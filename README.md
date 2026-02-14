@@ -59,27 +59,4 @@ Before merging any changes:
 
 ---
 
-## 📐 UML Development
-
-For UML diagrams, use **PlantUML** with Visual Studio Code.
-
-### Required VS Code Extension
-
-* **PlantUML** by `jebbs`
-
-  * 👉 [https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
-
-### Required Dependencies
-
-To work properly, PlantUML requires:
-
-* **Java** — Runtime platform used to execute PlantUML
-* **Graphviz** — Required to compute diagram layouts
-
-  * 👉 [https://www.graphviz.org/download/](https://www.graphviz.org/download/)
-
-Make sure both are installed and correctly added to your system PATH.
-
----
-
 ✅ Following this workflow ensures clean version control, traceable changes, and high-quality reviews.
