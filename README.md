@@ -1,37 +1,85 @@
 # 🧩 Development Workflow
 
-## Issues
-Create an issue following this naming convention:
-
-- **AAU** — As A User  
-- **AAD** — As A Developer  
-- **AAT** — As A Tester  
-
-Then add the **subject** of the issue.  
-> Example: `AAD, I should fix the bug of ...`
-
-You can assign **labels** and/or **milestones** to make your ticket more precise.
-
-Once the issue is created, **create a branch for it** *(initialy based on `develop`)*.
+This document describes the standard workflow to follow for development, from issue creation to merging code.
 
 ---
 
-## Commits
-When committing, include the **issue number** and a short sentence describing the changes.
+## 🐞 Issues
 
-> Example:  
-> `#23: Bug fixed by adjusting ...`
+Create an issue using the following **naming convention**:
+
+* **AAU** — *As A User*
+* **AAD** — *As A Developer*
+* **AAT** — *As A Tester*
+
+Then add a clear **subject** describing the goal of the issue.
+
+**Example:**
+
+```
+AAD, I should fix the bug of ...
+```
+
+You may also assign:
+
+* **Labels** (bug, feature, enhancement, etc.)
+* **Milestones** (sprint, release version, etc.)
+
+Once the issue is created:
+
+1. Create a **branch linked to the issue**
+2. The branch **must be based on `develop`**
 
 ---
 
-## Pull Requests
-Before merging your changes, **create a Pull Request** linked to the issue and **assign a reviewer**.
+## 🧱 Commits
 
-⚠️ **You cannot merge without a review!**
+Each commit message must include:
 
-# UML Delopment
-Import VCS'extention [PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml) from `jebbs`.
+* The **issue number**
+* A **short, clear description** of the change
 
-### Necessarly to work
-- Java : Platform for PlantUML running.
-- [Graphviz](https://www.graphviz.org/download/) : PlantUML requires it to calculate positions in diagram.
+**Example:**
+
+```
+#23: Fix bug by adjusting sensor threshold
+```
+
+---
+
+## 🔀 Pull Requests
+
+Before merging any changes:
+
+1. Create a **Pull Request (PR)**
+2. **Link the PR to its issue**
+3. **Assign at least one reviewer**
+
+⚠️ **Merging is strictly forbidden without an approved review.**
+
+---
+
+## 📐 UML Development
+
+For UML diagrams, use **PlantUML** with Visual Studio Code.
+
+### Required VS Code Extension
+
+* **PlantUML** by `jebbs`
+
+  * 👉 [https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
+
+### Required Dependencies
+
+To work properly, PlantUML requires:
+
+* **Java** — Runtime platform used to execute PlantUML
+* **Graphviz** — Required to compute diagram layouts
+
+  * 👉 [https://www.graphviz.org/download/](https://www.graphviz.org/download/)
+
+Make sure both are installed and correctly added to your system PATH.
+
+---
+
+✅ Following this workflow ensures clean version control, traceable changes, and high-quality reviews.
