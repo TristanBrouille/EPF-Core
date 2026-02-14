@@ -1,0 +1,75 @@
+@startuml Gestion Inscriptions Module
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor Utilisateur
+actor Candidat
+actor Etudiant
+actor "Responsable scolarité" as RespSco
+
+Utilisateur <|-- Candidat
+Utilisateur <|-- Etudiant
+Utilisateur <|-- RespSco
+
+package "Gestion des inscriptions" {
+
+  usecase "Soumettre candidature" as UCI_Cand
+  usecase "Déposer dossier administratif" as UCI_Dossier
+  usecase "Vérifier dossier" as UCI_Verif
+  usecase "Décider inscription" as UCI_Decision
+  usecase "Mettre à jour statut" as UCI_Statut
+
+  UCI_Cand --> UCI_Dossier : <<include>>
+  UCI_Dossier --> UCI_Verif : <<include>>
+  UCI_Decision --> UCI_Statut : <<include>>
+
+  UCI_Decision ..> UCI_Verif : <<extend>>
+}
+
+Etudiant --> UCI_Dossier
+Candidat --> UCI_Cand
+RespSco --> UCI_Decision
+
+package "Affectation aux formations" {
+
+  usecase "Affecter Etudiant à formation" as UCA_Form
+  usecase "Affecter Etudiant à groupe" as UCA_Groupe
+  usecase "Modifier affectation" as UCA_Modif
+
+  UCA_Groupe --> UCA_Form : <<include>>
+  UCA_Modif ..> UCA_Form : <<extend>>
+}
+
+RespSco --> UCA_Form
+RespSco --> UCA_Groupe
+
+package "Suivi du parcours" {
+
+  usecase "Consulter parcours" as UCP_Parcours
+  usecase "Consulter historique" as UCP_Histo
+  usecase "Consulter résultats" as UCP_Results
+  usecase "Générer attestation" as UCP_Attest
+
+  UCP_Parcours --> UCP_Histo : <<include>>
+  UCP_Parcours --> UCP_Results : <<include>>
+  UCP_Attest ..> UCP_Parcours : <<extend>>
+}
+
+Etudiant --> UCP_Parcours
+RespSco --> UCP_Attest
+
+package "Notifications" {
+
+  usecase "Envoyer notification" as UCN_Send
+  usecase "Notifier changement de statut" as UCN_Statut
+  usecase "Notifier affectation" as UCN_Affect
+
+  UCN_Send --> UCN_Statut : <<include>>
+  UCN_Send --> UCN_Affect : <<include>>
+
+  UCN_Statut ..> UCI_Statut : <<extend>>
+  UCN_Affect ..> UCA_Form : <<extend>>
+}
+
+@enduml
