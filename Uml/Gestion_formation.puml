@@ -1,0 +1,103 @@
+@startuml Gestion Formation Modul
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+' =====================
+' Acteurs
+' =====================
+actor Utilisateur
+actor "Scolaritée" as Admin
+actor "Responsable de formation" as Resp
+actor Intervenant
+actor Étudiant
+
+Utilisateur <|-- Admin
+Utilisateur <|-- Resp
+Utilisateur <|-- Intervenant
+Utilisateur <|-- Étudiant
+
+package "Gestion des formations" {
+
+  usecase "Gérer formation" as UCF_Gerer
+  usecase "Créer formation" as UCF_Creer
+  usecase "Modifier formation" as UCF_Modifier
+  usecase "Supprimer formation" as UCF_Supprimer
+  usecase "Consulter formation" as UCF_Consulter
+
+  UCF_Gerer --> UCF_Creer : <<include>>
+  UCF_Gerer --> UCF_Modifier : <<include>>
+  UCF_Gerer --> UCF_Supprimer : <<include>>
+
+}
+
+Admin --> UCF_Gerer
+Étudiant --> UCF_Consulter
+
+package "Organisation académique" {
+
+  usecase "Gérer programmes" as UCO_Prog
+  usecase "Gérer années académiques" as UCO_Annees
+  usecase "Associer formation à programme" as UCO_AssocProg
+  usecase "Associer formation à année" as UCO_AssocAnnee
+
+  UCO_AssocProg --> UCO_Prog : <<include>>
+  UCO_AssocProg --> UCF_Gerer : <<include>>
+
+  UCO_AssocAnnee --> UCO_Annees : <<include>>
+  UCO_AssocAnnee --> UCF_Gerer : <<include>>
+}
+
+Admin --> UCO_Prog
+Admin --> UCO_Annees
+Resp --> UCO_AssocProg
+Resp --> UCO_AssocAnnee
+
+package "Planification des sessions" {
+
+  usecase "Créer session" as UCP_Creer
+  usecase "Modifier session" as UCP_Modifier
+  usecase "Planifier dates" as UCP_Dates
+  usecase "Définir lieu" as UCP_Lieu
+  usecase "Affecter intervenants" as UCP_Interv
+  usecase "Consulter planning" as UCP_Planning
+
+  UCP_Creer --> UCP_Dates : <<include>>
+  UCP_Creer --> UCP_Lieu : <<include>>
+  UCP_Creer --> UCP_Interv : <<include>>
+
+  UCP_Modifier ..> UCP_Dates : <<extend>>
+  UCP_Modifier ..> UCP_Lieu : <<extend>>
+  UCP_Modifier ..> UCP_Interv : <<extend>>
+}
+
+Resp --> UCP_Creer
+Admin --> UCP_Modifier
+Admin --> UCP_Creer
+Intervenant --> UCP_Planning
+
+package "Suivi pédagogique" {
+
+  usecase "Suivre formation" as USP_Suivre
+  usecase "Enregistrer présences" as USP_Pres
+  usecase "Calculer taux de complétion" as USP_Taux
+  usecase "Saisir évaluations" as USP_Eval
+  usecase "Consulter évaluations" as USP_ConsEval
+  usecase "Générer indicateurs" as USP_Indic
+
+  USP_Suivre --> USP_Pres : <<include>>
+  USP_Suivre --> USP_Taux : <<include>>
+  USP_Suivre --> USP_Eval : <<include>>
+
+  USP_Indic --> USP_Taux : <<include>>
+  USP_Indic --> USP_Pres : <<include>>
+}
+
+Intervenant --> USP_Pres
+Intervenant --> USP_Eval
+Étudiant --> USP_ConsEval
+
+"Planification des sessions" ..> "Gestion des formations" : <<depend>>
+"Suivi pédagogique" ..> "Planification des sessions" : <<depend>>
+"Organisation académique" ..> "Gestion des formations" : <<depend>>
+@enduml
