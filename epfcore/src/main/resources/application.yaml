@@ -1,3 +1,19 @@
 spring:
-  application:
-    name: epfcore
+  datasource:
+    url: jdbc:postgresql://localhost:5432/epfcore_db
+    username: epfuser
+    password: epfpassword
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  jakarta:
+    persistence:
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/epfcore_db
+        user: epfuser
+        password: epfpassword
+
