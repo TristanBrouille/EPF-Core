@@ -1,4 +1,7 @@
-<div class="login-page">
+<div class="login-page position-relative">
+    <button type="submit" class="btn-red position-absolute top-0 end-0 m-3" routerLink="/register-candidat">
+      S'inscrire en tant que candidat
+    </button>
   <div class="login-container">
     <h1 class="text-center">Connexion EPF</h1>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">

@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {loginService} from './loginService';
 import {UserLog} from '../model/user';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-login',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {
+export class Login implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
 
@@ -31,8 +32,13 @@ export class Login {
 
       try {
         const response = await this.authService.login(user);
+        const authorities: string[] = response.body?.roles ?? [];
           setTimeout(() => {
-            this.router.navigate(['/home']);
+            if (authorities.includes('CANDIDAT')) {
+              this.router.navigate(['/candidat']);
+            } else {
+              this.router.navigate(['/login']);
+            }
           }, 500);
 
 

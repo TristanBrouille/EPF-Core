@@ -1,0 +1,72 @@
+@use '../../variables' as *;
+
+.progress-section {
+  margin: 2rem 0;
+
+  .progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: $gray-dark;
+      z-index: 0;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+
+      .step-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: $gray-dark;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      .step-label {
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        text-align: center;
+      }
+
+      &.active .step-circle {
+        background: $epf-red;
+      }
+
+      &.done .step-circle {
+        background: $epf-purple;
+      }
+    }
+  }
+
+  .progress {
+    height: 8px;
+    border-radius: 4px;
+    background: $gray-dark;
+
+    .progress-bar {
+      background: $epf-red;
+      transition: width 0.5s ease;
+    }
+  }
+
+  .progress-text {
+    color: $epf-red;
+    font-weight: 500;
+  }
+}

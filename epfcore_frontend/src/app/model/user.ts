@@ -9,3 +9,8 @@ export interface UserLog{
   email: string;
   password: string;
 }
+
+export interface UserRole {
+  email: string;
+  authorities: string[];
+}

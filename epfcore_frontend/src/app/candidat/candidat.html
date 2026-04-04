@@ -1,0 +1,49 @@
+@if (user) {
+  <div class="container mt-4">
+    <div class="row">
+
+      <!-- Colonne gauche -->
+      <div class="col-5">
+        <h2>Informations personnelles</h2>
+        <p><strong>Prénom :</strong> {{ user.firstname }}</p>
+        <p><strong>Nom :</strong> {{ user.lastname }}</p>
+        <p><strong>Email :</strong> {{ user.email }}</p>
+        <p><strong>Date de naissance :</strong> {{ user.birthday }}</p>
+      </div>
+
+      <!-- Colonne droite -->
+      <div class="col-7">
+        <h2>Avancement Dossier</h2>
+
+        <div class="progress-section">
+          <div class="progress-steps">
+            @for (step of steps; track step.id) {
+              <div class="step" [class.active]="step.id <= currentStep" [class.done]="step.id < currentStep">
+                <div class="step-circle">{{ step.id }}</div>
+                <div class="step-label">{{ step.label }}</div>
+              </div>
+            }
+          </div>
+
+          <div class="progress mt-3">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              [style.width.%]="progressPercent"
+            ></div>
+          </div>
+
+          <p class="progress-text text-center mt-2">{{ currentStepMessage }}</p>
+        </div>
+        <p></p>
+      </div>
+
+    </div>
+  </div>
+}
+
+@if (errorMessage) {
+  <div>
+    <p>{{ errorMessage }}</p>
+  </div>
+}
