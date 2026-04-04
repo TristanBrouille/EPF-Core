@@ -16,7 +16,7 @@ export class RegisterCandidat implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private candidatService: CandidatService
+    private candidatService: CandidatService,
   ) {}
 
   ngOnInit(): void {

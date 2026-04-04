@@ -27,6 +27,7 @@ export class Candidat implements OnInit {
     }
   }
 
+
   steps = [
     { id: 1, label: 'Inscription' },
     { id: 2, label: 'Documents' },
@@ -34,7 +35,9 @@ export class Candidat implements OnInit {
     { id: 4, label: 'Validation' },
   ];
 
-  currentStep: number = 1; // à modifier selon l'avancement réel du candidat
+  currentStep: number = 1;
+
+  //TODO modifier selon l'avancement réel du candidat
 
   get progressPercent(): number {
     return ((this.currentStep - 1) / (this.steps.length - 1)) * 100;
