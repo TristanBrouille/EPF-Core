@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {Header} from './decor/header/header';
@@ -23,4 +24,5 @@ export class App {
           event.urlAfterRedirects !== '/register-candidat';
       });
   }
+
 }
