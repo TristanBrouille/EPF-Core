@@ -1,19 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/epfcore_db
-    username: epfuser
-    password: epfpassword
+    url: jdbc:postgresql://db.jjcijtltmmabaqzkypdi.supabase.co:5432/postgres?sslmode=require
+    username: postgres
+    password: Leprojet2EpfCore
     driver-class-name: org.postgresql.Driver
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-  jakarta:
-    persistence:
-      jdbc:
-        url: jdbc:postgresql://localhost:5432/epfcore_db
-        user: epfuser
-        password: epfpassword
-
+    show-sql: true
