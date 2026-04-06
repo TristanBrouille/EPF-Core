@@ -22,7 +22,6 @@ export class Login implements OnInit {
 
   constructor(protected readonly router : Router, private fb: FormBuilder, private authService: loginService) {}
 
-
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -50,6 +49,5 @@ export class Login implements OnInit {
       }
     }
   }
-
 
 }
