@@ -1,0 +1,45 @@
+<div class="login-page">
+  <div class="login-container">
+    <h1 class="text-center">Connexion EPF</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="exemple@epf.fr"
+        />
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched){
+          <div class="error">
+            Email invalide
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Votre mot de passe"
+        />
+        @if(loginForm.get('password')?.invalid && loginForm.get('password')?.touched){
+          <div class="error">
+            Mot de passe requis
+          </div>
+        }
+
+      </div>
+
+      <button type="submit" class="btn-red" [disabled]="loginForm.invalid">Se connecter</button>
+    </form>
+    @if(errorMessage){
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+  </div>
+</div>
