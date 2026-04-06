@@ -1,18 +1,25 @@
 @use '../../variables' as *;
+
 .login-page {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: $gray-light;
+
+  background-image: url("/assets/images/epf_cachan.png");
+  background-size: cover;
+  background-attachment: fixed;
 
   .login-container {
-    background-color: $white;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba($black, 0.1);
     width: 100%;
     max-width: 400px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 
     h1 {
       color: $epf-red;
