@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {loginService} from './loginService';
+import {UserLog} from '../object/user';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ export class Login {
   loginForm!: FormGroup;
   errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: loginService) {}
+  constructor(protected readonly router : Router, private fb: FormBuilder, private authService: loginService) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -23,18 +25,21 @@ export class Login {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe({
-        next: (res) => {
-          console.log('Connexion réussie', res);
-          // Rediriger vers la page d'accueil ou dashboard
-        },
-        error: (err) => {
-          this.errorMessage = 'Email ou mot de passe incorrect';
-        },
-      });
+      const user: UserLog = this.loginForm.value;
+
+      try {
+        const response = await this.authService.login(user);
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 500);
+
+
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
+
 }
