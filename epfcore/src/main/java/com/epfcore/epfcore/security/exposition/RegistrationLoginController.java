@@ -3,6 +3,7 @@ package com.epfcore.epfcore.security.exposition;
 import com.epfcore.epfcore.security.domain.User;
 import com.epfcore.epfcore.security.infrastructure.UserJpaRepository;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -22,15 +23,34 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 =======
+=======
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
+>>>>>>> 628cbcd (ajout me rework login)
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 >>>>>>> 050ec83 (ajout login)
+=======
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+>>>>>>> 628cbcd (ajout me rework login)
 
 @RestController
 @RequestMapping("/")
@@ -41,11 +61,17 @@ public class RegistrationLoginController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private final SecurityContextRepository securityContextRepository =
             new HttpSessionSecurityContextRepository();
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 =======
 >>>>>>> 050ec83 (ajout login)
+=======
+    private final SecurityContextRepository securityContextRepository =
+            new HttpSessionSecurityContextRepository();
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+>>>>>>> 628cbcd (ajout me rework login)
 
     public RegistrationLoginController(UserJpaRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -64,6 +90,9 @@ public class RegistrationLoginController {
 
     @PostMapping("/login")
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 628cbcd (ajout me rework login)
     public ResponseEntity<Me> login(
             @RequestBody UserLog req,
             HttpServletRequest request,
@@ -97,9 +126,12 @@ public class RegistrationLoginController {
         }
 
         return ResponseEntity.ok(new UserExpose(user.getFirstname(), user.getLastname(), user.getEmail(), user.getBirthDate()));
+<<<<<<< HEAD
 =======
     public void loginUser(@RequestBody UserLog user) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.email(), user.password()));
 >>>>>>> 050ec83 (ajout login)
+=======
+>>>>>>> 628cbcd (ajout me rework login)
     }
 }
