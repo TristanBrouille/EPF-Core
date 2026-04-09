@@ -17,6 +17,7 @@ export interface Etudiant {
   telephone: string;
   programme: string;
   annee_academique: string;
+  formation: string;
   campus: string;
   date_inscription: string;
   dernier_diplome: string;
@@ -42,8 +43,9 @@ export class FicheEtudiant {
     bourse: 'NON',
     adresse: '12 Rue des Lilas, 75014 Paris',
     telephone: '+33 6 12 34 56 78',
-    programme: 'Informatique & Systèmes',
-    annee_academique: '2024-2025',
+    programme: 'majeur système numérique & intelligent',
+    annee_academique: '4A',
+    formation: 'FGE',
     campus: 'Cachan',
     date_inscription: '2021-09-06',
     dernier_diplome: 'Baccalauréat Scientifique',
