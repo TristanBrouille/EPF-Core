@@ -1,0 +1,114 @@
+<div class="student-page">
+
+  <div class="student-card">
+
+    <!-- LEFT PANEL -->
+    <div class="student-sidebar">
+
+      @if (etudiant.lien_photo) {
+        <img 
+          [src]="etudiant.lien_photo"
+          class="student-avatar"
+        />
+      } @else {
+        <div class="student-avatar placeholder">
+          {{ initialesAvatar }}
+        </div>
+      }
+
+      <h2 class="student-name">
+        {{ etudiant.prenom }} {{ etudiant.nom }}
+      </h2>
+
+      <p class="student-program">
+        {{ etudiant.programme }}
+      </p>
+
+      <div class="student-badge"
+           [class.active]="etudiant.bourse === 'OUI'">
+        {{ etudiant.bourse === 'OUI' ? 'Boursier' : 'Non boursier' }}
+      </div>
+
+      <div class="student-meta">
+        <div>{{ etudiant.campus }}</div>
+        <div>{{ etudiant.annee_academique }}</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="student-content">
+
+      <!-- Infos perso -->
+      <div class="card">
+        <h3>Informations</h3>
+
+        <div class="grid">
+          <div>
+            <label>Prénom</label>
+            <p>{{ etudiant.prenom }}</p>
+          </div>
+
+          <div>
+            <label>Nom</label>
+            <p>{{ etudiant.nom }}</p>
+          </div>
+
+          <div>
+            <label>Sexe</label>
+            <p>{{ etudiant.sexe }}</p>
+          </div>
+
+          <div>
+            <label>Nationalité</label>
+            <p>{{ etudiant.nationalite }}</p>
+          </div>
+
+          <div>
+            <label>Téléphone</label>
+            <p>{{ etudiant.telephone }}</p>
+          </div>
+
+          <div class="full">
+            <label>Adresse</label>
+            <p>{{ etudiant.adresse }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scolarité -->
+      <div class="card">
+        <h3>Scolarité</h3>
+
+        <div class="grid">
+          <div>
+            <label>Numéro étudiant</label>
+            <p class="mono">{{ etudiant.num_etudiant }}</p>
+          </div>
+
+          <div>
+            <label>Date inscription</label>
+            <p>{{ dateInscriptionFormatee }}</p>
+          </div>
+
+          <div class="full">
+            <label>Dernier diplôme</label>
+            <p>{{ etudiant.dernier_diplome }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="card">
+        <h3>Contact</h3>
+
+        <a [href]="'mailto:' + etudiant.email" class="email-link">
+          {{ etudiant.email }}
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

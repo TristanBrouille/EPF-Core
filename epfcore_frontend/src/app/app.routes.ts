@@ -3,6 +3,7 @@ import {Login} from './login/login';
 import {Candidat} from './candidat/candidat';
 import {RegisterCandidat} from './register-candidat/register-candidat';
 import {Home} from './home/home';
+import { FicheEtudiant } from './fiche-etudiant/fiche-etudiant';
 
 export const routes: Routes = [
   {path: 'login', component: Login},
