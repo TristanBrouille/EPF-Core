@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 export type Sexe = 'M' | 'F' | 'Autre';
 export type Boursier = 'OUI' | 'NON';
+
+
 
 export interface Etudiant {
   id: number;
@@ -26,11 +29,14 @@ export interface Etudiant {
 
 @Component({
   selector: 'app-fiche-etudiant',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './fiche-etudiant.html',
-  styleUrl: './fiche-etudiant.scss',
+  styleUrls: ['./fiche-etudiant.scss'],
 })
 export class FicheEtudiant {
+
+  constructor(private http: HttpClient) {}
 
     etudiant: Etudiant = {
     id: 1,
@@ -61,5 +67,29 @@ export class FicheEtudiant {
       day: '2-digit', month: 'long', year: 'numeric'
     });
   }
+
+  downloadPDF() {
+  const payload = this.etudiant;
+
+  this.http.post('http://localhost:3000/pdf', payload, {
+    responseType: 'blob'
+  }).subscribe({
+    next: (pdfBlob: Blob) => {
+      const url = window.URL.createObjectURL(pdfBlob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `etudiant-${this.etudiant.num_etudiant}.pdf`;
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.error('Erreur génération PDF', err);
+    }
+  });
+}
+
+  
 
 }

@@ -154,3 +154,19 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+.pdf-button {
+  background: #C8102E;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+
+  &:hover {
+    background: darken(#C8102E, 10%);
+    transform: translateY(-1px);
+  }
+}
