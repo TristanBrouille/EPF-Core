@@ -2,11 +2,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BulletinData, Semester, CourseGroup, SubCourse } from './bulletin.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-bulletin',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './bulletin.component.html',
   styleUrls: ['./bulletin.component.scss']
 })
@@ -33,7 +34,7 @@ const SAMPLE_DATA: BulletinData = {
   semesters: [
     {
       label: 'Semestre 1',
-      labelEn: 'Semester 1',
+      labelEn: '',
       rank: 42,
       students: 261,
       classAverage: 11.80,
@@ -45,7 +46,7 @@ const SAMPLE_DATA: BulletinData = {
       groups: [
         {
           label: 'Mathématiques pour l\'Ingénieur 1',
-          labelEn: 'Engineering Mathematics 1',
+          labelEn: ' ',
           students: 260,
           classAverage: 11.62,
           stdDev: 2.18,
@@ -55,14 +56,13 @@ const SAMPLE_DATA: BulletinData = {
           ectsMax: 7.0,
           grade: 'B',
           subCourses: [
-            { label: 'Mathématiques et Abstraction 1', labelEn: 'Mathematics and Abstraction 1', students: 261, classAverage: 10.89, stdDev: 2.85, average: 12.58, ectsMax: 3.0 },
-            { label: 'Outils Mathématiques pour l\'Ingénieur 1', labelEn: 'Mathematical Engineering Tools 1', students: 261, classAverage: 12.44, stdDev: 2.28, average: 13.90, ectsMax: 3.0 },
-            { label: 'Techniques Calculatoires', labelEn: 'Computational Techniques', students: 261, classAverage: 11.33, stdDev: 3.16, average: 15.78, ectsMax: 1.0 },
+            { label: 'Mathématiques et Abstraction 1', labelEn: ' ', students: 261, classAverage: 10.89, stdDev: 2.85, average: 12.58, ectsMax: 3.0 },
+            { label: 'Outils Mathématiques pour l\'Ingénieur 1', labelEn: ' ', students: 261, classAverage: 12.44, stdDev: 2.28, average: 13.90, ectsMax: 3.0 },
           ]
         },
         {
           label: 'Sciences Physiques 1',
-          labelEn: 'Physical Sciences 1',
+          labelEn: ' ',
           students: 261,
           classAverage: 10.22,
           stdDev: 2.02,
@@ -72,16 +72,15 @@ const SAMPLE_DATA: BulletinData = {
           ectsMax: 7.0,
           grade: 'E',
           subCourses: [
-            { label: 'Signaux et Systèmes Physiques', labelEn: 'Signals and Physical Systems', students: 261, classAverage: 10.29, stdDev: 2.56, average: 10.80, ectsMax: 1.5 },
-            { label: 'Circuits Électriques 1', labelEn: 'Electrical Circuits 1', students: 261, classAverage: 10.93, stdDev: 2.58, average: 11.20, ectsMax: 1.5 },
-            { label: 'Chimie des Solutions', labelEn: 'Chemistry of Solutions', students: 261, classAverage: 9.05, stdDev: 2.82, average: 8.25, ectsMax: 1.5 },
-            { label: 'Optique', labelEn: 'Optics', students: 261, classAverage: 13.76, stdDev: 1.53, average: 15.53, ectsMax: 1.0 },
+            { label: 'Signaux et Systèmes Physiques', labelEn: ' ', students: 261, classAverage: 10.29, stdDev: 2.56, average: 10.80, ectsMax: 1.5 },
+            { label: 'Circuits Électriques 1', labelEn: ' ', students: 261, classAverage: 10.93, stdDev: 2.58, average: 11.20, ectsMax: 1.5 },
+            { label: 'Chimie des Solutions', labelEn: ' ', students: 261, classAverage: 9.05, stdDev: 2.82, average: 8.25, ectsMax: 1.5 },
             { label: 'Examen Physique 1', labelEn: '', students: 261, classAverage: 8.21, stdDev: 3.40, average: 6.96, ectsSession2Special: '*', ectsMax: 1.5 },
           ]
         },
         {
           label: 'Sciences de l\'Ingénieur 1',
-          labelEn: 'Engineering Sciences 1',
+          labelEn: ' ',
           students: 258,
           classAverage: 10.34,
           stdDev: 2.12,
@@ -91,8 +90,71 @@ const SAMPLE_DATA: BulletinData = {
           ectsMax: 4.0,
           grade: 'B',
           subCourses: [
-            { label: 'Analyse des Systèmes et Technologie Mécanique 1', labelEn: 'Mechanical Engineering and Systems Analysis 1', students: 259, classAverage: 10.34, stdDev: 2.21, average: 13.85, ectsMax: 3.0 },
-            { label: 'Introduction aux Outils de l\'Ingénierie Numérique 1', labelEn: 'Introduction to Digital Engineering Tools 1', students: null, classAverage: null, stdDev: null, average: null, ectsSession1Special: 'Quitus', ectsMax: 1.0 },
+            { label: 'Analyse des Systèmes et Technologie Mécanique 1', labelEn: ' ', students: 259, classAverage: 10.34, stdDev: 2.21, average: 13.85, ectsMax: 3.0 },
+            { label: 'Introduction aux Outils de l\'Ingénierie Numérique 1', labelEn: 'I ', students: null, classAverage: null, stdDev: null, average: null, ectsSession1Special: 'Quitus', ectsMax: 1.0 },
+          ]
+        }
+      ]
+    },
+    {
+      label: 'Semestre 2',
+      labelEn: '',
+      rank: 42,
+      students: 261,
+      classAverage: 11.80,
+      stdDev: 1.79,
+      average: 13.51,
+      ectsSession1: 27.0,
+      ectsSession2: 30.0,
+      ectsMax: 30.0,
+      groups: [
+        {
+          label: 'Mathématiques pour l\'Ingénieur 2',
+          labelEn: ' ',
+          students: 260,
+          classAverage: 11.62,
+          stdDev: 2.18,
+          average: 13.60,
+          ectsSession1: 7.0,
+          ectsSession2: 7.0,
+          ectsMax: 7.0,
+          grade: 'B',
+          subCourses: [
+            { label: 'Outils Mathématiques pour l\'Ingénieur 2', labelEn: ' ', students: 261, classAverage: 12.44, stdDev: 2.28, average: 13.90, ectsMax: 3.0 },
+            { label: 'Techniques Calculatoires', labelEn: ' ', students: 261, classAverage: 11.33, stdDev: 3.16, average: 15.78, ectsMax: 1.0 },
+          ]
+        },
+        {
+          label: 'Sciences Physiques 2',
+          labelEn: ' ',
+          students: 261,
+          classAverage: 10.22,
+          stdDev: 2.02,
+          average: 10.19,
+          ectsSession1: 4.0,
+          ectsSession2: 7.0,
+          ectsMax: 7.0,
+          grade: 'E',
+          subCourses: [
+            { label: 'Circuits Électriques 2', labelEn: ' ', students: 261, classAverage: 10.93, stdDev: 2.58, average: 11.20, ectsMax: 1.5 },
+            { label: 'Optique', labelEn: ' ', students: 261, classAverage: 13.76, stdDev: 1.53, average: 15.53, ectsMax: 1.0 },
+            { label: 'Examen Physique 2', labelEn: '', students: 261, classAverage: 8.21, stdDev: 3.40, average: 6.96, ectsSession2Special: '*', ectsMax: 1.5 },
+          ]
+        },
+        {
+          label: 'Sciences de l\'Ingénieur 2',
+          labelEn: ' ',
+          students: 258,
+          classAverage: 10.34,
+          stdDev: 2.12,
+          average: 13.85,
+          ectsSession1: 4.0,
+          ectsSession2: 4.0,
+          ectsMax: 4.0,
+          grade: 'B',
+          subCourses: [
+            { label: 'Analyse des Systèmes et Technologie Mécanique 2', labelEn: ' ', students: 259, classAverage: 10.34, stdDev: 2.21, average: 13.85, ectsMax: 3.0 },
+            { label: 'Introduction aux Outils de l\'Ingénierie Numérique 2', labelEn: 'I ', students: null, classAverage: null, stdDev: null, average: null, ectsSession1Special: 'Quitus', ectsMax: 1.0 },
           ]
         }
       ]
