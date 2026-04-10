@@ -1,6 +1,18 @@
+@use '../../variables' as *;
+
 // ── Variables ────────────────────────────────────────────────────────────────
-$color-header-bg:    #3B5998;   // bleu foncé en-tête
-$color-semester-bg:  #B8C9E4;   // bleu clair semestre
+// $color-header-bg:    #3B5998;   // bleu foncé en-tête
+// $color-semester-bg:  #B8C9E4;   // bleu clair semestre
+// $color-summary-bg:   #D0DBEE;   // bleu très clair résumé global
+// $color-group-bg:     #EAF0F8;   // bleu pâle groupes
+// $color-sub-bg:       #FFFFFF;   // blanc sous-matières
+// $color-border:       #AABBD6;
+// $color-text-dark:    #1A1A2E;
+// $color-text-header:  #FFFFFF;
+// $font:               'Arial', sans-serif;
+
+$color-header-bg: $epf-red;   // en-tête
+$color-semester-bg: $epf-purple;   // bleu clair semestre
 $color-summary-bg:   #D0DBEE;   // bleu très clair résumé global
 $color-group-bg:     #EAF0F8;   // bleu pâle groupes
 $color-sub-bg:       #FFFFFF;   // blanc sous-matières
@@ -143,6 +155,7 @@ $font:               'Arial', sans-serif;
   // ── Ligne sous-matière
   .row-sub td {
     background: $color-sub-bg;
+    // background: $epf-red;
 
     .label-sub {
       text-align: left;
@@ -175,7 +188,7 @@ $font:               'Arial', sans-serif;
 
   .legend-title {
     font-weight: bold;
-    color: $color-text-dark;
+    color: $color-text-dark; //////////////////////////////////////////////////////////////////////////////////
   }
 
   .legend-item {
