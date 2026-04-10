@@ -1,0 +1,22 @@
+.layout {
+  height: 100vh;
+}
+
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+mat-sidenav.sidebar {
+  width: 50%;           /* largeur relative à la fenêtre */
+  min-width: 60px;      /* jamais trop petit */
+  max-width: 200px;     /* jamais trop large */
+  box-sizing: border-box;
+  overflow: hidden;     /* cache le contenu qui dépasse */
+}
