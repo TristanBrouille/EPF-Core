@@ -67,6 +67,7 @@ $border: #e5e5e5;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 15px;
+  opacity: 0.9;
 }
 
 .student-badge.active {
@@ -78,7 +79,7 @@ $border: #e5e5e5;
 .student-meta {
   margin-top: 20px;
   font-size: 15px;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 /* CONTENT */
@@ -119,9 +120,17 @@ label {
   color: $muted;
 }
 
+.right {
+  color:white;
+}
+
 p {
   margin: 3px 0 0;
   font-weight: 500;
+}
+
+.sexe{
+  font-size: 0.8rem;
 }
 
 .mono {
