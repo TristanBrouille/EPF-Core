@@ -63,5 +63,10 @@ public class EtudiantService {
     public void deleteEtudiant(Long id) {
         etudiantRepository.deleteById(id);
     }
+
+    public Etudiant findByUserEmail(String email) {
+    return etudiantRepository.findByUserEmail(email)
+            .orElseThrow(() -> new RuntimeException("Etudiant non trouvé pour email: " + email));
+}
     
 }

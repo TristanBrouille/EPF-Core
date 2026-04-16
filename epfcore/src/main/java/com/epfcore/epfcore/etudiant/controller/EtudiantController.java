@@ -1,7 +1,9 @@
 package com.epfcore.epfcore.etudiant.controller;
 
+import java.security.Principal;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +64,17 @@ public class EtudiantController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> getEtudiantConnecte(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Utilisateur non authentifié");
+        }
 
-    
+        String email = principal.getName();
+        Etudiant etudiant = etudiantService.findByUserEmail(email);
+
+        return ResponseEntity.ok(etudiant);
+    }
+
 }
