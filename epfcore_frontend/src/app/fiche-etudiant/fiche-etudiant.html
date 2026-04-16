@@ -1,3 +1,4 @@
+@if (etudiant) {
 <div class="student-page">
 
     <div class="student-card">
@@ -5,8 +6,8 @@
         <!-- LEFT PANEL -->
         <div class="student-sidebar">
 
-            @if (etudiant.lien_photo) {
-            <img [src]="etudiant.lien_photo" class="student-avatar" />
+            @if (etudiant.lienPhoto) {
+            <img [src]="etudiant.lienPhoto" class="student-avatar" />
             } @else {
             <div class="student-avatar placeholder">
                 {{ initialesAvatar }}
@@ -14,21 +15,35 @@
             }
 
             <h2 class="student-name">
-                {{ etudiant.prenom }} {{ etudiant.nom }}
+                {{ etudiant.user.firstname }} {{ etudiant.user.lastname }}
             </h2>
 
+
+
             <p class="student-program">
+                <span class="right">Majeur : </span>
                 {{ etudiant.programme }}
             </p>
 
+
             <div class="student-badge" [class.active]="etudiant.bourse === 'OUI'">
-                {{ etudiant.bourse === 'OUI' ? 'Boursier' : 'Non boursier' }}
+                <span class="right">Bourse : </span>
+                {{ etudiant.bourse === 'Boursier' ? 'Boursier' : 'Non boursier' }}
             </div>
 
             <div class="student-meta">
-                <div>{{ etudiant.campus }}</div>
-                <div>{{ etudiant.annee_academique }}</div>
+
+                <span class="right">Campus : </span>
+                {{ etudiant.campus }}
             </div>
+
+            <div class="student-meta">
+
+                <span class="right">Année : </span>
+                {{ etudiant.anneeAcademique }}
+
+            </div>
+
 
         </div>
 
@@ -42,17 +57,17 @@
                 <div class="grid">
                     <div>
                         <label>Prénom</label>
-                        <p>{{ etudiant.prenom }}</p>
+                        <p>{{ etudiant.user.firstname }}</p>
                     </div>
 
                     <div>
                         <label>Nom</label>
-                        <p>{{ etudiant.nom }}</p>
+                        <p>{{ etudiant.user.lastname }}</p>
                     </div>
 
-                    <div>
+                    <div  [class.active]="etudiant.sexe === 'MASCULIN'">
                         <label>Sexe</label>
-                        <p>{{ etudiant.sexe }}</p>
+                        <p>{{etudiant.sexe === 'MASCULIN' ? 'masculin' : 'féminin' }}</p>
                     </div>
 
                     <div>
@@ -62,7 +77,7 @@
 
                     <div>
                         <label>Téléphone</label>
-                        <p>{{ etudiant.telephone }}</p>
+                        <p>{{ telephoneFormate }}</p>
                     </div>
 
                     <div class="full">
@@ -79,7 +94,7 @@
                 <div class="grid">
                     <div>
                         <label>Numéro étudiant</label>
-                        <p class="mono">{{ etudiant.num_etudiant }}</p>
+                        <p class="mono">{{ etudiant.numEtudiant }}</p>
                     </div>
 
                     <div>
@@ -95,7 +110,7 @@
 
                     <div class="full">
                         <label>Dernier diplôme</label>
-                        <p>{{ etudiant.dernier_diplome }}</p>
+                        <p>{{ etudiant.dernierDiplome}}</p>
                     </div>
                 </div>
             </div>
@@ -104,17 +119,20 @@
             <div class="card">
                 <h3>Contact</h3>
 
-                <a [href]="'mailto:' + etudiant.email" class="email-link">
-                    {{ etudiant.email }}
+                <a [href]="'mailto:' + etudiant.user.email" class="email-link">
+                    {{ etudiant.user.email }}
                 </a>
             </div>
 
-            <button (click)="downloadPDF()" class="pdf-button">
+            <!-- <button (click)="downloadPDF()" class="pdf-button">
                 Télécharger en PDF
-            </button>
+            </button> -->
 
         </div>
 
     </div>
 
 </div>
+} @else {
+<div class="loading">Chargement...</div>
+}
