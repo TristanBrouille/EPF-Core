@@ -1,0 +1,28 @@
+@use '../../../variables' as *;
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  position: absolute;
+  left: 60px;
+  background-color: $epf-red-light;
+  color: $gray-light;
+  padding: 4px 8px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-item:hover .label {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scaleX(1);
+}

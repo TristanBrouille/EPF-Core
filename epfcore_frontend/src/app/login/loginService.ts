@@ -1,6 +1,5 @@
-import {firstValueFrom, Observable, of, throwError} from 'rxjs';
-import { delay } from 'rxjs/operators';
-import {inject, Injectable, signal} from '@angular/core';
+import {firstValueFrom, Observable} from 'rxjs';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User, UserLog} from '../model/user';
 
@@ -20,8 +19,7 @@ export class loginService {
     );
   }
 
-  me(): Promise<any>{
-    return firstValueFrom(
-      this.httpClient.get(this.urlMe));
+  me(): Observable<User>{
+    return this.httpClient.get<User>(this.urlMe);
   }
 }

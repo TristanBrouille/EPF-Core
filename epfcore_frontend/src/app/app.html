@@ -1,1 +1,22 @@
-<router-outlet></router-outlet>
+@if (showLayout){
+  <app-header></app-header>
+
+  <mat-sidenav-container class="layout">
+
+    <mat-sidenav mode="side" opened class="sidebar">
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
+    <mat-sidenav-content>
+
+      <div class="page-content">
+        <router-outlet></router-outlet>
+      </div>
+
+      <app-footer></app-footer>
+
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+} @else {
+  <router-outlet/>
+}

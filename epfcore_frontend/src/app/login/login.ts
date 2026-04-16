@@ -32,7 +32,7 @@ export class Login {
       try {
         const response = await this.authService.login(user);
           setTimeout(() => {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/home']);
           }, 500);
 
 
