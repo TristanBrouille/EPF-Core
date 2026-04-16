@@ -41,24 +41,25 @@ export class FicheEtudiant implements OnInit {
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.http.post('http://localhost:8080/login', {
-      email: 'jean.dupont@example.com',
-      password: 'password123'
-    }, { withCredentials: true }).subscribe({
-      next: () => this.loadEtudiant(),
-      error: (err) => console.error('Erreur login', err)
-    });
+    this.loadEtudiantConnecte();
   }
 
-  loadEtudiant(): void {
-    this.http.get<Etudiant>('http://localhost:8080/api/etudiants/1', {
-      withCredentials: true
-    }).subscribe({
+  /**
+   * 🔥 On ne fait PLUS de login manuel ici
+   * Le backend doit reconnaître l'utilisateur via cookie / JWT
+   */
+  loadEtudiantConnecte(): void {
+    this.http.get<Etudiant>(
+      'http://localhost:8080/api/etudiants/me',
+      { withCredentials: true }
+    ).subscribe({
       next: (data) => {
         this.etudiant = data;
-        this.cdr.detectChanges(); // force Angular à re-render
+        this.cdr.detectChanges();
       },
-      error: (err) => console.error('Erreur chargement étudiant', err)
+      error: (err) => {
+        console.error('Erreur chargement étudiant connecté', err);
+      }
     });
   }
 
