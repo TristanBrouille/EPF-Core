@@ -36,9 +36,9 @@ export interface Etudiant {
 })
 export class FicheEtudiant implements OnInit {
 
- etudiant: Etudiant | null = null;
+  etudiant: Etudiant | null = null;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.loadEtudiantConnecte();
@@ -76,32 +76,36 @@ export class FicheEtudiant implements OnInit {
   }
 
   get telephoneFormate(): string {
-  if (!this.etudiant) return '';
-  return this.etudiant.telephone.replace(/(\d{2})(?=\d)/g, '$1 ');
+    if (!this.etudiant) return '';
+    return this.etudiant.telephone.replace(/(\d{2})(?=\d)/g, '$1 ');
+  }
+
+  downloadPDF(): void {
+  if (!this.etudiant) return;
+
+  this.http.get(
+    `http://localhost:8080/api/etudiants/${this.etudiant.id}/pdf`,
+    { responseType: 'blob',
+      withCredentials: true
+     }
+  ).subscribe({
+    next: (pdfBlob: Blob) => {
+
+      const url = window.URL.createObjectURL(pdfBlob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `etudiant-${this.etudiant?.numEtudiant}.pdf`;
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.error('Erreur génération PDF', err);
+    }
+  });
 }
 
-//   downloadPDF() {
-//   const payload = this.etudiant;
 
-//   this.http.post('http://localhost:3000/pdf', payload, {
-//     responseType: 'blob'
-//   }).subscribe({
-//     next: (pdfBlob: Blob) => {
-//       const url = window.URL.createObjectURL(pdfBlob);
-
-//       const a = document.createElement('a');
-//       a.href = url;
-//       a.download = `etudiant-${this.etudiant.num_etudiant}.pdf`;
-//       a.click();
-
-//       window.URL.revokeObjectURL(url);
-//     },
-//     error: (err) => {
-//       console.error('Erreur génération PDF', err);
-//     }
-//   });
-// }
-
-  
 
 }
