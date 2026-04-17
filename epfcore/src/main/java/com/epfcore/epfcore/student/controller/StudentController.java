@@ -1,4 +1,4 @@
-package com.epfcore.epfcore.etudiant.controller;
+package com.epfcore.epfcore.student.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.security.Principal;
@@ -19,74 +19,71 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.epfcore.epfcore.etudiant.entity.Etudiant;
-import com.epfcore.epfcore.etudiant.service.EtudiantService;
+import com.epfcore.epfcore.student.entity.Student;
+import com.epfcore.epfcore.student.service.StudentService;
 
 @RestController
-@RequestMapping("/api/etudiants")
-public class EtudiantController {
+@RequestMapping("/api/students")
+public class StudentController {
 
-    private final EtudiantService etudiantService;
+    private final StudentService studentService;
 
-    public EtudiantController(EtudiantService etudiantService) {
-        this.etudiantService = etudiantService;
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
     @GetMapping
-    public List<Etudiant> getAllEtudiants() {
-        return etudiantService.getAllEtudiants();
+    public List<Student> getAllStudents() {
+        return studentService.getAllStudents();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Etudiant> getEtudiantById(@PathVariable Long id) {
-        return etudiantService.getEtudiantById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.getStudentById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Etudiant> createEtudiant(@RequestBody Etudiant etudiant) {
-        Etudiant createdEtudiant = etudiantService.createEtudiant(etudiant);
-        return ResponseEntity.ok(createdEtudiant);
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        Student createdStudent = studentService.createStudent(student);
+        return ResponseEntity.ok(createdStudent);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Etudiant> updateEtudiant(
+    public ResponseEntity<Student> updateStudent(
             @PathVariable Long id,
-            @RequestBody Etudiant etudiant) {
+            @RequestBody Student student) {
 
         try {
-            Etudiant updatedEtudiant = etudiantService.updateEtudiant(id, etudiant);
-            return ResponseEntity.ok(updatedEtudiant);
+            Student updatedStudent = studentService.updateStudent(id, student);
+            return ResponseEntity.ok(updatedStudent);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEtudiant(@PathVariable Long id) {
-        etudiantService.deleteEtudiant(id);
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getEtudiantConnecte(Principal principal) {
+    public ResponseEntity<?> getStudentConnecte(Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Utilisateur non authentifié");
         }
 
         String email = principal.getName();
-        Etudiant etudiant = etudiantService.findByUserEmail(email);
+        Student student = studentService.findByUserEmail(email);
 
-        return ResponseEntity.ok(etudiant);
+        return ResponseEntity.ok(student);
     }
 
     @GetMapping("/{id}/pdf")
     public ResponseEntity<byte[]> generatePdf(@PathVariable Long id) {
 
-        Etudiant etudiant = etudiantService.getEtudiantById(id)
-                .orElseThrow(() -> new RuntimeException("Etudiant introuvable"));
+        Student student = studentService.getStudentById(id);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -97,9 +94,9 @@ public class EtudiantController {
             document.open();
 
             document.add(new Paragraph("Fiche Étudiant"));
-            document.add(new Paragraph("Nom : " + etudiant.getUser().getLastname()));
-            document.add(new Paragraph("Prénom : " + etudiant.getUser().getFirstname()));
-            document.add(new Paragraph("Email : " + etudiant.getUser().getEmail()));
+            document.add(new Paragraph("Nom : " + student.getUser().getLastname()));
+            document.add(new Paragraph("Prénom : " + student.getUser().getFirstname()));
+            document.add(new Paragraph("Email : " + student.getUser().getEmail()));
 
             document.close();
 
@@ -109,7 +106,7 @@ public class EtudiantController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=etudiant-" + etudiant.getNumEtudiant() + ".pdf")
+                        "attachment; filename=student-" + student.getStudentNumber() + ".pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(out.toByteArray());
     }
