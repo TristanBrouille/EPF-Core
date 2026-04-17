@@ -1,5 +1,5 @@
 package com.epfcore.epfcore.security.domain;
 
 public enum Roles {
-    USER, ETUDIANT, ENSEIGNANT
+    USER, ETUDIANT, ENSEIGNANT, CANDIDAT
 }
