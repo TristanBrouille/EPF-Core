@@ -1,4 +1,4 @@
-@if (etudiant) {
+@if (student) {
 <div class="student-page">
 
     <div class="student-card">
@@ -6,8 +6,8 @@
         <!-- LEFT PANEL -->
         <div class="student-sidebar">
 
-            @if (etudiant.lienPhoto) {
-            <img [src]="etudiant.lienPhoto" class="student-avatar" />
+            @if (student.photoUrl) {
+            <img [src]="student.photoUrl" class="student-avatar" />
             } @else {
             <div class="student-avatar placeholder">
                 {{ initialesAvatar }}
@@ -15,32 +15,32 @@
             }
 
             <h2 class="student-name">
-                {{ etudiant.user.firstname }} {{ etudiant.user.lastname }}
+                {{ student.user.firstname }} {{ student.user.lastname }}
             </h2>
 
 
 
             <p class="student-program">
                 <span class="right">Majeur : </span>
-                {{ etudiant.programme }}
+                {{ student.major }}
             </p>
 
 
-            <div class="student-badge" [class.active]="etudiant.bourse === 'OUI'">
+            <div class="student-badge" [class.active]="student.scholarship === 'OUI'">
                 <span class="right">Bourse : </span>
-                {{ etudiant.bourse === 'Boursier' ? 'Boursier' : 'Non boursier' }}
+                {{ student.scholarship === 'Boursier' ? 'Boursier' : 'Non boursier' }}
             </div>
 
             <div class="student-meta">
 
                 <span class="right">Campus : </span>
-                {{ etudiant.campus }}
+                {{ student.campus }}
             </div>
 
             <div class="student-meta">
 
                 <span class="right">Année : </span>
-                {{ etudiant.anneeAcademique }}
+                {{ student.academicYear }}
 
             </div>
 
@@ -57,22 +57,22 @@
                 <div class="grid">
                     <div>
                         <label>Prénom</label>
-                        <p>{{ etudiant.user.firstname }}</p>
+                        <p>{{ student.user.firstname }}</p>
                     </div>
 
                     <div>
                         <label>Nom</label>
-                        <p>{{ etudiant.user.lastname }}</p>
+                        <p>{{ student.user.lastname }}</p>
                     </div>
 
-                    <div  [class.active]="etudiant.sexe === 'MASCULIN'">
+                    <div  [class.active]="student.gender === 'MALE'">
                         <label>Sexe</label>
-                        <p>{{etudiant.sexe === 'MASCULIN' ? 'masculin' : 'féminin' }}</p>
+                        <p>{{student.gender === 'MALE' ? 'masculin' : 'féminin' }}</p>
                     </div>
 
                     <div>
                         <label>Nationalité</label>
-                        <p>{{ etudiant.nationalite }}</p>
+                        <p>{{ student.nationality }}</p>
                     </div>
 
                     <div>
@@ -82,7 +82,7 @@
 
                     <div class="full">
                         <label>Adresse</label>
-                        <p>{{ etudiant.adresse }}</p>
+                        <p>{{ student.address }}</p>
                     </div>
                 </div>
             </div>
@@ -94,12 +94,12 @@
                 <div class="grid">
                     <div>
                         <label>Numéro étudiant</label>
-                        <p class="mono">{{ etudiant.numEtudiant }}</p>
+                        <p class="mono">{{ student.studentNumber }}</p>
                     </div>
 
                     <div>
                         <label>Formation</label>
-                        <p>{{ etudiant.formation }}</p>
+                        <p>{{ student.program }}</p>
                     </div>
 
 
@@ -110,7 +110,7 @@
 
                     <div class="full">
                         <label>Dernier diplôme</label>
-                        <p>{{ etudiant.dernierDiplome}}</p>
+                        <p>{{ student.lastDegree}}</p>
                     </div>
                 </div>
             </div>
@@ -119,8 +119,8 @@
             <div class="card">
                 <h3>Contact</h3>
 
-                <a [href]="'mailto:' + etudiant.user.email" class="email-link">
-                    {{ etudiant.user.email }}
+                <a [href]="'mailto:' + student.user.email" class="email-link">
+                    {{ student.user.email }}
                 </a>
             </div>
 
