@@ -1,17 +1,14 @@
 package com.epfcore.epfcore.etudiant.controller;
 
 import java.io.ByteArrayOutputStream;
-// import java.net.http.HttpHeaders;
 import java.security.Principal;
 import java.util.List;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.epfcore.epfcore.etudiant.entity.Etudiant;
 import com.epfcore.epfcore.etudiant.service.EtudiantService;
 

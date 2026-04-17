@@ -2,30 +2,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-export interface User {
-  id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-}
 
-export interface Etudiant {
-  id: number;
-  numEtudiant: string;   // camelCase comme Java
-  user: User;            // objet imbriqué
-  sexe: string;
-  nationalite: string;
-  bourse: string;
-  adresse: string;
-  telephone: string;
-  programme: string;
-  anneeAcademique: string;
-  formation: string;
-  campus: string;
-  dateInscription: string;
-  dernierDiplome: string;
-  lienPhoto?: string;
-}
+
+
 
 @Component({
   selector: 'app-fiche-etudiant',
@@ -44,10 +23,7 @@ export class FicheEtudiant implements OnInit {
     this.loadEtudiantConnecte();
   }
 
-  /**
-   * 🔥 On ne fait PLUS de login manuel ici
-   * Le backend doit reconnaître l'utilisateur via cookie / JWT
-   */
+  
   loadEtudiantConnecte(): void {
     this.http.get<Etudiant>(
       'http://localhost:8080/api/etudiants/me',

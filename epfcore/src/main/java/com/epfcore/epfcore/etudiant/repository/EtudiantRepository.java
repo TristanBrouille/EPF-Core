@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.epfcore.epfcore.etudiant.entity.Etudiant;
 
+@Repository
 public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
 
     Optional<Etudiant> findByNumEtudiant(String numEtudiant);
