@@ -18,7 +18,9 @@ export class App {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.showLayout = event.urlAfterRedirects !== '/login';
+        this.showLayout =
+          event.urlAfterRedirects !== '/login' &&
+          event.urlAfterRedirects !== '/register-candidat';
       });
   }
 }

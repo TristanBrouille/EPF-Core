@@ -14,9 +14,9 @@ mat-sidenav-content {
 }
 
 mat-sidenav.sidebar {
-  width: 50%;           /* largeur relative à la fenêtre */
-  min-width: 60px;      /* jamais trop petit */
-  max-width: 200px;     /* jamais trop large */
+  width: 50%;
+  min-width: 60px;
+  max-width: 200px;
   box-sizing: border-box;
-  overflow: hidden;     /* cache le contenu qui dépasse */
+  overflow: hidden;
 }

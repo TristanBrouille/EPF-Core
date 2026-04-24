@@ -37,7 +37,7 @@ export class Login implements OnInit {
             if (authorities.includes('CANDIDAT')) {
               this.router.navigate(['/candidat']);
             } else {
-              this.router.navigate(['/login']);
+              this.router.navigate(['/home']);
             }
           }, 500);
 

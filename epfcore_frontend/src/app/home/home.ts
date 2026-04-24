@@ -18,10 +18,4 @@ import {Observable} from 'rxjs';
 })
 export class Home {
 
-  protected readonly user$: Observable<User>;
-
-  constructor(private authService: loginService) {
-    this.user$ = this.authService.me();
-  }
-
 }
