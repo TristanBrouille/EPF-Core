@@ -3,7 +3,6 @@
 
     <div class="student-card">
 
-        <!-- LEFT PANEL -->
         <div class="student-sidebar">
 
             @if (student.photoUrl) {
@@ -26,7 +25,7 @@
             </p>
 
 
-            <div class="student-badge" [class.active]="student.scholarship === 'OUI'">
+            <div class="student-badge" [class.active]="student.scholarship">
                 <span class="right">Bourse : </span>
                 {{ student.scholarship === 'Boursier' ? 'Boursier' : 'Non boursier' }}
             </div>
@@ -47,10 +46,8 @@
 
         </div>
 
-        <!-- RIGHT PANEL -->
         <div class="student-content">
 
-            <!-- Infos perso -->
             <div class="card">
                 <h3>Informations</h3>
 
@@ -87,7 +84,7 @@
                 </div>
             </div>
 
-            <!-- Scolarité -->
+        
             <div class="card">
                 <h3>Scolarité</h3>
 
@@ -115,7 +112,6 @@
                 </div>
             </div>
 
-            <!-- Contact -->
             <div class="card">
                 <h3>Contact</h3>
 
