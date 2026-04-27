@@ -52,8 +52,8 @@ public class Student {
 
     private String campus;
 
-    @Enumerated(EnumType.STRING)
-    private Scholarship scholarship;
+    @Column(nullable = false)
+    private boolean scholarship = false;
 
     @Column(name = "last_degree")
     private String lastDegree;
@@ -160,11 +160,11 @@ public class Student {
         this.campus = campus;
     }
 
-    public Scholarship getScholarship() {
+    public boolean getScholarship() {
         return scholarship;
     }
 
-    public void setScholarship(Scholarship scholarship) {
+    public void setScholarship(boolean scholarship) {
         this.scholarship = scholarship;
     }
 
@@ -202,6 +202,6 @@ public class Student {
 
     
 
-
     
+
 }

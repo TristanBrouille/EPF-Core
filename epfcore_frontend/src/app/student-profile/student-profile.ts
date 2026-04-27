@@ -1,15 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-
 import { Student } from '../model/student';
-
-
+import { StudentService } from '../services/student-service';
 
 @Component({
   selector: 'app-student-profile',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './student-profile.html',
   styleUrls: ['./student-profile.scss'],
 })
@@ -17,26 +14,22 @@ export class StudentProfile implements OnInit {
 
   student: Student | null = null;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private studentService: StudentService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  ngOnInit(): void {
-    this.loadStudentConnecte();
+  async ngOnInit(): Promise<void> {
+    await this.loadStudentConnecte();
   }
 
-
-  loadStudentConnecte(): void {
-    this.http.get<Student>(
-      'http://localhost:8080/api/students/me',
-      { withCredentials: true }
-    ).subscribe({
-      next: (data) => {
-        this.student = data;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Erreur chargement student connecté', err);
-      }
-    });
+  async loadStudentConnecte(): Promise<void> {
+    try {
+      this.student = await this.studentService.getCurrentStudent();
+      this.cdr.detectChanges();
+    } catch (err) {
+      console.error('Erreur chargement student connecté', err);
+    }
   }
 
   get initialesAvatar(): string {
@@ -56,33 +49,22 @@ export class StudentProfile implements OnInit {
     return this.student.phone.replace(/(\d{2})(?=\d)/g, '$1 ');
   }
 
-  downloadPDF(): void {
+  async downloadPDF(): Promise<void> {
     if (!this.student) return;
 
-    this.http.get(
-      `http://localhost:8080/api/students/${this.student.id}/pdf`,
-      {
-        responseType: 'blob',
-        withCredentials: true
-      }
-    ).subscribe({
-      next: (pdfBlob: Blob) => {
+    try {
+      const pdfBlob = await this.studentService.downloadPdf(this.student.id);
 
-        const url = window.URL.createObjectURL(pdfBlob);
+      const url = window.URL.createObjectURL(pdfBlob);
 
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `student-${this.student?.studentNumber}.pdf`;
-        a.click();
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `student-${this.student.studentNumber}.pdf`;
+      a.click();
 
-        window.URL.revokeObjectURL(url);
-      },
-      error: (err) => {
-        console.error('Erreur génération PDF', err);
-      }
-    });
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erreur génération PDF', err);
+    }
   }
-
-
-
 }
