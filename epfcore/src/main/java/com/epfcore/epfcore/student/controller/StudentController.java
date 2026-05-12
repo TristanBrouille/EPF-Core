@@ -19,7 +19,7 @@ import com.epfcore.epfcore.student.service.GenerationPdfService;
 import com.epfcore.epfcore.student.service.StudentService;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/students")
 public class StudentController {
 
     private final StudentService studentService;

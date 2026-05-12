@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Student } from '../model/student';
-import { StudentService } from '../services/student-service';
+import { StudentService } from './student-service';
 
 @Component({
   selector: 'app-student-profile',
@@ -17,7 +17,7 @@ export class StudentProfile implements OnInit {
   constructor(
     private studentService: StudentService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.loadStudentConnecte();
@@ -34,7 +34,7 @@ export class StudentProfile implements OnInit {
 
   get initialesAvatar(): string {
     if (!this.student) return '';
-    return `${this.student.user.firstname[0]}${this.student.user.lastname[0]}`.toUpperCase();
+    return `${this.student.user.firstName[0]}${this.student.user.lastName[0]}`.toUpperCase();
   }
 
   get dateInscriptionFormatee(): string {

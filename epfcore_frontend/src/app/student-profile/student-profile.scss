@@ -1,11 +1,5 @@
-$epf-red: #C8102E;
-$epf-purple: #6A1B9A;
-$black: #000000;
-$white: #FFFFFF;
-$gray-light: #F5F5F5;
-$gray-dark: #333333;
-$muted: #777;
-$border: #e5e5e5;
+
+@use '../../_variables.scss' as *;
 
 .student-page {
   min-height: 100vh;
@@ -93,7 +87,7 @@ $border: #e5e5e5;
 
 .card {
   background: $white;
-  border: 1px solid $border;
+  border: 1px solid $white;
   border-radius: 12px;
   padding: 20px;
 }
@@ -117,7 +111,7 @@ $border: #e5e5e5;
 
 label {
   font-size: 12px;
-  color: $muted;
+  color: $white;
 }
 
 .right {

@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface Student {
   id: number;
   studentNumber: string;
@@ -16,11 +18,5 @@ export interface Student {
   photoUrl?: string;
 }
 
-export interface User {
-  id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-  birthday: Date;
-}
+
 

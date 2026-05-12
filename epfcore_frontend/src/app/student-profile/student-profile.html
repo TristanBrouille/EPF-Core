@@ -14,7 +14,7 @@
             }
 
             <h2 class="student-name">
-                {{ student.user.firstname }} {{ student.user.lastname }}
+                {{ student.user.firstName }} {{ student.user.lastName }}
             </h2>
 
 
@@ -54,12 +54,12 @@
                 <div class="grid">
                     <div>
                         <label>Prénom</label>
-                        <p>{{ student.user.firstname }}</p>
+                        <p>{{ student.user.firstName }}</p>
                     </div>
 
                     <div>
                         <label>Nom</label>
-                        <p>{{ student.user.lastname }}</p>
+                        <p>{{ student.user.lastName }}</p>
                     </div>
 
                     <div  [class.active]="student.gender === 'MALE'">
