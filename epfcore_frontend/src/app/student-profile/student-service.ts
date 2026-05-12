@@ -10,11 +10,11 @@ export class StudentService {
 
   private baseUrl = 'http://localhost:8080/api/students';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCurrentStudent(): Promise<Student> {
     return firstValueFrom(
-      this.http.get<Student>(`${this.baseUrl}/me`, { withCredentials: true })
+      this.http.get<Student>(`${this.baseUrl}/me`)
     );
   }
 

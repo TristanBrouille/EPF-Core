@@ -53,7 +53,7 @@ public class Student {
     private String campus;
 
     @Column(nullable = false)
-    private boolean scholarship = false;
+    private Boolean scholarship = false;
 
     @Column(name = "last_degree")
     private String lastDegree;
@@ -160,11 +160,11 @@ public class Student {
         this.campus = campus;
     }
 
-    public boolean getScholarship() {
+    public Boolean getScholarship() {
         return scholarship;
     }
 
-    public void setScholarship(boolean scholarship) {
+    public void setScholarship(Boolean scholarship) {
         this.scholarship = scholarship;
     }
 
