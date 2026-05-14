@@ -13,18 +13,6 @@
             </div>
             }
 
-            <h2 class="student-name">
-                {{ student.user.firstName }} {{ student.user.lastName }}
-            </h2>
-
-
-
-            <p class="student-program">
-                <span class="right">Majeur : </span>
-                {{ student.major }}
-            </p>
-
-
             <div class="student-badge" [class.active]="student.scholarship">
                 <span class="right">Bourse : </span>
                 {{ student.scholarship === 'Boursier' ? 'Boursier' : 'Non boursier' }}
@@ -54,15 +42,15 @@
                 <div class="grid">
                     <div>
                         <label>Prénom</label>
-                        <p>{{ student.user.firstName }}</p>
+                        <p>{{ student.user.firstname }}</p>
                     </div>
 
                     <div>
                         <label>Nom</label>
-                        <p>{{ student.user.lastName }}</p>
+                        <p>{{ student.user.lastname }}</p>
                     </div>
 
-                    <div  [class.active]="student.gender === 'MALE'">
+                    <div [class.active]="student.gender === 'MALE'">
                         <label>Sexe</label>
                         <p>{{student.gender === 'MALE' ? 'masculin' : 'féminin' }}</p>
                     </div>
@@ -71,6 +59,13 @@
                         <label>Nationalité</label>
                         <p>{{ student.nationality }}</p>
                     </div>
+
+                    <div>
+                        <label>Date d'anniversaire</label>
+                        <p>{{ student.user.birthDate }}</p>
+                    </div>
+
+
 
                     <div>
                         <label>Téléphone</label>
@@ -84,7 +79,7 @@
                 </div>
             </div>
 
-        
+
             <div class="card">
                 <h3>Scolarité</h3>
 
@@ -99,6 +94,10 @@
                         <p>{{ student.program }}</p>
                     </div>
 
+                    <div>
+                        <label>Majeur</label>
+                        <p>{{ student.major }}</p>
+                    </div>
 
                     <div>
                         <label>Date inscription</label>
