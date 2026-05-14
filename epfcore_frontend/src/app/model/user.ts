@@ -1,8 +1,8 @@
 export interface User {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
-  birthday: Date;
+  birthDate: Date;
 }
 
 export interface UserLog{

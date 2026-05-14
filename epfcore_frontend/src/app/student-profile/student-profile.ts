@@ -34,7 +34,7 @@ export class StudentProfile implements OnInit {
 
   get initialesAvatar(): string {
     if (!this.student) return '';
-    return `${this.student.user.firstName[0]}${this.student.user.lastName[0]}`.toUpperCase();
+    return `${this.student.user.firstname[0]}${this.student.user.lastname[0]}`.toUpperCase();
   }
 
   get dateInscriptionFormatee(): string {
