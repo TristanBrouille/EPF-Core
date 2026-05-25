@@ -1,25 +1,31 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { loginService } from '../login/loginService';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-candidat',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './candidat.html',
   styleUrl: './candidat.scss',
 })
 export class Candidat implements OnInit {
   user: any = null;
+  hasFormulaire: boolean = false;
   errorMessage: string = '';
 
   constructor(
     private authService: loginService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private http: HttpClient
   ) {}
 
   async ngOnInit(): Promise<void> {
     try {
       this.user = await this.authService.me();
+      await this.checkFormulaire();
       this.cdr.detectChanges();
     } catch (error) {
       this.errorMessage = 'Impossible de récupérer les informations';
@@ -27,6 +33,18 @@ export class Candidat implements OnInit {
     }
   }
 
+  async checkFormulaire(): Promise<void> {
+    try {
+      await firstValueFrom(
+        this.http.get('http://localhost:8080/formulaire/me', { withCredentials: true })
+      );
+      this.hasFormulaire = true;
+    } catch (error: any) {
+      if (error.status === 404) {
+        this.hasFormulaire = false;
+      }
+    }
+  }
 
   steps = [
     { id: 1, label: 'Inscription' },
@@ -36,8 +54,6 @@ export class Candidat implements OnInit {
   ];
 
   currentStep: number = 1;
-
-  //TODO modifier selon l'avancement réel du candidat
 
   get progressPercent(): number {
     return ((this.currentStep - 1) / (this.steps.length - 1)) * 100;
