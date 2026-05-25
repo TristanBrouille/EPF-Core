@@ -3,9 +3,8 @@ import {Login} from './login/login';
 import {Candidat} from './candidat/candidat';
 import {RegisterCandidat} from './register-candidat/register-candidat';
 import {Home} from './home/home';
-import { StudentProfile } from './student-profile/student-profile';
-import { FicheEtudiant } from './fiche-etudiant/fiche-etudiant';
 import {FormulaireInscription} from './formulaire-inscription/formulaire-inscription';
+import { StudentProfile } from './student-profile/student-profile';
 
 export const routes: Routes = [
   {path: 'login', component: Login},
