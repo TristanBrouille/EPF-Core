@@ -2,8 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { loginService } from '../login/loginService';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { FormulaireService } from '../formulaire-inscription/formulaireService';
 
 @Component({
   selector: 'app-candidat',
@@ -18,8 +17,8 @@ export class Candidat implements OnInit {
 
   constructor(
     private authService: loginService,
-    private cdr: ChangeDetectorRef,
-    private http: HttpClient
+    private formulaireService: FormulaireService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -35,9 +34,7 @@ export class Candidat implements OnInit {
 
   async checkFormulaire(): Promise<void> {
     try {
-      await firstValueFrom(
-        this.http.get('http://localhost:8080/formulaire/me', { withCredentials: true })
-      );
+      await this.formulaireService.getMyFormulaire();
       this.hasFormulaire = true;
     } catch (error: any) {
       if (error.status === 404) {

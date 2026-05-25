@@ -1,9 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { RouterLink } from '@angular/router';
 import { Formulaire } from '../model/formulaire';
+import { FormulaireService } from './formulaireService';
 
 @Component({
   selector: 'app-formulaire-inscription',
@@ -19,8 +18,7 @@ export class FormulaireInscription implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
-    private router: Router,
+    private formulaireService: FormulaireService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -36,9 +34,7 @@ export class FormulaireInscription implements OnInit {
     });
 
     try {
-      const existing = await firstValueFrom(
-        this.http.get<Formulaire>('http://localhost:8080/formulaire/me', { withCredentials: true })
-      );
+      const existing = await this.formulaireService.getMyFormulaire();
       this.isExisting = true;
       this.formulaireForm.patchValue(existing);
       this.cdr.detectChanges();
@@ -54,13 +50,9 @@ export class FormulaireInscription implements OnInit {
 
     try {
       if (this.isExisting) {
-        await firstValueFrom(
-          this.http.put<Formulaire>('http://localhost:8080/formulaire', formulaire, { withCredentials: true })
-        );
+        await this.formulaireService.update(formulaire);
       } else {
-        await firstValueFrom(
-          this.http.post<Formulaire>('http://localhost:8080/formulaire', formulaire, { withCredentials: true })
-        );
+        await this.formulaireService.create(formulaire);
         this.isExisting = true;
       }
       this.successMessage = 'Dossier sauvegardé avec succès !';
