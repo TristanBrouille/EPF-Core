@@ -1,0 +1,165 @@
+
+@use '../../_variables.scss' as *;
+
+.student-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.student-card {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  background: $white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* SIDEBAR */
+.student-sidebar {
+  width: 280px;
+  background: linear-gradient(135deg, $epf-red, darken($epf-red, 15%));
+  color: $black;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.student-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.student-avatar.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 32px;
+  font-weight: bold;
+}
+
+
+.student-badge {
+  margin: 15px auto;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+.student-badge.active {
+  background: $white;
+  color: $epf-red;
+  font-weight: bold;
+}
+
+.student-meta {
+  margin-top: 20px;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+/* CONTENT */
+.student-content {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: $white;
+  border: 1px solid $gray-dark;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.card h3 {
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: $epf-red;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.grid .full {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-size: 12px;
+  color: #888;
+}
+
+.right {
+  color: $white;
+}
+
+p {
+  margin: 3px 0 0;
+  font-weight: 500;
+}
+
+.sexe {
+  font-size: 0.8rem;
+}
+
+.mono {
+  font-family: monospace;
+  color: $epf-purple;
+}
+
+/* EMAIL */
+.email-link {
+  color: $epf-red;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .student-card {
+    flex-direction: column;
+  }
+
+  .student-sidebar {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pdf-button {
+  background: $epf-red;
+  color: $white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+
+  &:hover {
+    background: darken($epf-red, 10%);
+    transform: translateY(-1px);
+  }
+}

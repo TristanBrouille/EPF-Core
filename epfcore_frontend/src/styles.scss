@@ -1,4 +1,5 @@
 
+
 // Include theming for Angular Material with `mat.theme()`.
 // This Sass mixin will define CSS variables that are used for styling Angular Material
 // components according to the Material 3 design spec.
@@ -39,6 +40,7 @@ body {
 }
 
 
+
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
@@ -58,6 +60,7 @@ a {
   color: $epf-purple;
   text-decoration: none;
   transition: color 0.3s;
+
 }
 
 button {
@@ -72,6 +75,7 @@ button {
   &.btn-red {
     background-color: $epf-red;
     color: $white;
+
   }
 
   &.btn-purple {

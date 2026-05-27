@@ -18,8 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
 
 @RestController
 @RequestMapping("/")
@@ -29,9 +34,13 @@ public class RegistrationLoginController {
     private final UserJpaRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+
     private final SecurityContextRepository securityContextRepository =
             new HttpSessionSecurityContextRepository();
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+
+    
+
 
     public RegistrationLoginController(UserJpaRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -49,6 +58,7 @@ public class RegistrationLoginController {
     }
 
     @PostMapping("/login")
+
     public ResponseEntity<Me> login(
             @RequestBody UserLog req,
             HttpServletRequest request,
@@ -82,5 +92,6 @@ public class RegistrationLoginController {
         }
 
         return ResponseEntity.ok(new UserExpose(user.getFirstname(), user.getLastname(), user.getEmail(), user.getBirthDate()));
+
     }
 }

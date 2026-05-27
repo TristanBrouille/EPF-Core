@@ -5,12 +5,18 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-
   background-image: url("/assets/images/epf_cachan.png");
   background-size: cover;
   background-attachment: fixed;
+}
 
   .login-container {
+
+  background-color: $gray-light;
+
+  .login-container {
+    background-color: $white;
+
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba($black, 0.1);

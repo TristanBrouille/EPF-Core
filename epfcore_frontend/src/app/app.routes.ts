@@ -3,6 +3,7 @@ import {Login} from './login/login';
 import {Candidat} from './candidat/candidat';
 import {RegisterCandidat} from './register-candidat/register-candidat';
 import {Home} from './home/home';
+import { StudentProfile } from './student-profile/student-profile';
 
 export const routes: Routes = [
   {path: 'login', component: Login},
@@ -10,4 +11,5 @@ export const routes: Routes = [
   {path: 'register-candidat', component: RegisterCandidat},
   {path: 'home', component: Home},
   {path: '', redirectTo: 'home', pathMatch: 'full' },
+  {path: 'student-profile', component: StudentProfile }
 ];
