@@ -57,3 +57,16 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+
+## pour lancer le back
+
+**changer de réseau, se mettre sur le réseau du téléphone**
+mvn spring-boot:run
+
+## connexion, éviter le 403 Forbidden
+
+"email" : "jean.dupont@example.com"
+"password" : "password123"
+

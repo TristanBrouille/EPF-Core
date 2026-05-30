@@ -1,23 +1,18 @@
 @use '../../variables' as *;
 
-.login-page {
+.formulaire-page {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-image: url("/assets/images/epf_cachan.png");
-  background-size: cover;
-  background-attachment: fixed;
-}
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 4rem 1rem;
 
-  .login-container {
-    background-color: $white;
-
+  .formulaire-container {
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba($black, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 700px;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -26,6 +21,14 @@
     h1 {
       color: $epf-red;
       margin-bottom: 2rem;
+    }
+
+    h3 {
+      color: $epf-purple;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba($epf-purple, 0.3);
+      padding-bottom: 0.5rem;
     }
 
     .form-group {
@@ -38,33 +41,37 @@
         font-weight: 500;
       }
 
-      input {
+      input, textarea {
         padding: 0.5rem 0.75rem;
         border: 1px solid $gray-dark;
         border-radius: 4px;
         font-size: 1rem;
         outline: none;
+        background: rgba(255, 255, 255, 0.7);
 
         &:focus {
           border-color: $epf-purple;
         }
       }
-
-      .error {
-        color: $epf-red;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-      }
     }
 
     button {
       width: 100%;
+      margin-top: 1rem;
+    }
+
+    .success-message {
+      margin-top: 1rem;
+      color: green;
+      text-align: center;
+      margin-bottom: 1rem;
     }
 
     .error-message {
       margin-top: 1rem;
       color: $epf-red;
       text-align: center;
+      margin-bottom: 1rem;
     }
   }
-
+}

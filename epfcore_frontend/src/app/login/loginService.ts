@@ -1,3 +1,4 @@
+
 import {firstValueFrom} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
@@ -7,6 +8,7 @@ import {User, UserLog} from '../model/user';
   providedIn: 'root',
 })
 export class loginService {
+
 
   private readonly baseUrl = "http://localhost:8080";
   constructor(private httpClient: HttpClient) {}
@@ -31,5 +33,6 @@ export class loginService {
     return firstValueFrom(
       this.httpClient.get<User>(this.url('me'))
     );
+
   }
 }

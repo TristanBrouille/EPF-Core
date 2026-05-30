@@ -1,0 +1,66 @@
+<div class="formulaire-page position-relative">
+  <button type="button" class="btn-red m-3" routerLink="/candidat">
+    ← Retour
+  </button>
+
+  <div class="formulaire-container" >
+    <h1 class="text-center">Dossier de candidature</h1>
+
+    <form [formGroup]="formulaireForm" (ngSubmit)="onSubmit()">
+
+      <h3>Parcours académique</h3>
+
+      <div class="form-group">
+        <label>Dernier diplôme</label>
+        <input type="text" formControlName="dernierDiplome" placeholder="Ex: Baccalauréat Scientifique" />
+      </div>
+
+      <div class="form-group">
+        <label>Établissement</label>
+        <input type="text" formControlName="etablissement" placeholder="Ex: Lycée Louis le Grand" />
+      </div>
+
+      <div class="form-group">
+        <label>Niveau d'étude</label>
+        <input type="text" formControlName="niveauEtude" placeholder="Ex: Bac+2" />
+      </div>
+
+      <div class="form-group">
+        <label>Année d'obtention</label>
+        <input type="number" formControlName="anneeObtention" placeholder="Ex: 2023" />
+      </div>
+
+      <h3>Choix programme / campus</h3>
+
+      <div class="form-group">
+        <label>Programme choisi</label>
+        <input type="text" formControlName="programmeChoisi" placeholder="Ex: Cycle Ingénieur" />
+      </div>
+
+      <div class="form-group">
+        <label>Campus choisi</label>
+        <input type="text" formControlName="campusChoisi" placeholder="Ex: Cachan" />
+      </div>
+
+      <h3>Motivations</h3>
+
+      <div class="form-group">
+        <label>Lettre de motivation</label>
+        <textarea formControlName="motivations" rows="6" placeholder="Décrivez vos motivations..."></textarea>
+      </div>
+
+      @if (successMessage) {
+        <div class="success-message">{{ successMessage }}</div>
+      }
+
+      @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+      }
+
+      <button type="submit" class="btn-red">
+        {{ isExisting ? 'Mettre à jour' : 'Sauvegarder' }}
+      </button>
+
+    </form>
+  </div>
+</div>

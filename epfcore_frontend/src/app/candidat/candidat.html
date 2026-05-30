@@ -7,6 +7,16 @@
         <p><strong>Nom :</strong> {{ user.lastname }}</p>
         <p><strong>Email :</strong> {{ user.email }}</p>
         <p><strong>Date de naissance :</strong> {{ user.birthday }}</p>
+
+        @if (!hasFormulaire) {
+          <button class="btn-red mt-3" routerLink="/formulaire-inscription">
+            Créer mon dossier de candidature
+          </button>
+        } @else {
+          <button class="btn-red mt-3" routerLink="/formulaire-inscription">
+            Voir mon dossier de candidature
+          </button>
+        }
       </div>
 
       <div class="col-7">
@@ -32,9 +42,7 @@
 
           <p class="progress-text text-center mt-2">{{ currentStepMessage }}</p>
         </div>
-        <p></p>
       </div>
-
     </div>
   </div>
 }

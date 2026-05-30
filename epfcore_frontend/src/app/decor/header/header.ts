@@ -43,4 +43,8 @@ export class Header {
     }
   }
 
+  goToProfile() {
+    this.router.navigate(['/student-profile']);
+  }
+
 }

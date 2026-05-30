@@ -1,5 +1,6 @@
 spring:
   datasource:
+
     url: jdbc:postgresql://db.jjcijtltmmabaqzkypdi.supabase.co:5432/postgres?sslmode=require
     username: postgres
     password: Leprojet2EpfCore
@@ -12,3 +13,4 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+

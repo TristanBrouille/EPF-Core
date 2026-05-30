@@ -1,8 +1,10 @@
+
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {loginService} from './loginService';
 import {UserLog} from '../model/user';
 import {Router, RouterLink} from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -13,6 +15,7 @@ import {Router, RouterLink} from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
+
 export class Login implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
@@ -25,7 +28,6 @@ export class Login implements OnInit {
       password: ['', Validators.required],
     });
   }
-
   async onSubmit(): Promise<void> {
     if (this.loginForm.valid) {
       const user: UserLog = this.loginForm.value;
