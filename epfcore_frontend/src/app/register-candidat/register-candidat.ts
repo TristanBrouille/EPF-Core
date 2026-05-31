@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
-import { CandidatService } from '../services/candidat-service';
+import { CandidatService } from '../candidat/candidat-service';
 
 @Component({
   selector: 'app-register-candidat',
