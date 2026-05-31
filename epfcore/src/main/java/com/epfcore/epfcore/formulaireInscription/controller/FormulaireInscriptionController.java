@@ -34,7 +34,7 @@ public class FormulaireInscriptionController {
         return ResponseEntity.ok(formulaireService.update(formulaire, authentication.getName()));
     }
 
-    @GetMapping("/me")
+    @GetMapping("/candidatform")
     public ResponseEntity<FormulaireInscriptionDTO> getMyFormulaire(Authentication authentication) {
         return ResponseEntity.ok(formulaireService.getByEmail(authentication.getName()));
     }

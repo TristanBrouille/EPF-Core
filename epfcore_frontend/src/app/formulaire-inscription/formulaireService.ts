@@ -8,7 +8,7 @@ import { Formulaire } from '../model/formulaire';
 })
 export class FormulaireService {
 
-  private readonly baseUrl = 'http://localhost:8080';
+  private readonly baseUrl = 'http://localhost:8080/formulaire';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -18,25 +18,25 @@ export class FormulaireService {
 
   getMyFormulaire(): Promise<Formulaire> {
     return firstValueFrom(
-      this.httpClient.get<Formulaire>(this.url('formulaire/me'))
+      this.httpClient.get<Formulaire>(this.url('candidatform'))
     );
   }
 
   create(formulaire: Formulaire): Promise<Formulaire> {
     return firstValueFrom(
-      this.httpClient.post<Formulaire>(this.url('formulaire'), formulaire)
+      this.httpClient.post<Formulaire>(this.baseUrl, formulaire)
     );
   }
 
   update(formulaire: Formulaire): Promise<Formulaire> {
     return firstValueFrom(
-      this.httpClient.put<Formulaire>(this.url('formulaire'), formulaire)
+      this.httpClient.put<Formulaire>(this.baseUrl, formulaire)
     );
   }
 
   delete(id: number): Promise<void> {
     return firstValueFrom(
-      this.httpClient.delete<void>(this.url(`formulaire/${id}`))
+      this.httpClient.delete<void>(this.url(`${id}`))
     );
   }
 }
