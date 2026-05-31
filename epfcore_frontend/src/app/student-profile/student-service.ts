@@ -26,4 +26,8 @@ export class StudentService {
       })
     );
   }
+
+  updateStudent(id: number, student: Student) {
+    return this.http.put<Student>(`http://localhost:8080/students/${id}`, student);
+  }
 }

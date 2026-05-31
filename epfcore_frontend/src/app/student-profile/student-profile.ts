@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Student } from '../model/student';
 import { StudentService } from './student-service';
 
+
+
+
 @Component({
   selector: 'app-student-profile',
   standalone: true,
@@ -13,6 +16,8 @@ import { StudentService } from './student-service';
 export class StudentProfile implements OnInit {
 
   student: Student | null = null;
+  isEditing = false;
+  editStudent!: Student;
 
   constructor(
     private studentService: StudentService,
@@ -67,4 +72,12 @@ export class StudentProfile implements OnInit {
       console.error('Erreur génération PDF', err);
     }
   }
+
+  
+
+  
+
+
+
+
 }
