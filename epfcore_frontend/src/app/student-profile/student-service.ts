@@ -26,4 +26,13 @@ export class StudentService {
       })
     );
   }
+
+  certificate(studentId: number): Promise<Blob> {
+  return firstValueFrom(
+    this.http.get(`${this.baseUrl}/${studentId}/certificate`, {
+      responseType: 'blob',
+      withCredentials: true
+    })
+  );
+}
 }

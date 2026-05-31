@@ -64,7 +64,28 @@ export class StudentProfile implements OnInit {
 
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      console.error('Erreur génération PDF', err);
+      console.error('Erreur génération infos PDF', err);
     }
   }
+
+  async certificate(): Promise<void> {
+    if (!this.student) return;
+
+    try {
+      const pdfBlob = await this.studentService.certificate(this.student.id);
+
+      const url = window.URL.createObjectURL(pdfBlob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `student-${this.student.studentNumber}.pdf`;
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erreur génération certificat PDF', err);
+    }
+  }
+
+
 }
