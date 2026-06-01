@@ -211,7 +211,6 @@ public class GenerationCertificateService {
                         Emmanuel DUFLOS<br/>
                         Directeur général de l'EPF
                     </div>
-
                 </body>
                 </html>
                 """
