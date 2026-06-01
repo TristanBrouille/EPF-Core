@@ -1,69 +1,71 @@
 package com.epfcore.epfcore.document.service;
 
-
 import com.epfcore.epfcore.document.entity.Document;
 import com.epfcore.epfcore.document.entity.DocumentRequest;
 import com.epfcore.epfcore.document.repository.DocumentRepository;
 import com.epfcore.epfcore.document.repository.DocumentRequestRepository;
 import com.epfcore.epfcore.student.entity.Student;
-
+import com.epfcore.epfcore.student.repository.StudentRepository;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenerationCertificateService {
 
     private final DocumentRepository documentRepository;
     private final DocumentRequestRepository documentRequestRepository;
+    private final StudentRepository studentRepository;
 
-    public GenerationCertificateService(DocumentRepository documentRepository,
-                                        DocumentRequestRepository documentRequestRepository) {
+   public GenerationCertificateService(DocumentRepository documentRepository,
+                                        DocumentRequestRepository documentRequestRepository,
+                                        StudentRepository studentRepository) {
         this.documentRepository = documentRepository;
         this.documentRequestRepository = documentRequestRepository;
+        this.studentRepository = studentRepository;
     }
 
-    // -------------------------------------------------------------------------
-    // Point d'entrée principal
-    // -------------------------------------------------------------------------
-
-    public byte[] generateFromRequest(Integer requestId) {
-        // 1. Récupérer la demande
-        DocumentRequest request = documentRequestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found: " + requestId));
-
-        Student student = request.getStudent();
-
-        // 2. Générer le PDF
-        byte[] pdfBytes = generateStudentCertificateHtml(student);
-
-        // 3. Sauvegarder le Document en base
+    public byte[] generateFromRequest(Integer studentId) {
+ 
+        List<Document> existing = documentRepository.findByStudentId(studentId);
+        Optional<Document> existingCertificate = existing.stream()
+                .filter(d -> d.getDocumentType() == DocumentRequest.DocumentType.CERTIFICATE)
+                .findFirst();
+ 
+        if (existingCertificate.isPresent()) {
+            Student student = existingCertificate.get().getStudent();
+            return generateStudentCertificateHtml(student);
+        }
+ 
+        Student student = studentRepository.findById(Long.valueOf(studentId))
+                .orElseThrow(() -> new RuntimeException("Student not found: " + studentId));
+ 
+        DocumentRequest request = new DocumentRequest();
+        request.setStudent(student);
+        request.setDocumentType(DocumentRequest.DocumentType.CERTIFICATE);
+        request.setStatus(DocumentRequest.DocumentRequestStatus.APPROVED);
+        request.setCreationDate(LocalDateTime.now());
+        request.setProcessingDate(LocalDateTime.now());
+        DocumentRequest savedRequest = documentRequestRepository.save(request);
+ 
         Document document = new Document();
         document.setStudent(student);
-        document.setRequest(request);
+        document.setRequest(savedRequest);
         document.setDocumentType(DocumentRequest.DocumentType.CERTIFICATE);
         document.setAcademicYear(student.getAcademicYear());
         document.setCreationDate(LocalDateTime.now());
         documentRepository.save(document);
 
-        // 4. Passer la demande à APPROVED
-        request.setStatus(DocumentRequest.DocumentRequestStatus.APPROVED);
-        request.setProcessingDate(LocalDateTime.now());
-        documentRequestRepository.save(request);
-
-        return pdfBytes;
+        return generateStudentCertificateHtml(student);
     }
-
-    // -------------------------------------------------------------------------
-    // Génération PDF
-    // -------------------------------------------------------------------------
-
+ 
     public byte[] generateStudentCertificateHtml(Student student) {
         try {
             String html = buildHtml(student);
@@ -77,15 +79,10 @@ public class GenerationCertificateService {
             throw new RuntimeException("Erreur lors de la génération du PDF", e);
         }
     }
-
-    // -------------------------------------------------------------------------
-    // Construction du HTML
-    // -------------------------------------------------------------------------
-
+ 
     private String buildHtml(Student student) {
-        String logoBase64 = loadImageAsBase64();
-        String SignatureBase64 = loadImageAsBase64_2();
-
+        String logoBase64 = loadImageAsBase64("static/images/logo_epf2.png", "logo");
+        String signatureBase64 = loadImageAsBase64("static/images/Signature.png", "signature");
         String nom = student.getUser().getLastname().toUpperCase();
         String prenom = student.getUser().getFirstname();
         String address = student.getAddress();
@@ -214,9 +211,6 @@ public class GenerationCertificateService {
                         Emmanuel DUFLOS<br/>
                         Directeur général de l'EPF
                     </div>
-
-                    
-
                 </body>
                 </html>
                 """
@@ -229,38 +223,16 @@ public class GenerationCertificateService {
                         anneeUniversitaire,
                         major,
                         campus, dateComplete,
-                        SignatureBase64);
+                        signatureBase64);
     }
 
-    // -------------------------------------------------------------------------
-    // Chargement du logo en base64
-    // -------------------------------------------------------------------------
-
-    private String loadImageAsBase64() {
-        try (InputStream is = getClass().getResourceAsStream("/static/images/logo_epf2.png")) {
-            if (is == null) {
-                throw new RuntimeException("Logo introuvable : /static/images/logo_epf2.png");
-            }
-            byte[] bytes = is.readAllBytes();
+    private String loadImageAsBase64(String path, String label) {
+        try {
+            ClassPathResource resource = new ClassPathResource(path);
+            byte[] bytes = resource.getContentAsByteArray();
             return "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
-        } catch (RuntimeException e) {
-            throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Erreur lors du chargement du logo", e);
-        }
-    }
-
-    private String loadImageAsBase64_2() {
-        try (InputStream is = getClass().getResourceAsStream("/static/images/Signature.png")) {
-            if (is == null) {
-                throw new RuntimeException("Logo introuvable : /static/images/Signature.png");
-            }
-            byte[] bytes = is.readAllBytes();
-            return "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors du chargement de la signature", e);
+            throw new RuntimeException("Image introuvable : " + path + " (" + label + ")", e);
         }
     }
 }

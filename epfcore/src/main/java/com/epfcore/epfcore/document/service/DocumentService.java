@@ -2,9 +2,7 @@ package com.epfcore.epfcore.document.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.epfcore.epfcore.document.entity.Document;
 import com.epfcore.epfcore.document.repository.DocumentRepository;
 
@@ -16,10 +14,6 @@ public class DocumentService {
     public DocumentService(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
     }
- 
-    // -------------------------------------------------------------------------
-    // Read
-    // -------------------------------------------------------------------------
  
     public List<Document> getAll() {
         return documentRepository.findAll();
@@ -43,37 +37,21 @@ public class DocumentService {
         return documentRepository.findByStudentIdAndAcademicYear(studentId, academicYear);
     }
  
-    // -------------------------------------------------------------------------
-    // Create
-    // -------------------------------------------------------------------------
- 
     public Document create(Document document) {
         document.setCreationDate(LocalDateTime.now());
         return documentRepository.save(document);
     }
  
-    // -------------------------------------------------------------------------
-    // Update
-    // -------------------------------------------------------------------------
- 
     public Document update(Integer id, Document updated) {
         Document existing = getById(id);
-        existing.setFileUrl(updated.getFileUrl());
-        existing.setPhotoUrl(updated.getPhotoUrl());
         existing.setAcademicYear(updated.getAcademicYear());
         existing.setDocumentType(updated.getDocumentType());
         return documentRepository.save(existing);
     }
- 
-    // -------------------------------------------------------------------------
-    // Delete
-    // -------------------------------------------------------------------------
- 
+
     public void delete(Integer id) {
         documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found with id: " + id));
         documentRepository.deleteById(id);
     }
-
-    
 }

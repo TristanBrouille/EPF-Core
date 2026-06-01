@@ -2,9 +2,7 @@ package com.epfcore.epfcore.document.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.epfcore.epfcore.document.entity.DocumentRequest;
 import com.epfcore.epfcore.document.entity.DocumentRequest.DocumentRequestStatus;
 import com.epfcore.epfcore.document.repository.DocumentRequestRepository;
@@ -17,10 +15,6 @@ public class DocumentRequestService {
     public DocumentRequestService(DocumentRequestRepository documentRequestRepository) {
         this.documentRequestRepository = documentRequestRepository;
     }
- 
-    // -------------------------------------------------------------------------
-    // Read
-    // -------------------------------------------------------------------------
  
     public List<DocumentRequest> getAll() {
         return documentRequestRepository.findAll();
@@ -43,20 +37,12 @@ public class DocumentRequestService {
         return documentRequestRepository.findByStudentIdAndStatus(studentId, status);
     }
  
-    // -------------------------------------------------------------------------
-    // Create
-    // -------------------------------------------------------------------------
- 
     public DocumentRequest create(DocumentRequest request) {
         request.setCreationDate(LocalDateTime.now());
         request.setStatus(DocumentRequestStatus.PENDING);
         return documentRequestRepository.save(request);
     }
- 
-    // -------------------------------------------------------------------------
-    // Update
-    // -------------------------------------------------------------------------
- 
+
     public DocumentRequest updateStatus(Integer id, DocumentRequestStatus newStatus) {
         DocumentRequest request = getById(id);
         request.setStatus(newStatus);
@@ -65,10 +51,6 @@ public class DocumentRequestService {
         }
         return documentRequestRepository.save(request);
     }
- 
-    // -------------------------------------------------------------------------
-    // Delete
-    // -------------------------------------------------------------------------
  
     public void delete(Integer id) {
         documentRequestRepository.findById(id)

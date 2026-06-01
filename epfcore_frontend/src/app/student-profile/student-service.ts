@@ -26,27 +26,12 @@ export class StudentService {
       })
     );
   }
-
-  //   certificate(studentId: number): Promise<Blob> {
-  //   return firstValueFrom(
-  //     this.http.get(`${this.baseUrl}/${studentId}/certificate`, {
-  //       responseType: 'blob',
-  //       withCredentials: true
-  //     })
-  //   );
-  // }
-
+  
   async certificate(studentId: number): Promise<Blob> {
-    const request = await firstValueFrom(
-      this.http.post<{ id: number }>('http://localhost:8080/api/document-requests', {
-        student: { id: studentId },
-        documentType: 'CERTIFICATE'
-      })
-    );
-    return firstValueFrom(
-      this.http.get(`http://localhost:8080/api/document-requests/${request.id}/generate/certificate`, {
-        responseType: 'blob'
-      })
-    );
-  }
+  return firstValueFrom(
+    this.http.get(`http://localhost:8080/api/document-requests/generate/certificate/${studentId}`, {
+      responseType: 'blob'
+    })
+  );
+}
 }

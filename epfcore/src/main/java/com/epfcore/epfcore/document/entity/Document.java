@@ -32,21 +32,7 @@ public class Document {
     @Column(name = "creation_date")
     private LocalDateTime creationDate = LocalDateTime.now();
  
-    @Column(name = "file_url", length = 255)
-    private String fileUrl;
- 
-    @Column(name = "photo_url", columnDefinition = "TEXT")
-    private String photoUrl;
- 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
- 
     public Document() {}
- 
-    // -------------------------------------------------------------------------
-    // Getters & Setters
-    // -------------------------------------------------------------------------
  
     public Integer getId() {
         return id;
@@ -91,23 +77,4 @@ public class Document {
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
- 
-    public String getFileUrl() {
-        return fileUrl;
-    }
- 
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
- 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
- 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-
-    
 }
