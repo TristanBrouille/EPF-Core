@@ -84,6 +84,7 @@ public class GenerationCertificateService {
 
     private String buildHtml(Student student) {
         String logoBase64 = loadImageAsBase64();
+        String SignatureBase64 = loadImageAsBase64_2();
 
         String nom = student.getUser().getLastname().toUpperCase();
         String prenom = student.getUser().getFirstname();
@@ -183,7 +184,7 @@ public class GenerationCertificateService {
                     <table style="margin-bottom: 12px;">
                         <tr>
                             <td class="info-label">Née le :</td>
-                            <td>%s &#160;&#160;&#160;&#160;&#160; à : &#160;&#160;&#160;&#160;&#160; %s</td>
+                            <td>%s &#160;&#160;&#160;&#160;&#160;</td>
                         </tr>
                     </table>
 
@@ -195,19 +196,16 @@ public class GenerationCertificateService {
                     </table>
 
                     <div class="intro" style="margin-top:20px;">
-                        est inscrit(e) sur les registres de l'Etablissement pour l'année scolaire %s en
+                        est inscrit(e) sur les registres de l'Etablissement pour l'année scolaire %s en  
                     </div>
 
-                    <div class="formation">%s</div>
+                    <div class="formation">Formation Ingénieur Généraliste %s</div>
 
                     <table style="margin-top: 60px;">
                         <tr>
                             <td style="font-size:13px;">Fait à %s, le %s</td>
                             <td style="text-align:right; font-size:11px;">
-                                EPF ÉCOLE D'INGÉNIEUR·E·S<br/>
-                                55, Avenue du Président Wilson<br/>
-                                94230 CACHAN – FRANCE<br/>
-                                Tél. 01 41 13 01 51
+                               <img src="%s" alt="Signature EPF" />
                             </td>
                         </tr>
                     </table>
@@ -217,6 +215,8 @@ public class GenerationCertificateService {
                         Directeur général de l'EPF
                     </div>
 
+                    
+
                 </body>
                 </html>
                 """
@@ -225,11 +225,11 @@ public class GenerationCertificateService {
                         anneeUniversitaire,
                         nom, prenom,
                         birthDateFormatee,
-                        campus,
                         address,
                         anneeUniversitaire,
                         major,
-                        campus, dateComplete);
+                        campus, dateComplete,
+                        SignatureBase64);
     }
 
     // -------------------------------------------------------------------------
@@ -247,6 +247,20 @@ public class GenerationCertificateService {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException("Erreur lors du chargement du logo", e);
+        }
+    }
+
+    private String loadImageAsBase64_2() {
+        try (InputStream is = getClass().getResourceAsStream("/static/images/Signature.png")) {
+            if (is == null) {
+                throw new RuntimeException("Logo introuvable : /static/images/Signature.png");
+            }
+            byte[] bytes = is.readAllBytes();
+            return "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors du chargement de la signature", e);
         }
     }
 }
