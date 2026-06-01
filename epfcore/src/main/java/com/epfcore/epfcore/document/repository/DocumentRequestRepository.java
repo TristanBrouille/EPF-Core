@@ -10,9 +10,7 @@ import java.util.List;
 public interface DocumentRequestRepository extends JpaRepository<DocumentRequest, Integer> {
 
     List<DocumentRequest> findByStudentId(Integer studentId);
- 
     List<DocumentRequest> findByStatus(DocumentRequestStatus status);
- 
     List<DocumentRequest> findByStudentIdAndStatus(Integer studentId, DocumentRequestStatus status);
   
 }

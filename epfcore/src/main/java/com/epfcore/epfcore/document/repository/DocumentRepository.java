@@ -10,10 +10,6 @@ import java.util.Optional;
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     List<Document> findByStudentId(Integer studentId);
- 
     Optional<Document> findByRequestId(Integer requestId);
- 
     List<Document> findByStudentIdAndAcademicYear(Integer studentId, String academicYear);
-
-    
 }

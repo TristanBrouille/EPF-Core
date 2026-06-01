@@ -41,9 +41,6 @@ public class DocumentRequest {
     @Column(name = "processing_date")
     private LocalDateTime processingDate;
  
-    // -------------------------------------------------------------------------
-    // Enums
-    // -------------------------------------------------------------------------
  
     public enum DocumentType {
         CERTIFICATE, INFOS
@@ -53,15 +50,7 @@ public class DocumentRequest {
         PENDING, IN_PROGRESS, APPROVED, REJECTED
     }
  
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
- 
     public DocumentRequest() {}
- 
-    // -------------------------------------------------------------------------
-    // Getters & Setters
-    // -------------------------------------------------------------------------
  
     public Integer getId() {
         return id;
@@ -106,6 +95,4 @@ public class DocumentRequest {
     public void setProcessingDate(LocalDateTime processingDate) {
         this.processingDate = processingDate;
     }
-
-
 }
