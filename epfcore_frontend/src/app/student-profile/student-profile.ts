@@ -59,7 +59,7 @@ export class StudentProfile implements OnInit {
 
       const a = document.createElement('a');
       a.href = url;
-      a.download = `student-${this.student.studentNumber}.pdf`;
+      a.download = `informations_personnelles_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
       a.click();
 
       window.URL.revokeObjectURL(url);
@@ -78,7 +78,7 @@ export class StudentProfile implements OnInit {
 
       const a = document.createElement('a');
       a.href = url;
-      a.download = `student-${this.student.studentNumber}.pdf`;
+      a.download = `certificat_scolarite_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
       a.click();
 
       window.URL.revokeObjectURL(url);

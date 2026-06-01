@@ -26,12 +26,11 @@ export class StudentService {
       })
     );
   }
-
-  certificate(studentId: number): Promise<Blob> {
+  
+  async certificate(studentId: number): Promise<Blob> {
   return firstValueFrom(
-    this.http.get(`${this.baseUrl}/${studentId}/certificate`, {
-      responseType: 'blob',
-      withCredentials: true
+    this.http.get(`http://localhost:8080/api/document-requests/generate/certificate/${studentId}`, {
+      responseType: 'blob'
     })
   );
 }
