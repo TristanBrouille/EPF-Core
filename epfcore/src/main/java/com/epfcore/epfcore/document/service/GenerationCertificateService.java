@@ -1,15 +1,68 @@
-package com.epfcore.epfcore.student.service;
+package com.epfcore.epfcore.document.service;
+
+
+import com.epfcore.epfcore.document.entity.Document;
+import com.epfcore.epfcore.document.entity.DocumentRequest;
+import com.epfcore.epfcore.document.repository.DocumentRepository;
+import com.epfcore.epfcore.document.repository.DocumentRequestRepository;
+import com.epfcore.epfcore.student.entity.Student;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import org.springframework.stereotype.Service;
-import com.epfcore.epfcore.student.entity.Student;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 
 @Service
 public class GenerationCertificateService {
+
+    private final DocumentRepository documentRepository;
+    private final DocumentRequestRepository documentRequestRepository;
+
+    public GenerationCertificateService(DocumentRepository documentRepository,
+                                        DocumentRequestRepository documentRequestRepository) {
+        this.documentRepository = documentRepository;
+        this.documentRequestRepository = documentRequestRepository;
+    }
+
+    // -------------------------------------------------------------------------
+    // Point d'entrée principal
+    // -------------------------------------------------------------------------
+
+    public byte[] generateFromRequest(Integer requestId) {
+        // 1. Récupérer la demande
+        DocumentRequest request = documentRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found: " + requestId));
+
+        Student student = request.getStudent();
+
+        // 2. Générer le PDF
+        byte[] pdfBytes = generateStudentCertificateHtml(student);
+
+        // 3. Sauvegarder le Document en base
+        Document document = new Document();
+        document.setStudent(student);
+        document.setRequest(request);
+        document.setDocumentType(DocumentRequest.DocumentType.CERTIFICATE);
+        document.setAcademicYear(student.getAcademicYear());
+        document.setCreationDate(LocalDateTime.now());
+        documentRepository.save(document);
+
+        // 4. Passer la demande à APPROVED
+        request.setStatus(DocumentRequest.DocumentRequestStatus.APPROVED);
+        request.setProcessingDate(LocalDateTime.now());
+        documentRequestRepository.save(request);
+
+        return pdfBytes;
+    }
+
+    // -------------------------------------------------------------------------
+    // Génération PDF
+    // -------------------------------------------------------------------------
 
     public byte[] generateStudentCertificateHtml(Student student) {
         try {
@@ -21,19 +74,23 @@ public class GenerationCertificateService {
             builder.run();
             return out.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException("Erreur PDF HTML", e);
+            throw new RuntimeException("Erreur lors de la génération du PDF", e);
         }
     }
 
+    // -------------------------------------------------------------------------
+    // Construction du HTML
+    // -------------------------------------------------------------------------
+
     private String buildHtml(Student student) {
+        String logoBase64 = loadImageAsBase64();
+
         String nom = student.getUser().getLastname().toUpperCase();
         String prenom = student.getUser().getFirstname();
         String address = student.getAddress();
         LocalDate birthDate = student.getUser().getBirthDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String birthDateFormatee = birthDate.format(formatter);
+        String birthDateFormatee = birthDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         String campus = student.getCampus();
-        String academicYear = student.getAcademicYear();
         String major = student.getMajor();
         LocalDate enrollmentDate = student.getEnrollmentDate();
 
@@ -99,8 +156,7 @@ public class GenerationCertificateService {
                     <table style="margin-bottom: 40px;">
                         <tr>
                             <td>
-                                <strong>epf</strong><br/>
-                                <span style="font-size:10px;">ÉCOLE D'INGÉNIEUR·E·S<br/><em>Creating the future together</em></span>
+                                <img src="%s" alt="Logo EPF" />
                             </td>
                             <td style="text-align:right; font-size:12px;">
                                 FONDATION EPF<br/>
@@ -165,6 +221,7 @@ public class GenerationCertificateService {
                 </html>
                 """
                 .formatted(
+                        logoBase64,
                         anneeUniversitaire,
                         nom, prenom,
                         birthDateFormatee,
@@ -173,5 +230,23 @@ public class GenerationCertificateService {
                         anneeUniversitaire,
                         major,
                         campus, dateComplete);
+    }
+
+    // -------------------------------------------------------------------------
+    // Chargement du logo en base64
+    // -------------------------------------------------------------------------
+
+    private String loadImageAsBase64() {
+        try (InputStream is = getClass().getResourceAsStream("/static/images/logo_epf2.png")) {
+            if (is == null) {
+                throw new RuntimeException("Logo introuvable : /static/images/logo_epf2.png");
+            }
+            byte[] bytes = is.readAllBytes();
+            return "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors du chargement du logo", e);
+        }
     }
 }
