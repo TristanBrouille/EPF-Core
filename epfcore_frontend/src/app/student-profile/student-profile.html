@@ -119,13 +119,15 @@
                 </a>
             </div>
 
-            <button (click)="downloadPDF()" class="pdf-button">
-                Télécharger en PDF
-            </button>
+            <div class="button-container">
+                <button (click)="downloadpdf()" class="pdf-button">
+                    Télécharger mes informations personnelles
+                </button>
 
-            <button (click)="certificate()" class="pdf-button">
-                Télécharger certificat de scolarité
-            </button>
+                <button (click)="certificate()" class="pdf-button">
+                    Télécharger mon certificat de scolarité
+                </button>
+            </div>
 
         </div>
 

@@ -1,32 +1,80 @@
-package com.epfcore.epfcore.student.service;
+package com.epfcore.epfcore.document.service;
 
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import org.springframework.stereotype.Service;
-import com.epfcore.epfcore.student.entity.Student;
-
-import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
+import com.epfcore.epfcore.document.entity.Document;
+import com.epfcore.epfcore.document.entity.DocumentRequest;
+import com.epfcore.epfcore.document.repository.DocumentRepository;
+import com.epfcore.epfcore.document.repository.DocumentRequestRepository;
+import com.epfcore.epfcore.student.entity.Student;
+import com.epfcore.epfcore.student.repository.StudentRepository;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import java.io.ByteArrayOutputStream;
 
 @Service
 public class GenerationPdfService {
 
-    public byte[] generateStudentPdfHtml(Student student) {
+    private final DocumentRepository documentRepository;
+    private final DocumentRequestRepository documentRequestRepository;
+    private final StudentRepository studentRepository;
 
+    public GenerationPdfService(DocumentRepository documentRepository,
+                                        DocumentRequestRepository documentRequestRepository,
+                                        StudentRepository studentRepository) {
+        this.documentRepository = documentRepository;
+        this.documentRequestRepository = documentRequestRepository;
+        this.studentRepository = studentRepository;
+    }
+
+    public byte[] generateFromRequest(Integer studentId) {
+ 
+        List<Document> existing = documentRepository.findByStudentId(studentId);
+        Optional<Document> existingCertificate = existing.stream()
+                .filter(d -> d.getDocumentType() == DocumentRequest.DocumentType.INFOS)
+                .findFirst();
+ 
+        if (existingCertificate.isPresent()) {
+            Student student = existingCertificate.get().getStudent();
+            return generateStudentPdfInfosHtml(student);
+        }
+ 
+        Student student = studentRepository.findById(Long.valueOf(studentId))
+                .orElseThrow(() -> new RuntimeException("Student not found: " + studentId));
+ 
+        DocumentRequest request = new DocumentRequest();
+        request.setStudent(student);
+        request.setDocumentType(DocumentRequest.DocumentType.INFOS);
+        request.setStatus(DocumentRequest.DocumentRequestStatus.APPROVED);
+        request.setCreationDate(LocalDateTime.now());
+        request.setProcessingDate(LocalDateTime.now());
+        DocumentRequest savedRequest = documentRequestRepository.save(request);
+ 
+        Document document = new Document();
+        document.setStudent(student);
+        document.setRequest(savedRequest);
+        document.setDocumentType(DocumentRequest.DocumentType.INFOS);
+        document.setAcademicYear(student.getAcademicYear());
+        document.setCreationDate(LocalDateTime.now());
+        documentRepository.save(document);
+
+        return generateStudentPdfInfosHtml(student);
+    }
+ 
+    public byte[] generateStudentPdfInfosHtml(Student student) {
         try {
             String html = buildHtml(student);
-
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.withHtmlContent(html, null);
             builder.toStream(out);
             builder.run();
-
             return out.toByteArray();
-
         } catch (Exception e) {
-            throw new RuntimeException("Erreur PDF HTML", e);
+            throw new RuntimeException("Erreur lors de la génération du PDF", e);
         }
     }
 
@@ -108,4 +156,5 @@ public class GenerationPdfService {
     </html>
     """.formatted(bourseFormatee, campus, academicYear, nom, prenom, email, nationality,birthDateFormatee,numeroFormate, address,  numero, major, lastDegree, EnrollmentDateFormatee);
 }
+    
 }

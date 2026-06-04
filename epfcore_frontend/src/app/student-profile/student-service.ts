@@ -18,20 +18,21 @@ export class StudentService {
     );
   }
 
-  downloadPdf(studentId: number): Promise<Blob> {
-    return firstValueFrom(
-      this.http.get(`${this.baseUrl}/${studentId}/pdf`, {
-        responseType: 'blob',
-        withCredentials: true
-      })
-    );
-  }
-  
   async certificate(studentId: number): Promise<Blob> {
   return firstValueFrom(
     this.http.get(`http://localhost:8080/api/document-requests/generate/certificate/${studentId}`, {
       responseType: 'blob'
     })
   );
+}
+
+  async downloadpdf(studentId: number): Promise<Blob> {
+  return firstValueFrom(
+    this.http.get(`http://localhost:8080/api/document-requests/generate/pdf/${studentId}`, {
+      responseType: 'blob'
+    })
+  );
+
+
 }
 }

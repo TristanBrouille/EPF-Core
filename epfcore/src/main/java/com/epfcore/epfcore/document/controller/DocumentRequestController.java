@@ -16,6 +16,7 @@ import com.epfcore.epfcore.document.entity.DocumentRequest;
 import com.epfcore.epfcore.document.entity.DocumentRequest.DocumentRequestStatus;
 import com.epfcore.epfcore.document.service.DocumentRequestService;
 import com.epfcore.epfcore.document.service.GenerationCertificateService;
+import com.epfcore.epfcore.document.service.GenerationPdfService;
 
 @RestController
 @RequestMapping("/api/document-requests")
@@ -23,11 +24,13 @@ public class DocumentRequestController {
 
     private final DocumentRequestService documentRequestService;
     private final GenerationCertificateService generationCertificateService;
+    private final GenerationPdfService generationPdfService;
 
     public DocumentRequestController(DocumentRequestService documentRequestService,
-            GenerationCertificateService generationCertificateService) {
+            GenerationCertificateService generationCertificateService, GenerationPdfService generationPdfService) {
         this.documentRequestService = documentRequestService;
         this.generationCertificateService = generationCertificateService;
+        this.generationPdfService=generationPdfService;
     }
 
     @GetMapping
@@ -81,6 +84,15 @@ public class DocumentRequestController {
         return ResponseEntity.ok()
                 .header("Content-Type", "application/pdf")
                 .header("Content-Disposition", "attachment; filename=certificat_scolarite.pdf")
+                .body(pdf);
+    }
+
+    @GetMapping("/generate/pdf/{studentId}")
+    public ResponseEntity<byte[]> generatePdf(@PathVariable Integer studentId) {
+        byte[] pdf = generationPdfService.generateFromRequest(studentId);
+        return ResponseEntity.ok()
+                .header("Content-Type", "application/pdf")
+                .header("Content-Disposition", "attachment; filename=infos_personnelles.pdf")
                 .body(pdf);
     }
 }

@@ -49,25 +49,6 @@ export class StudentProfile implements OnInit {
     return this.student.phone.replace(/(\d{2})(?=\d)/g, '$1 ');
   }
 
-  async downloadPDF(): Promise<void> {
-    if (!this.student) return;
-
-    try {
-      const pdfBlob = await this.studentService.downloadPdf(this.student.id);
-
-      const url = window.URL.createObjectURL(pdfBlob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `informations_personnelles_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
-      a.click();
-
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('Erreur génération infos PDF', err);
-    }
-  }
-
   async certificate(): Promise<void> {
     if (!this.student) return;
 
@@ -84,6 +65,25 @@ export class StudentProfile implements OnInit {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Erreur génération certificat PDF', err);
+    }
+  }
+
+  async downloadpdf(): Promise<void> {
+    if (!this.student) return;
+
+    try {
+      const pdfBlob = await this.studentService.downloadpdf(this.student.id);
+
+      const url = window.URL.createObjectURL(pdfBlob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Infos_personnelles_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erreur génération PDF', err);
     }
   }
 
