@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Student } from '../model/student';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,7 +33,10 @@ export class StudentService {
       responseType: 'blob'
     })
   );
+  }
+
+  
 
 
-}
+
 }

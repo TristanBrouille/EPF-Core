@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Student } from '../model/student';
 import { StudentService } from './student-service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-student-profile',
@@ -15,6 +16,7 @@ export class StudentProfile implements OnInit {
   student: Student | null = null;
 
   constructor(
+    protected readonly router : Router,
     private studentService: StudentService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -85,6 +87,10 @@ export class StudentProfile implements OnInit {
     } catch (err) {
       console.error('Erreur génération PDF', err);
     }
+  }
+
+  goToHistory() {
+    this.router.navigate(['/history']);
   }
 
 
