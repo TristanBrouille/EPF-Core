@@ -4,6 +4,7 @@ import { DocumentRequestService } from '../history/document-request.service';
 import { StudentService } from '../student-profile/student-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { signal, computed } from '@angular/core';
 
 @Component({
   selector: 'app-history',
@@ -13,23 +14,25 @@ import { FormsModule } from '@angular/forms';
 })
 export class History implements OnInit {
 
-  requests: DocumentRequest[] = [];
   searchTerm = '';
   filterStatus = '';
   filterType = '';
 
-  constructor(private documentService: DocumentRequestService, private studentService: StudentService ) { }
+  constructor(private documentService: DocumentRequestService, private studentService: StudentService) { }
+
+  requests = signal<DocumentRequest[]>([]);
 
   ngOnInit(): void {
     this.studentService.getCurrentStudent().then(student => {
       this.documentService.getByStudentId(student.id).then(data => {
-        this.requests = data;
+        // this.requests = data;
+        this.requests.set(data);
       });
     });
   }
 
-  filteredRequests(): DocumentRequest[] {
-    return this.requests.filter(r => {
+  filteredRequests() {
+    return this.requests().filter(r => {
       const matchSearch = !this.searchTerm ||
         r.documentType.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchStatus = !this.filterStatus || r.status === this.filterStatus;
@@ -39,7 +42,7 @@ export class History implements OnInit {
   }
 
   countByStatus(status: string): number {
-    return this.requests.filter(r => r.status === status).length;
+    return this.requests().filter(r => r.status === status).length;
   }
 
   badgeClass(status: string): string {
@@ -66,8 +69,4 @@ export class History implements OnInit {
       INFOS: 'ti-user'
     } as Record<string, string>)[type] ?? 'ti-file';
   }
-
-
-
-
 }

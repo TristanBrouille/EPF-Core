@@ -1,7 +1,6 @@
 .history-wrapper {
   padding: 2rem 1.5rem;
 
-  // Titre
   .page-title {
     font-size: 22px;
     font-weight: 500;
@@ -14,7 +13,7 @@
     margin-bottom: 1.5rem;
   }
 
-  // Cartes résumé
+  
   .summary-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -52,7 +51,7 @@
     }
   }
 
-  // Barre de filtres
+  
   .filter-bar {
     display: flex;
     gap: 10px;
@@ -79,7 +78,7 @@
     input { flex: 1; min-width: 160px; }
   }
 
-  // Tableau
+  
   .table-card {
     background: #fff;
     border: 1px solid #e9ecef;
@@ -122,7 +121,7 @@
     }
   }
 
-  // Icône document
+  
   .doc-icon {
     width: 32px;
     height: 32px;
@@ -146,7 +145,7 @@
     vertical-align: middle;
   }
 
-  // Badges statut
+  
   .badge-status {
     display: inline-flex;
     align-items: center;
@@ -175,14 +174,14 @@
     &.dot-rejected   { background: #a32d2d; }
   }
 
-  // Dates
+
   .date-cell {
     color: #6c757d;
     font-size: 12px;
     white-space: nowrap;
   }
 
-  // Bouton télécharger
+  
   .btn-icon {
     border: none;
     background: none;
@@ -204,7 +203,6 @@
     }
   }
 
-  // État vide
   .empty-state {
     text-align: center;
     padding: 3rem 1rem;
