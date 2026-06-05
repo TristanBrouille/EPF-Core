@@ -15,7 +15,6 @@
     margin-bottom: 1.5rem;
   }
 
-  
   .summary-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -53,7 +52,6 @@
     }
   }
 
-  
   .filter-bar {
     display: flex;
     gap: 10px;
@@ -80,7 +78,6 @@
     input { flex: 1; min-width: 160px; }
   }
 
-  
   .table-card {
     background: #fff;
     border: 1px solid #e9ecef;
@@ -123,7 +120,6 @@
     }
   }
 
-  
   .doc-icon {
     width: 32px;
     height: 32px;
@@ -147,7 +143,6 @@
     vertical-align: middle;
   }
 
-  
   .badge-status {
     display: inline-flex;
     align-items: center;
@@ -176,14 +171,12 @@
     &.dot-rejected   { background: #a32d2d; }
   }
 
-
   .date-cell {
     color: #6c757d;
     font-size: 12px;
     white-space: nowrap;
   }
 
-  
   .btn-icon {
     border: none;
     background: none;
@@ -223,7 +216,6 @@
   transition: 0.2s;
   font-size: 13px;
   
-
   &:hover {
     background: darken($epf-red, 10%);
     transform: translateY(-1px);

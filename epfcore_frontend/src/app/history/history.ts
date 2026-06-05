@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { signal, computed } from '@angular/core';
 import { Student } from '../model/student';
 
-
 @Component({
   selector: 'app-history',
   imports: [CommonModule, FormsModule],
@@ -34,7 +33,17 @@ export class History implements OnInit {
     });
   }
 
-  filteredRequests() {
+  // filteredRequests() {
+  //   return this.requests().filter(r => {
+  //     const matchSearch = !this.searchTerm ||
+  //       r.documentType.toLowerCase().includes(this.searchTerm.toLowerCase());
+  //     const matchStatus = !this.filterStatus || r.status === this.filterStatus;
+  //     const matchType = !this.filterType || r.documentType === this.filterType;
+  //     return matchSearch && matchStatus && matchType;
+  //   });
+  // }
+
+  filteredRequests(): DocumentRequest[] {
     return this.requests().filter(r => {
       const matchSearch = !this.searchTerm ||
         r.documentType.toLowerCase().includes(this.searchTerm.toLowerCase());
@@ -44,8 +53,12 @@ export class History implements OnInit {
     });
   }
 
-  countByStatus(status: string): number {
-    return this.requests().filter(r => r.status === status).length;
+  // countByStatus(status: string): number {
+  //   return this.requests().filter(r => r.status === status).length;
+  // }
+
+  countFiltered(status: string): number {
+    return this.filteredRequests().filter(r => r.status === status).length;
   }
 
   badgeClass(status: string): string {
@@ -113,8 +126,8 @@ export class History implements OnInit {
 
   documentTypeLabel(type: string): string {
     return ({
-      CERTIFICATE: 'CERTIFICAT',
-      INFOS: 'INFOS',
+      CERTIFICATE: 'Certificat de scolarité',
+      INFOS: 'Informations personnelles',
     } as Record<string, string>)[type] ?? type;
   }
 }

@@ -2,19 +2,19 @@
   <div class="summary-cards">
     <div class="scard">
       <div class="scard-label">Total</div>
-      <div class="scard-value">{{ requests().length }}</div>
+      <div class="scard-value">{{ filteredRequests().length }}</div>
     </div>
     <div class="scard pending">
       <div class="scard-label">En attente</div>
-      <div class="scard-value">{{ countByStatus('PENDING') }}</div>
+      <div class="scard-value">{{ countFiltered('PENDING') }}</div>
     </div>
     <div class="scard approved">
       <div class="scard-label">Approuvées</div>
-      <div class="scard-value">{{ countByStatus('APPROVED') }}</div>
+      <div class="scard-value">{{ countFiltered('APPROVED') }}</div>
     </div>
     <div class="scard rejected">
       <div class="scard-label">Refusées</div>
-      <div class="scard-value">{{ countByStatus('REJECTED') }}</div>
+      <div class="scard-value">{{ countFiltered('REJECTED') }}</div>
     </div>
   </div>
 
@@ -31,7 +31,6 @@
       <option value="">Tous les types</option>
       <option value="CERTIFICATE">Certificat de scolarité</option>
       <option value="INFOS">Infos personnelles</option>
-
     </select>
   </div>
 
