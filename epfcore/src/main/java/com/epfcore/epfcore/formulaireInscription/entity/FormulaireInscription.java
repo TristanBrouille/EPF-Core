@@ -1,9 +1,12 @@
 package com.epfcore.epfcore.formulaireInscription.entity;
 
+import com.epfcore.epfcore.campus.entity.Campus;
 import com.epfcore.epfcore.security.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -34,13 +37,39 @@ public class FormulaireInscription {
     @Column(name = "programme_choisi")
     private String programmeChoisi;
 
-    @Column(name = "campus_choisi")
-    private String campusChoisi;
-
     @Column(columnDefinition = "TEXT")
     private String motivations;
 
-    @Column(name = "avancement")
-    private String avancement = "en_cours";
+    @Column(name = "date_creation")
+    private LocalDateTime dateCreation;
 
+    @ManyToOne
+    @JoinColumn(name = "campus_id")
+    private Campus campus;
+
+    @Column(name = "soumis")
+    private Boolean soumis;
+
+    @Column(name = "genre")
+    private String genre;
+
+    @Column(name = "telephone")
+    private String telephone;
+
+    @Column(name = "nationalite")
+    private String nationalite;
+
+    @Column(name = "adresse")
+    private String adresse;
+
+    @Column(name = "annee_integration")
+    private Integer anneeIntegration;
+
+    @Column(name = "majeur")
+    private String majeur;
+
+    @PrePersist
+    public void prePersist() {
+        this.dateCreation = LocalDateTime.now();
+    }
 }

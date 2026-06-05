@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Formulaire } from '../model/formulaire';
 import { FormulaireService } from './formulaireService';
@@ -15,6 +15,8 @@ export class FormulaireInscription implements OnInit {
   isExisting: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+  currentStep: number = 1;
+  totalSteps: number = 3;
 
   constructor(
     private fb: FormBuilder,
@@ -24,13 +26,21 @@ export class FormulaireInscription implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.formulaireForm = this.fb.group({
+
+      genre: [''],
+      telephone: [null],
+      nationalite: [''],
+      adresse: [''],
+
       dernierDiplome: [''],
       etablissement: [''],
-      niveauEtude: [''],
       anneeObtention: [null],
+
       programmeChoisi: [''],
-      campusChoisi: [''],
       motivations: [''],
+      campusVille: [''],
+      anneeIntegration: [null],
+      majeur: [''],
     });
 
     try {
@@ -45,6 +55,18 @@ export class FormulaireInscription implements OnInit {
     }
   }
 
+  nextStep(): void {
+    if (this.currentStep < this.totalSteps) {
+      this.currentStep++;
+    }
+  }
+
+  prevStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
+
   async onSubmit(): Promise<void> {
     const formulaire: Formulaire = this.formulaireForm.value;
 
@@ -56,10 +78,43 @@ export class FormulaireInscription implements OnInit {
         this.isExisting = true;
       }
       this.successMessage = 'Dossier sauvegardé avec succès !';
+      this.errorMessage = '';
       this.cdr.detectChanges();
     } catch (error) {
       this.errorMessage = 'Une erreur est survenue lors de la sauvegarde';
+      this.successMessage = '';
       console.error(error);
     }
+  }
+
+  get completionStep1(): number {
+    const fields = ['genre', 'telephone', 'nationalite', 'adresse'];
+    const filled = fields.filter(f => this.formulaireForm.get(f)?.value).length;
+    return Math.round((filled / fields.length) * 100);
+  }
+
+  get completionStep2(): number {
+    const fields = ['dernierDiplome', 'etablissement', 'anneeObtention'];
+    const filled = fields.filter(f => this.formulaireForm.get(f)?.value).length;
+    return Math.round((filled / fields.length) * 100);
+  }
+
+  get completionStep3(): number {
+    const fields = ['programmeChoisi', 'campusVille', 'anneeIntegration', 'majeur', 'motivations'];
+    const filled = fields.filter(f => this.formulaireForm.get(f)?.value).length;
+    return Math.round((filled / fields.length) * 100);
+  }
+
+  get completionTotal(): number {
+    return Math.round((this.completionStep1 + this.completionStep2 + this.completionStep3) / 3);
+  }
+
+  get isFormComplete(): boolean {
+    const fields = [
+      'genre', 'telephone', 'nationalite', 'adresse',
+      'dernierDiplome', 'etablissement', 'anneeObtention',
+      'programmeChoisi', 'campusVille', 'anneeIntegration', 'majeur', 'motivations'
+    ];
+    return fields.every(f => this.formulaireForm.get(f)?.value);
   }
 }

@@ -44,7 +44,12 @@ export class Header {
   }
 
   goToProfile() {
-    this.router.navigate(['/student-profile']);
+    const url = this.router.url;
+    if (url === '/candidat' || url === '/formulaire-inscription') {
+      this.router.navigate(['/candidat']);
+    } else {
+      this.router.navigate(['/student-profile']);
+    }
   }
 
 }
