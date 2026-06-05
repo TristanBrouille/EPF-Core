@@ -10,7 +10,7 @@ export interface DocumentRequest {
 }
 
 export enum DocumentType {
-  CERTIFICAT = 'CERTIFICAT',
+  CERTIFICATE = 'CERTIFICATE',
   INFOS = 'INFOS',
 }
 

@@ -57,12 +57,12 @@ export class History implements OnInit {
   }
 
   docIconClass(type: string): string {
-    return { CERTIFICAT: 'doc-cert', INFOS: 'doc-infos', }[type] ?? '';
+    return { CERTIFICATE: 'doc-cert', INFOS: 'doc-infos', }[type] ?? '';
   }
 
   docIconTi(type: string): string {
     return ({
-      CERTIFICAT: 'ti-certificate',
+      CERTIFICATE: 'ti-certificate',
       INFOS: 'ti-user'
     } as Record<string, string>)[type] ?? 'ti-file';
   }
