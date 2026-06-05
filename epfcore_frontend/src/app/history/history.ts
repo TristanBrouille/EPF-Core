@@ -5,6 +5,8 @@ import { StudentService } from '../student-profile/student-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { signal, computed } from '@angular/core';
+import { Student } from '../model/student';
+
 
 @Component({
   selector: 'app-history',
@@ -17,6 +19,7 @@ export class History implements OnInit {
   searchTerm = '';
   filterStatus = '';
   filterType = '';
+  student: Student | null = null;
 
   constructor(private documentService: DocumentRequestService, private studentService: StudentService) { }
 
@@ -24,8 +27,8 @@ export class History implements OnInit {
 
   ngOnInit(): void {
     this.studentService.getCurrentStudent().then(student => {
+      this.student = student;
       this.documentService.getByStudentId(student.id).then(data => {
-        // this.requests = data;
         this.requests.set(data);
       });
     });
@@ -68,5 +71,50 @@ export class History implements OnInit {
       CERTIFICATE: 'ti-certificate',
       INFOS: 'ti-user'
     } as Record<string, string>)[type] ?? 'ti-file';
+  }
+
+  async certificate(): Promise<void> {
+    if (!this.student) return;
+
+    try {
+      const pdfBlob = await this.studentService.certificate(this.student.id);
+
+      const url = window.URL.createObjectURL(pdfBlob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `certificat_scolarite_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erreur génération certificat PDF', err);
+    }
+  }
+
+  async downloadpdf(): Promise<void> {
+    if (!this.student) return;
+
+    try {
+      const pdfBlob = await this.studentService.downloadpdf(this.student.id);
+
+      const url = window.URL.createObjectURL(pdfBlob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Infos_personnelles_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erreur génération PDF', err);
+    }
+  }
+
+  documentTypeLabel(type: string): string {
+    return ({
+      CERTIFICATE: 'CERTIFICAT',
+      INFOS: 'INFOS',
+    } as Record<string, string>)[type] ?? type;
   }
 }

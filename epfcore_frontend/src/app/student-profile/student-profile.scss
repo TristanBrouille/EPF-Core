@@ -152,10 +152,12 @@ p {
   color: $white;
   border: none;
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: 600;
   transition: 0.2s;
+  font-size: 15px;
+  
 
   &:hover {
     background: darken($epf-red, 10%);

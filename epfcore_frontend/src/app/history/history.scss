@@ -1,3 +1,5 @@
+@use '../../_variables.scss' as *;
+
 .history-wrapper {
   padding: 2rem 1.5rem;
 
@@ -209,4 +211,22 @@
     color: #6c757d;
     font-size: 14px;
   }
+
+  .pdf-button {
+  background: $epf-red;
+  color: $white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+  font-size: 13px;
+  
+
+  &:hover {
+    background: darken($epf-red, 10%);
+    transform: translateY(-1px);
+  }
+}
 }

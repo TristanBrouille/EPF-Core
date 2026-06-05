@@ -43,6 +43,7 @@
           <th>Date de demande</th>
           <th>Date de création</th>
           <th>Statut</th>
+          <th>Téléchargement</th>
           <th></th>
         </tr>
       </thead>
@@ -53,7 +54,7 @@
             <span class="doc-icon" [ngClass]="docIconClass(r.documentType)">
               <i class="ti" [ngClass]="docIconTi(r.documentType)" aria-hidden="true"></i>
             </span>
-            <span class="doc-label">{{ r.documentType }}</span>
+            <span class="doc-label">{{ documentTypeLabel(r.documentType) }}</span>
           </td>
           <td class="date-cell">{{ r.creationDate | date:'dd MMM yyyy' }}</td>
           <td class="date-cell">{{ r.processingDate ? (r.processingDate | date:'dd MMM yyyy') : '—' }}</td>
@@ -62,6 +63,18 @@
               <span class="dot" [ngClass]="dotClass(r.status)"></span>
               {{ r.status }}
             </span>
+          </td>
+          <td>
+            @if (r.documentType === 'CERTIFICATE') {
+            <button (click)="certificate()" class="pdf-button">
+              Télécharger le certificat 
+            </button>
+            }
+            @if (r.documentType === 'INFOS') {
+            <button (click)="downloadpdf()" class="pdf-button">
+              Télécharger les infos 
+            </button>
+            }
           </td>
         </tr>
         }
