@@ -10,6 +10,7 @@ import { Student } from '../model/student';
 export class StudentService {
 
   private baseUrl = 'http://localhost:8080/api/students';
+  private documentUrl = 'http://localhost:8080/api/documents';
 
   constructor(private http: HttpClient) { }
 
@@ -20,23 +21,19 @@ export class StudentService {
   }
 
   async certificate(studentId: number): Promise<Blob> {
-  return firstValueFrom(
-    this.http.get(`http://localhost:8080/api/document-requests/generate/certificate/${studentId}`, {
-      responseType: 'blob'
-    })
-  );
-}
-
-  async downloadpdf(studentId: number): Promise<Blob> {
-  return firstValueFrom(
-    this.http.get(`http://localhost:8080/api/document-requests/generate/pdf/${studentId}`, {
-      responseType: 'blob'
-    })
-  );
+    return firstValueFrom(
+      this.http.get(`${this.documentUrl}/generate/certificate/${studentId}`, {
+        responseType: 'blob'
+      })
+    );
   }
 
-  
-
-
+  async downloadpdf(studentId: number): Promise<Blob> {
+    return firstValueFrom(
+      this.http.get(`${this.documentUrl}/generate/pdf/${studentId}`, {
+        responseType: 'blob'
+      })
+    );
+  }
 
 }

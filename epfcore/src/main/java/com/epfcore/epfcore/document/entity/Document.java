@@ -3,78 +3,100 @@ package com.epfcore.epfcore.document.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-import com.epfcore.epfcore.student.entity.Student;
-
-
 @Entity
 @Table(name = "document")
 public class Document {
 
+    public enum DocumentType {
+        CERTIFICATE, INFOS
+    }
+
+    public enum DocumentStatus {
+        PENDING, IN_PROGRESS, APPROVED, REJECTED
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
- 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
- 
-    @ManyToOne
-    @JoinColumn(name = "request_id")
-    private DocumentRequest request;
- 
-    @Column(name = "document_type", nullable = false, length = 11)
+
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
+    @Column(name = "document_type", nullable = false, length = 15)
     @Enumerated(EnumType.STRING)
-    private DocumentRequest.DocumentType documentType;
- 
-    @Column(name = "academic_year", length = 9)
-    private String academicYear;
- 
+    private DocumentType documentType;
+
+    @Column(name = "status", nullable = false, length = 15)
+    @Enumerated(EnumType.STRING)
+    private DocumentStatus status;
+
     @Column(name = "creation_date")
     private LocalDateTime creationDate = LocalDateTime.now();
- 
-    public Document() {}
- 
+
+    @Column(name = "processing_date")
+    private LocalDateTime processingDate;
+
+    @Column(name = "file_url", columnDefinition = "TEXT")
+    private String fileUrl;
+
+    public Document() {
+    }
+
     public Integer getId() {
         return id;
     }
- 
-    public Student getStudent() {
-        return student;
+
+    public void setId(Integer id) {
+        this.id = id;
     }
- 
-    public void setStudent(Student student) {
-        this.student = student;
+
+    public Integer getUserId() {
+        return userId;
     }
- 
-    public DocumentRequest getRequest() {
-        return request;
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
- 
-    public void setRequest(DocumentRequest request) {
-        this.request = request;
-    }
- 
-    public DocumentRequest.DocumentType getDocumentType() {
+
+    public DocumentType getDocumentType() {
         return documentType;
     }
- 
-    public void setDocumentType(DocumentRequest.DocumentType documentType) {
+
+    public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;
     }
- 
-    public String getAcademicYear() {
-        return academicYear;
+
+    public DocumentStatus getStatus() {
+        return status;
     }
- 
-    public void setAcademicYear(String academicYear) {
-        this.academicYear = academicYear;
+
+    public void setStatus(DocumentStatus status) {
+        this.status = status;
     }
- 
+
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
- 
+
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
+
+    public LocalDateTime getProcessingDate() {
+        return processingDate;
+    }
+
+    public void setProcessingDate(LocalDateTime processingDate) {
+        this.processingDate = processingDate;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    
 }

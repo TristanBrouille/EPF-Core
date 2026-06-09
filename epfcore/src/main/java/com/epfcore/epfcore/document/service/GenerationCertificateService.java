@@ -1,9 +1,7 @@
 package com.epfcore.epfcore.document.service;
 
 import com.epfcore.epfcore.document.entity.Document;
-import com.epfcore.epfcore.document.entity.DocumentRequest;
 import com.epfcore.epfcore.document.repository.DocumentRepository;
-import com.epfcore.epfcore.document.repository.DocumentRequestRepository;
 import com.epfcore.epfcore.student.entity.Student;
 import com.epfcore.epfcore.student.repository.StudentRepository;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
@@ -21,51 +19,47 @@ import java.util.Optional;
 public class GenerationCertificateService {
 
     private final DocumentRepository documentRepository;
-    private final DocumentRequestRepository documentRequestRepository;
     private final StudentRepository studentRepository;
 
-   public GenerationCertificateService(DocumentRepository documentRepository,
-                                        DocumentRequestRepository documentRequestRepository,
-                                        StudentRepository studentRepository) {
+    public GenerationCertificateService(DocumentRepository documentRepository,
+            StudentRepository studentRepository) {
         this.documentRepository = documentRepository;
-        this.documentRequestRepository = documentRequestRepository;
         this.studentRepository = studentRepository;
     }
 
     public byte[] generateFromRequest(Integer studentId) {
- 
-        List<Document> existing = documentRepository.findByStudentId(studentId);
-        Optional<Document> existingCertificate = existing.stream()
-                .filter(d -> d.getDocumentType() == DocumentRequest.DocumentType.CERTIFICATE)
-                .findFirst();
- 
-        if (existingCertificate.isPresent()) {
-            Student student = existingCertificate.get().getStudent();
-            return generateStudentCertificateHtml(student);
-        }
- 
         Student student = studentRepository.findById(Long.valueOf(studentId))
                 .orElseThrow(() -> new RuntimeException("Student not found: " + studentId));
- 
-        DocumentRequest request = new DocumentRequest();
-        request.setStudent(student);
-        request.setDocumentType(DocumentRequest.DocumentType.CERTIFICATE);
-        request.setStatus(DocumentRequest.DocumentRequestStatus.APPROVED);
-        request.setCreationDate(LocalDateTime.now());
-        request.setProcessingDate(LocalDateTime.now());
-        DocumentRequest savedRequest = documentRequestRepository.save(request);
- 
+
+        Integer userId = Math.toIntExact(student.getUser().getId());
+
+        List<Document> existing = documentRepository.findByUserId(userId);
+        Optional<Document> existingCertificate = existing.stream()
+                .filter(d -> d.getDocumentType() == Document.DocumentType.CERTIFICATE)
+                .findFirst();
+
+        if (existingCertificate.isPresent()) {
+            String fileData = existingCertificate.get().getFileUrl();
+            if (fileData != null) {
+                return Base64.getDecoder().decode(fileData);
+            }
+            return generateStudentCertificateHtml(student);
+        }
+
+        byte[] pdf = generateStudentCertificateHtml(student);
+
         Document document = new Document();
-        document.setStudent(student);
-        document.setRequest(savedRequest);
-        document.setDocumentType(DocumentRequest.DocumentType.CERTIFICATE);
-        document.setAcademicYear(student.getAcademicYear());
+        document.setUserId(userId);
+        document.setDocumentType(Document.DocumentType.CERTIFICATE);
+        document.setStatus(Document.DocumentStatus.APPROVED);
         document.setCreationDate(LocalDateTime.now());
+        document.setProcessingDate(LocalDateTime.now());
+        document.setFileUrl(Base64.getEncoder().encodeToString(pdf));
         documentRepository.save(document);
 
-        return generateStudentCertificateHtml(student);
+        return pdf;
     }
- 
+
     public byte[] generateStudentCertificateHtml(Student student) {
         try {
             String html = buildHtml(student);
@@ -79,7 +73,7 @@ public class GenerationCertificateService {
             throw new RuntimeException("Erreur lors de la génération du PDF", e);
         }
     }
- 
+
     private String buildHtml(Student student) {
         String logoBase64 = loadImageAsBase64("static/images/logo_epf2.png", "logo");
         String signatureBase64 = loadImageAsBase64("static/images/Signature.png", "signature");
@@ -193,7 +187,7 @@ public class GenerationCertificateService {
                     </table>
 
                     <div class="intro" style="margin-top:20px;">
-                        est inscrit(e) sur les registres de l'Etablissement pour l'année scolaire %s en  
+                        est inscrit(e) sur les registres de l'Etablissement pour l'année scolaire %s en
                     </div>
 
                     <div class="formation">Formation Ingénieur Généraliste %s</div>

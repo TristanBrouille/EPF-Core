@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { DocumentRequest } from '../model/documentrequest';
-import { DocumentRequestService } from '../history/document-request.service';
+import { Component, OnInit, Inject, signal } from '@angular/core';
+import { Document } from '../model/document';
+import { DocumentService } from './document.service';
 import { StudentService } from '../student-profile/student-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { signal, computed } from '@angular/core';
-import { Student } from '../model/student';
+import {Student } from '../model/student';
 
 @Component({
   selector: 'app-history',
@@ -20,30 +19,23 @@ export class History implements OnInit {
   filterType = '';
   student: Student | null = null;
 
-  constructor(private documentService: DocumentRequestService, private studentService: StudentService) { }
+  constructor(
+  @Inject(DocumentService) private documentService: DocumentService,
+  @Inject(StudentService) private studentService: StudentService
+) { }
 
-  requests = signal<DocumentRequest[]>([]);
+  requests = signal<Document[]>([]);
 
   ngOnInit(): void {
     this.studentService.getCurrentStudent().then(student => {
       this.student = student;
-      this.documentService.getByStudentId(student.id).then(data => {
+      this.documentService.getByUserId(student.user.id).then(data => {
         this.requests.set(data);
       });
     });
   }
 
-  // filteredRequests() {
-  //   return this.requests().filter(r => {
-  //     const matchSearch = !this.searchTerm ||
-  //       r.documentType.toLowerCase().includes(this.searchTerm.toLowerCase());
-  //     const matchStatus = !this.filterStatus || r.status === this.filterStatus;
-  //     const matchType = !this.filterType || r.documentType === this.filterType;
-  //     return matchSearch && matchStatus && matchType;
-  //   });
-  // }
-
-  filteredRequests(): DocumentRequest[] {
+  filteredRequests(): Document[] {
     return this.requests().filter(r => {
       const matchSearch = !this.searchTerm ||
         r.documentType.toLowerCase().includes(this.searchTerm.toLowerCase());
@@ -52,10 +44,6 @@ export class History implements OnInit {
       return matchSearch && matchStatus && matchType;
     });
   }
-
-  // countByStatus(status: string): number {
-  //   return this.requests().filter(r => r.status === status).length;
-  // }
 
   countFiltered(status: string): number {
     return this.filteredRequests().filter(r => r.status === status).length;
@@ -88,17 +76,13 @@ export class History implements OnInit {
 
   async certificate(): Promise<void> {
     if (!this.student) return;
-
     try {
       const pdfBlob = await this.studentService.certificate(this.student.id);
-
       const url = window.URL.createObjectURL(pdfBlob);
-
       const a = document.createElement('a');
       a.href = url;
       a.download = `certificat_scolarite_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
       a.click();
-
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Erreur génération certificat PDF', err);
@@ -107,17 +91,13 @@ export class History implements OnInit {
 
   async downloadpdf(): Promise<void> {
     if (!this.student) return;
-
     try {
       const pdfBlob = await this.studentService.downloadpdf(this.student.id);
-
       const url = window.URL.createObjectURL(pdfBlob);
-
       const a = document.createElement('a');
       a.href = url;
       a.download = `Infos_personnelles_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
       a.click();
-
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Erreur génération PDF', err);

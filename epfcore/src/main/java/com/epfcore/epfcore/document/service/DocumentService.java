@@ -24,17 +24,16 @@ public class DocumentService {
                 .orElseThrow(() -> new RuntimeException("Document not found with id: " + id));
     }
  
-    public List<Document> getByStudentId(Integer studentId) {
-        return documentRepository.findByStudentId(studentId);
+    public List<Document> getByUserId(Integer userId) {
+        return documentRepository.findByUserId(userId);
     }
- 
-    public Document getByRequestId(Integer requestId) {
-        return documentRepository.findByRequestId(requestId)
-                .orElseThrow(() -> new RuntimeException("Document not found for request id: " + requestId));
+
+    public List<Document> getByStatus(Document status) {
+        return documentRepository.findByStatus(status);
     }
- 
-    public List<Document> getByStudentIdAndAcademicYear(Integer studentId, String academicYear) {
-        return documentRepository.findByStudentIdAndAcademicYear(studentId, academicYear);
+
+    public List<Document> getByUserIdAndStatus(Integer userId, Document status) {
+        return documentRepository.findByUserIdAndStatus(userId, status);
     }
  
     public Document create(Document document) {
@@ -44,7 +43,6 @@ public class DocumentService {
  
     public Document update(Integer id, Document updated) {
         Document existing = getById(id);
-        existing.setAcademicYear(updated.getAcademicYear());
         existing.setDocumentType(updated.getDocumentType());
         return documentRepository.save(existing);
     }
