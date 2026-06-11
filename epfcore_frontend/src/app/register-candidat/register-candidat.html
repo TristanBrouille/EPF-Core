@@ -75,7 +75,11 @@
         <div class="error-message">{{ errorMessage }}</div>
       }
 
-      <button type="submit" class="btn-red" [disabled]="registerForm.invalid">
+      <div class="form-group">
+        <div id="recaptcha-container"></div>
+      </div>
+
+      <button type="submit" class="btn-red" [disabled]="registerForm.invalid || !recaptchaService.isValid()">
         S'inscrire
       </button>
 

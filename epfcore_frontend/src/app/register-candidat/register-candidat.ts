@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import { CandidatService } from '../candidat/candidat-service';
+import { RecaptchaService } from './recaptchaService';
 
 @Component({
   selector: 'app-register-candidat',
@@ -9,7 +10,7 @@ import { CandidatService } from '../candidat/candidat-service';
   templateUrl: './register-candidat.html',
   styleUrl: './register-candidat.scss',
 })
-export class RegisterCandidat implements OnInit {
+export class RegisterCandidat implements OnInit, AfterViewInit {
   registerForm!: FormGroup;
   errorMessage: string = '';
 
@@ -17,6 +18,7 @@ export class RegisterCandidat implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private candidatService: CandidatService,
+    protected recaptchaService: RecaptchaService
   ) {}
 
   ngOnInit(): void {
@@ -31,13 +33,31 @@ export class RegisterCandidat implements OnInit {
 
   async onSubmit(): Promise<void> {
     if (this.registerForm.valid) {
+      if (!this.recaptchaService.isValid()) {
+        this.errorMessage = 'Veuillez valider le captcha';
+        return;
+      }
+
       try {
-        await this.candidatService.register(this.registerForm.value);
+        await this.candidatService.register({
+          ...this.registerForm.value,
+          captchaToken: this.recaptchaService.getToken()
+        });
         this.router.navigate(['/login']);
       } catch (error) {
         this.errorMessage = 'Une erreur est survenue lors de l\'inscription';
+        this.recaptchaService.reset();
         console.error(error);
       }
+    }
+  }
+
+  ngAfterViewInit(): void {
+    const grecaptcha = (window as any).grecaptcha;
+    if (grecaptcha) {
+      grecaptcha.render('recaptcha-container', {
+        sitekey: '6LfxIhotAAAAAFq4j3YQAn7Gi7eguo8wSLlKqFek'
+      });
     }
   }
 }
