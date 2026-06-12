@@ -40,14 +40,6 @@ public class GenerationCertificateService {
                 .filter(d -> d.getDocumentType() == DocumentType.CERTIFICATE)
                 .findFirst();
 
-        // if (existingCertificate.isPresent()) {
-        // String fileData = existingCertificate.get().getFileUrl();
-        // if (fileData != null) {
-        // return Base64.getDecoder().decode(fileData);
-        // }
-        // return generateStudentCertificateHtml(student);
-        // }
-
         if (existingCertificate.isPresent()) {
             String fileData = existingCertificate.get().getFileUrl();
             return fileData != null ? Base64.getDecoder().decode(fileData) : generateStudentCertificateHtml(student);
