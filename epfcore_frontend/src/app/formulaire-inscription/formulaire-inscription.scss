@@ -169,6 +169,48 @@
           }
         }
 
+        .file-field {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.5rem 0.75rem;
+          border: 1px solid $gray-dark;
+          border-radius: 4px;
+          background: rgba(255, 255, 255, 0.7);
+
+          input[type="file"] {
+            border: none;
+            background: transparent;
+            padding: 0;
+            width: auto;
+            font-size: 0;
+            color: transparent;
+
+            &::file-selector-button,
+            &::-webkit-file-upload-button {
+              font-size: 0.9rem;
+              color: $gray-dark;
+              padding: 0.4rem 1rem;
+              border: 1px solid $gray-dark;
+              border-radius: 4px;
+              background: rgba(255, 255, 255, 0.9);
+              cursor: pointer;
+            }
+
+            &:focus {
+              outline: none;
+            }
+          }
+
+          .file-name {
+            font-size: 0.9rem;
+            color: $gray-dark;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
         .error {
           color: $epf-red;
           font-size: 0.875rem;

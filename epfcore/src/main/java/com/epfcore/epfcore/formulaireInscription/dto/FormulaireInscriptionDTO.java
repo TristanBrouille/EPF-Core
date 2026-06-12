@@ -11,7 +11,6 @@ public record FormulaireInscriptionDTO(
         String niveauEtude,
         Integer anneeObtention,
         String programmeChoisi,
-        String motivations,
         LocalDateTime dateCreation,
         String campusVille,
         Boolean soumis,

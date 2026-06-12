@@ -2,13 +2,17 @@ package com.epfcore.epfcore.formulaireInscription.service;
 
 import com.epfcore.epfcore.campus.entity.Campus;
 import com.epfcore.epfcore.campus.repository.CampusRepository;
+import com.epfcore.epfcore.documentFormulaire.repository.DocumentFormulaireRepository;
+import com.epfcore.epfcore.documentFormulaire.storage.StorageService;
 import com.epfcore.epfcore.formulaireInscription.dto.FormulaireInscriptionDTO;
 import com.epfcore.epfcore.formulaireInscription.entity.FormulaireInscription;
 import com.epfcore.epfcore.formulaireInscription.repository.FormulaireInscriptionRepository;
+import com.epfcore.epfcore.security.domain.Roles;
 import com.epfcore.epfcore.security.domain.User;
 import com.epfcore.epfcore.security.exposition.UserExpose;
 import com.epfcore.epfcore.security.infrastructure.UserJpaRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,15 +24,21 @@ public class FormulaireInscriptionService {
     private final FormulaireInscriptionRepository formulaireRepository;
     private final UserJpaRepository userRepository;
     private final CampusRepository campusRepository;
+    private final DocumentFormulaireRepository documentRepository;
+    private final StorageService storageService;
 
     public FormulaireInscriptionService(
             FormulaireInscriptionRepository formulaireRepository,
             UserJpaRepository userRepository,
-            CampusRepository campusRepository
+            CampusRepository campusRepository,
+            DocumentFormulaireRepository documentRepository,
+            StorageService storageService
     ) {
         this.formulaireRepository = formulaireRepository;
         this.userRepository = userRepository;
         this.campusRepository = campusRepository;
+        this.documentRepository = documentRepository;
+        this.storageService = storageService;
     }
 
     public FormulaireInscriptionDTO save(FormulaireInscriptionDTO dto, String email) {
@@ -52,7 +62,6 @@ public class FormulaireInscriptionService {
         existing.setNiveauEtude(dto.niveauEtude());
         existing.setAnneeObtention(dto.anneeObtention());
         existing.setProgrammeChoisi(dto.programmeChoisi());
-        existing.setMotivations(dto.motivations());
         existing.setSoumis(dto.soumis());
         existing.setGenre(dto.genre());
         existing.setTelephone(dto.telephone());
@@ -90,10 +99,18 @@ public class FormulaireInscriptionService {
                 .toList();
     }
 
-    public void delete(Long id) {
-        if (!formulaireRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Formulaire not found");
+    public void delete(Long id, Authentication authentication) {
+        FormulaireInscription formulaire = formulaireRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Formulaire not found"));
+
+        User user = getUserByEmail(authentication.getName());
+        if (user.getRole() == Roles.CANDIDAT && !formulaire.getUser().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
+
+        documentRepository.findByFormulaireId(id)
+                .forEach(document -> storageService.delete(document.getFileUrl()));
+
         formulaireRepository.deleteById(id);
     }
 
@@ -105,7 +122,6 @@ public class FormulaireInscriptionService {
         formulaire.setNiveauEtude(dto.niveauEtude());
         formulaire.setAnneeObtention(dto.anneeObtention());
         formulaire.setProgrammeChoisi(dto.programmeChoisi());
-        formulaire.setMotivations(dto.motivations());
         formulaire.setSoumis(dto.soumis());
         formulaire.setGenre(dto.genre());
         formulaire.setTelephone(dto.telephone());
@@ -139,7 +155,6 @@ public class FormulaireInscriptionService {
                 formulaire.getNiveauEtude(),
                 formulaire.getAnneeObtention(),
                 formulaire.getProgrammeChoisi(),
-                formulaire.getMotivations(),
                 formulaire.getDateCreation(),
                 formulaire.getCampus() != null ? formulaire.getCampus().getVille() : null,
                 formulaire.getSoumis(),

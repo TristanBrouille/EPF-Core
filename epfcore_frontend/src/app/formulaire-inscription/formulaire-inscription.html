@@ -50,6 +50,16 @@
           </div>
         </div>
 
+        <!-- Section 4 -->
+        <div class="recap-section">
+          <h4 [class.active]="currentStep === 4" [class.done]="completionStep4 === 100">
+            {{ completionStep4 === 100 ? '✓' : '4' }} Documents supplémentaires
+          </h4>
+          <div class="recap-mini-bar">
+            <div class="recap-mini-fill" [style.width.%]="completionStep4"></div>
+          </div>
+        </div>
+
         <button type="submit" form="formulaireForm" class="btn-red">
           {{ 'Sauvegarder' }}
         </button>
@@ -149,11 +159,26 @@
             <label>Majeur</label>
             <input type="text" formControlName="majeur" placeholder="Ex: Informatique" />
           </div>
+        }
 
-          <div class="form-group">
-            <label>Lettre de motivation</label>
-            <textarea formControlName="motivations" rows="6" placeholder="Décrivez vos motivations..."></textarea>
-          </div>
+        @if (currentStep === 4) {
+          <h3>Documents supplémentaires</h3>
+
+          @if (!formulaireId) {
+            <div class="error-message">
+              Veuillez d'abord sauvegarder votre dossier avant d'ajouter vos documents.
+            </div>
+          }
+
+          @for (docType of documentTypes; track docType.key) {
+            <div class="form-group">
+              <label>{{ docType.label }}</label>
+              <div class="file-field">
+                <input type="file" accept=".pdf,.jpg,.jpeg,.png" (change)="onFileSelected($event, docType.key)" [disabled]="!formulaireId" />
+                <span class="file-name">{{ getDisplayFileName(docType.key) }}</span>
+              </div>
+            </div>
+          }
         }
 
         @if (successMessage) {

@@ -37,9 +37,6 @@ public class FormulaireInscription {
     @Column(name = "programme_choisi")
     private String programmeChoisi;
 
-    @Column(columnDefinition = "TEXT")
-    private String motivations;
-
     @Column(name = "date_creation")
     private LocalDateTime dateCreation;
 

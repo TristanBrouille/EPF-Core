@@ -1,12 +1,11 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { loginService } from '../login/loginService';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormulaireService } from '../formulaire-inscription/formulaireService';
 
 @Component({
   selector: 'app-candidat',
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './candidat.html',
   styleUrl: './candidat.scss',
 })
@@ -18,6 +17,7 @@ export class Candidat implements OnInit {
   constructor(
     private authService: loginService,
     private formulaireService: FormulaireService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -40,6 +40,18 @@ export class Candidat implements OnInit {
       if (error.status === 404) {
         this.hasFormulaire = false;
       }
+    }
+  }
+
+  async createFormulaire(): Promise<void> {
+    try {
+      await this.formulaireService.create({});
+      this.hasFormulaire = true;
+      await this.router.navigate(['/formulaire-inscription']);
+    } catch (error) {
+      this.errorMessage = 'Impossible de créer le dossier de candidature';
+      console.error('Erreur lors de la création du dossier', error);
+      this.cdr.detectChanges();
     }
   }
 

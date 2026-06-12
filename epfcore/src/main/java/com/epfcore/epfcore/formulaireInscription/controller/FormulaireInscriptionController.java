@@ -50,8 +50,8 @@ public class FormulaireInscriptionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        formulaireService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
+        formulaireService.delete(id, authentication);
         return ResponseEntity.noContent().build();
     }
 }
