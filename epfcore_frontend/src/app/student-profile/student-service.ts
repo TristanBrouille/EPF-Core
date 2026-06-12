@@ -10,7 +10,7 @@ import { Student } from '../model/student';
 export class StudentService {
 
   private baseUrl = 'http://localhost:8080/api/students';
-  private documentUrl = 'http://localhost:8080/api/documents';
+  private documentUrl = 'http://localhost:8080/api/document_student';
 
   constructor(private http: HttpClient) { }
 

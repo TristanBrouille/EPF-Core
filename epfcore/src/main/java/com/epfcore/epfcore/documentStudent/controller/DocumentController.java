@@ -1,4 +1,4 @@
-package com.epfcore.epfcore.document.controller;
+package com.epfcore.epfcore.documentStudent.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.epfcore.epfcore.document.entity.Document;
-import com.epfcore.epfcore.document.service.DocumentService;
-import com.epfcore.epfcore.document.service.GenerationCertificateService;
-import com.epfcore.epfcore.document.service.GenerationPdfService;
+import com.epfcore.epfcore.documentStudent.entity.DocumentStudent;
+import com.epfcore.epfcore.documentStudent.service.DocumentStudentService;
+import com.epfcore.epfcore.documentStudent.service.GenerationCertificateService;
+import com.epfcore.epfcore.documentStudent.service.GenerationPdfService;
 
 @RestController
-@RequestMapping("/api/documents")
+@RequestMapping("/api/document_student")
 public class DocumentController {
 
-    private final DocumentService documentService;
+    private final DocumentStudentService documentService;
     private final GenerationCertificateService generationCertificateService;
     private final GenerationPdfService generationPdfService;
  
-    public DocumentController(DocumentService documentService, GenerationCertificateService generationCertificateService,
+    public DocumentController(DocumentStudentService documentService, GenerationCertificateService generationCertificateService,
                                GenerationPdfService generationPdfService) {
         this.documentService = documentService;
         this.generationCertificateService = generationCertificateService;
@@ -34,27 +34,27 @@ public class DocumentController {
     }
  
     @GetMapping
-    public ResponseEntity<List<Document>> getAll() {
+    public ResponseEntity<List<DocumentStudent>> getAll() {
         return ResponseEntity.ok(documentService.getAll());
     }
  
     @GetMapping("/{id}")
-    public ResponseEntity<Document> getById(@PathVariable Integer id) {
+    public ResponseEntity<DocumentStudent> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(documentService.getById(id));
     }
  
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Document>> getByUserId(@PathVariable Integer userId) {
+    public ResponseEntity<List<DocumentStudent>> getByUserId(@PathVariable Integer userId) {
         return ResponseEntity.ok(documentService.getByUserId(userId));
     }
  
     @PostMapping
-    public ResponseEntity<Document> create(@RequestBody Document document) {
+    public ResponseEntity<DocumentStudent> create(@RequestBody DocumentStudent document) {
         return ResponseEntity.status(HttpStatus.CREATED).body(documentService.create(document));
     }
  
     @PutMapping("/{id}")
-    public ResponseEntity<Document> update(@PathVariable Integer id, @RequestBody Document document) {
+    public ResponseEntity<DocumentStudent> update(@PathVariable Integer id, @RequestBody DocumentStudent document) {
         return ResponseEntity.ok(documentService.update(id, document));
     }
  

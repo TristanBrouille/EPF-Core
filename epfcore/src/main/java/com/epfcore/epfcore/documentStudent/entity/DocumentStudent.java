@@ -1,19 +1,15 @@
-package com.epfcore.epfcore.document.entity;
+package com.epfcore.epfcore.documentStudent.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "document")
-public class Document {
+@Table(name = "document_student")
+public class DocumentStudent {
 
-    public enum DocumentType {
-        CERTIFICATE, INFOS
-    }
+    public static final String DocumentType = null;
 
-    public enum DocumentStatus {
-        PENDING, IN_PROGRESS, APPROVED, REJECTED
-    }
+    public static final String DocumentStatus = null;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +35,7 @@ public class Document {
     @Column(name = "file_url", columnDefinition = "TEXT")
     private String fileUrl;
 
-    public Document() {
+    public DocumentStudent() {
     }
 
     public Integer getId() {
@@ -97,6 +93,4 @@ public class Document {
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
     }
-
-    
 }

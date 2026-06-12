@@ -1,4 +1,4 @@
-package com.epfcore.epfcore.document.service;
+package com.epfcore.epfcore.documentStudent.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,20 +7,22 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import com.epfcore.epfcore.document.entity.Document;
-import com.epfcore.epfcore.document.repository.DocumentRepository;
+import com.epfcore.epfcore.documentStudent.entity.DocumentStudent;
+import com.epfcore.epfcore.documentStudent.repository.DocumentStudentRepository;
 import com.epfcore.epfcore.student.entity.Student;
 import com.epfcore.epfcore.student.repository.StudentRepository;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import java.io.ByteArrayOutputStream;
+import com.epfcore.epfcore.documentStudent.entity.DocumentType;
+import com.epfcore.epfcore.documentStudent.entity.DocumentStatus;
 
 @Service
 public class GenerationPdfService {
 
-    private final DocumentRepository documentRepository;
+    private final DocumentStudentRepository documentRepository;
     private final StudentRepository studentRepository;
 
-    public GenerationPdfService(DocumentRepository documentRepository,
+    public GenerationPdfService(DocumentStudentRepository documentRepository,
             StudentRepository studentRepository) {
         this.documentRepository = documentRepository;
         this.studentRepository = studentRepository;
@@ -32,9 +34,9 @@ public class GenerationPdfService {
 
         Integer userId = Math.toIntExact(student.getUser().getId());
 
-        List<Document> existing = documentRepository.findByUserId(userId);
-        Optional<Document> existingInfos = existing.stream()
-                .filter(d -> d.getDocumentType() == Document.DocumentType.INFOS)
+        List<DocumentStudent> existing = documentRepository.findByUserId(userId);
+        Optional<DocumentStudent> existingInfos = existing.stream()
+                .filter(d -> d.getDocumentType() == DocumentType.INFOS)
                 .findFirst();
 
         if (existingInfos.isPresent()) {
@@ -47,10 +49,10 @@ public class GenerationPdfService {
 
         byte[] pdf = generateStudentPdfInfosHtml(student);
 
-        Document document = new Document();
+        DocumentStudent document = new DocumentStudent();
         document.setUserId(userId);
-        document.setDocumentType(Document.DocumentType.INFOS);
-        document.setStatus(Document.DocumentStatus.APPROVED);
+        document.setDocumentType(DocumentType.INFOS);
+        document.setStatus(DocumentStatus.APPROVED);
         document.setCreationDate(LocalDateTime.now());
         document.setProcessingDate(LocalDateTime.now());
         document.setFileUrl(Base64.getEncoder().encodeToString(pdf));

@@ -1,4 +1,4 @@
-export interface Document {
+export interface DocumentStudent {
     id: number;
     userId: number;
     documentType: DocumentType;

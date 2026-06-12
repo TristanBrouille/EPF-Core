@@ -1,48 +1,48 @@
-package com.epfcore.epfcore.document.service;
+package com.epfcore.epfcore.documentStudent.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.epfcore.epfcore.document.entity.Document;
-import com.epfcore.epfcore.document.repository.DocumentRepository;
+import com.epfcore.epfcore.documentStudent.entity.DocumentStudent;
+import com.epfcore.epfcore.documentStudent.repository.DocumentStudentRepository;
 
 @Service
-public class DocumentService {
+public class DocumentStudentService {
 
-    private final DocumentRepository documentRepository;
+    private final DocumentStudentRepository documentRepository;
  
-    public DocumentService(DocumentRepository documentRepository) {
+    public DocumentStudentService(DocumentStudentRepository documentRepository) {
         this.documentRepository = documentRepository;
     }
  
-    public List<Document> getAll() {
+    public List<DocumentStudent> getAll() {
         return documentRepository.findAll();
     }
  
-    public Document getById(Integer id) {
+    public DocumentStudent getById(Integer id) {
         return documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found with id: " + id));
     }
  
-    public List<Document> getByUserId(Integer userId) {
+    public List<DocumentStudent> getByUserId(Integer userId) {
         return documentRepository.findByUserId(userId);
     }
 
-    public List<Document> getByStatus(Document status) {
+    public List<DocumentStudent> getByStatus(DocumentStudent status) {
         return documentRepository.findByStatus(status);
     }
 
-    public List<Document> getByUserIdAndStatus(Integer userId, Document status) {
+    public List<DocumentStudent> getByUserIdAndStatus(Integer userId, DocumentStudent status) {
         return documentRepository.findByUserIdAndStatus(userId, status);
     }
  
-    public Document create(Document document) {
+    public DocumentStudent create(DocumentStudent document) {
         document.setCreationDate(LocalDateTime.now());
         return documentRepository.save(document);
     }
  
-    public Document update(Integer id, Document updated) {
-        Document existing = getById(id);
+    public DocumentStudent update(Integer id, DocumentStudent updated) {
+        DocumentStudent existing = getById(id);
         existing.setDocumentType(updated.getDocumentType());
         return documentRepository.save(existing);
     }

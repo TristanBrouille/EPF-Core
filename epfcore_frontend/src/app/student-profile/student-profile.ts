@@ -90,7 +90,7 @@ export class StudentProfile implements OnInit {
   }
 
   goToHistory() {
-    this.router.navigate(['/history']);
+    this.router.navigate(['/history-student']);
   }
 
 

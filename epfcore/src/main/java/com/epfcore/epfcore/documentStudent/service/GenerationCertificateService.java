@@ -1,7 +1,7 @@
-package com.epfcore.epfcore.document.service;
+package com.epfcore.epfcore.documentStudent.service;
 
-import com.epfcore.epfcore.document.entity.Document;
-import com.epfcore.epfcore.document.repository.DocumentRepository;
+import com.epfcore.epfcore.documentStudent.entity.DocumentStudent;
+import com.epfcore.epfcore.documentStudent.repository.DocumentStudentRepository;
 import com.epfcore.epfcore.student.entity.Student;
 import com.epfcore.epfcore.student.repository.StudentRepository;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
@@ -14,14 +14,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import com.epfcore.epfcore.documentStudent.entity.DocumentType;
+import com.epfcore.epfcore.documentStudent.entity.DocumentStatus;
 
 @Service
 public class GenerationCertificateService {
 
-    private final DocumentRepository documentRepository;
+    private final DocumentStudentRepository documentRepository;
     private final StudentRepository studentRepository;
 
-    public GenerationCertificateService(DocumentRepository documentRepository,
+    public GenerationCertificateService(DocumentStudentRepository documentRepository,
             StudentRepository studentRepository) {
         this.documentRepository = documentRepository;
         this.studentRepository = studentRepository;
@@ -33,25 +35,30 @@ public class GenerationCertificateService {
 
         Integer userId = Math.toIntExact(student.getUser().getId());
 
-        List<Document> existing = documentRepository.findByUserId(userId);
-        Optional<Document> existingCertificate = existing.stream()
-                .filter(d -> d.getDocumentType() == Document.DocumentType.CERTIFICATE)
+        List<DocumentStudent> existing = documentRepository.findByUserId(userId);
+        Optional<DocumentStudent> existingCertificate = existing.stream()
+                .filter(d -> d.getDocumentType() == DocumentType.CERTIFICATE)
                 .findFirst();
+
+        // if (existingCertificate.isPresent()) {
+        // String fileData = existingCertificate.get().getFileUrl();
+        // if (fileData != null) {
+        // return Base64.getDecoder().decode(fileData);
+        // }
+        // return generateStudentCertificateHtml(student);
+        // }
 
         if (existingCertificate.isPresent()) {
             String fileData = existingCertificate.get().getFileUrl();
-            if (fileData != null) {
-                return Base64.getDecoder().decode(fileData);
-            }
-            return generateStudentCertificateHtml(student);
+            return fileData != null ? Base64.getDecoder().decode(fileData) : generateStudentCertificateHtml(student);
         }
 
         byte[] pdf = generateStudentCertificateHtml(student);
 
-        Document document = new Document();
+        DocumentStudent document = new DocumentStudent();
         document.setUserId(userId);
-        document.setDocumentType(Document.DocumentType.CERTIFICATE);
-        document.setStatus(Document.DocumentStatus.APPROVED);
+        document.setDocumentType(DocumentType.CERTIFICATE);
+        document.setStatus(DocumentStatus.APPROVED);
         document.setCreationDate(LocalDateTime.now());
         document.setProcessingDate(LocalDateTime.now());
         document.setFileUrl(Base64.getEncoder().encodeToString(pdf));
@@ -218,7 +225,6 @@ public class GenerationCertificateService {
                         major,
                         campus, dateComplete,
                         signatureBase64);
-
     }
 
     private String loadImageAsBase64(String path, String label) {
@@ -230,5 +236,4 @@ public class GenerationCertificateService {
             throw new RuntimeException("Image introuvable : " + path + " (" + label + ")", e);
         }
     }
-
 }

@@ -1,18 +1,18 @@
 import { Component, OnInit, Inject, signal } from '@angular/core';
-import { Document } from '../model/document';
-import { DocumentService } from './document.service';
+import { DocumentStudent } from '../model/documentStudent';
+import { DocumentStudentService } from './documentstudent.service';
 import { StudentService } from '../student-profile/student-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {Student } from '../model/student';
+import { Student } from '../model/student';
 
 @Component({
   selector: 'app-history',
   imports: [CommonModule, FormsModule],
-  templateUrl: './history.html',
-  styleUrl: './history.scss',
+  templateUrl: './history-student.html',
+  styleUrl: './history-student.scss',
 })
-export class History implements OnInit {
+export class HistoryStudent implements OnInit {
 
   searchTerm = '';
   filterStatus = '';
@@ -20,11 +20,11 @@ export class History implements OnInit {
   student: Student | null = null;
 
   constructor(
-  @Inject(DocumentService) private documentService: DocumentService,
-  @Inject(StudentService) private studentService: StudentService
-) { }
+    @Inject(DocumentStudentService) private documentService: DocumentStudentService,
+    @Inject(StudentService) private studentService: StudentService
+  ) { }
 
-  requests = signal<Document[]>([]);
+  requests = signal<DocumentStudent[]>([]);
 
   ngOnInit(): void {
     this.studentService.getCurrentStudent().then(student => {
@@ -35,7 +35,7 @@ export class History implements OnInit {
     });
   }
 
-  filteredRequests(): Document[] {
+  filteredRequests(): DocumentStudent[] {
     return this.requests().filter(r => {
       const matchSearch = !this.searchTerm ||
         r.documentType.toLowerCase().includes(this.searchTerm.toLowerCase());
