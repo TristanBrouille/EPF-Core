@@ -14,3 +14,8 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  config:
+    import: optional:classpath:env.properties
+
+recaptcha:
+  secret: ${RECAPTCHA_SECRET}

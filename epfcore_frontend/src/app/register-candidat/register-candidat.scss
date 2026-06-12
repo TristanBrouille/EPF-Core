@@ -65,5 +65,10 @@
       text-align: center;
       margin-bottom: 1rem;
     }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
   }
 }
