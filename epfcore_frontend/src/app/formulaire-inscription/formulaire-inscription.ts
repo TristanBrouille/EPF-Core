@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Formulaire } from '../model/formulaire';
 import { FormulaireService } from './formulaireService';
 import { DocumentService } from './documentService';
@@ -45,7 +45,8 @@ export class FormulaireInscription implements OnInit {
     private fb: FormBuilder,
     private formulaireService: FormulaireService,
     private documentService: DocumentService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -174,7 +175,18 @@ export class FormulaireInscription implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
-    const formulaire: Formulaire = this.formulaireForm.value;
+    await this.save(false);
+  }
+
+  async onSubmitFinal(): Promise<void> {
+    const saved = await this.save(true);
+    if (saved) {
+      await this.router.navigate(['/candidat']);
+    }
+  }
+
+  private async save(soumis: boolean): Promise<boolean> {
+    const formulaire: Formulaire = { ...this.formulaireForm.value, soumis };
 
     try {
       if (this.isExisting) {
@@ -190,10 +202,12 @@ export class FormulaireInscription implements OnInit {
       this.successMessage = 'Dossier sauvegardé avec succès !';
       this.errorMessage = '';
       this.cdr.detectChanges();
+      return true;
     } catch (error) {
       this.errorMessage = 'Une erreur est survenue lors de la sauvegarde';
       this.successMessage = '';
       console.error(error);
+      return false;
     }
   }
 

@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { loginService } from '../login/loginService';
 import { Router, RouterLink } from '@angular/router';
 import { FormulaireService } from '../formulaire-inscription/formulaireService';
+import { Formulaire } from '../model/formulaire';
 
 @Component({
   selector: 'app-candidat',
@@ -12,6 +13,7 @@ import { FormulaireService } from '../formulaire-inscription/formulaireService';
 export class Candidat implements OnInit {
   user: any = null;
   hasFormulaire: boolean = false;
+  formulaire: Formulaire | null = null;
   errorMessage: string = '';
 
   constructor(
@@ -34,8 +36,11 @@ export class Candidat implements OnInit {
 
   async checkFormulaire(): Promise<void> {
     try {
-      await this.formulaireService.getMyFormulaire();
+      this.formulaire = await this.formulaireService.getMyFormulaire();
       this.hasFormulaire = true;
+      if (this.formulaire.soumis) {
+        this.currentStep = 2;
+      }
     } catch (error: any) {
       if (error.status === 404) {
         this.hasFormulaire = false;
@@ -56,13 +61,17 @@ export class Candidat implements OnInit {
   }
 
   steps = [
-    { id: 1, label: 'Inscription' },
-    { id: 2, label: 'Documents' },
-    { id: 3, label: 'Vérification' },
+    { id: 1, label: 'Formulaire de candidature' },
+    { id: 2, label: 'Entretien' },
+    { id: 3, label: 'Décision du jury' },
     { id: 4, label: 'Validation' },
   ];
 
   currentStep: number = 1;
+
+  get isSoumis(): boolean {
+    return !!this.formulaire?.soumis;
+  }
 
   get progressPercent(): number {
     return ((this.currentStep - 1) / (this.steps.length - 1)) * 100;
@@ -70,10 +79,10 @@ export class Candidat implements OnInit {
 
   get currentStepMessage(): string {
     const messages: { [key: number]: string } = {
-      1: 'Votre inscription est en cours.',
-      2: 'En attente de vos documents.',
-      3: 'Vos documents sont en cours de vérification.',
-      4: 'Votre dossier a été validé !',
+      1: 'Remplissage et soumission du dossier de candidature.',
+      2: 'Un entretien sera prévu bientôt.',
+      3: 'Le jury est en concertation pour votre dossier.',
+      4: 'Vous avez rçue une réponse par mail du jury',
     };
     return messages[this.currentStep] ?? '';
   }
