@@ -204,7 +204,7 @@
               Suivant →
             </button>
           } @else {
-            <button type="submit" form="formulaireForm" class="btn-red" [disabled]="!isFormComplete">
+            <button type="button" class="btn-red" [disabled]="!isFormComplete" (click)="onSubmitFinal()">
               Soumettre
             </button>
           }
