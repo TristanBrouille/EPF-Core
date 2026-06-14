@@ -2,76 +2,262 @@
 
 .formulaire-page {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   min-height: 100vh;
-  padding: 4rem 1rem;
+  padding: 4rem 1rem 2rem;
+  position: relative;
 
-  .formulaire-container {
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba($black, 0.1);
+  background-size: cover;
+  background-attachment: fixed;
+
+  .formulaire-recap-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 260px;
+    flex-shrink: 0;
+
+    .btn-retour {
+      width: 100%;
+    }
+  }
+
+  .formulaire-layout {
+    display: flex;
+    gap: 2rem;
     width: 100%;
-    max-width: 700px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 1100px;
+    align-items: flex-start;
 
-    h1 {
-      color: $epf-red;
-      margin-bottom: 2rem;
-    }
 
-    h3 {
-      color: $epf-purple;
-      margin-top: 1.5rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid rgba($epf-purple, 0.3);
-      padding-bottom: 0.5rem;
-    }
+    .formulaire-recap {
+      width: 260px;
+      flex-shrink: 0;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: sticky;
+      top: 2rem;
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1.5rem;
-
-      label {
-        margin-bottom: 0.5rem;
-        font-weight: 500;
+      h3 {
+        color: $epf-red;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-size: 1.1rem;
+        border-bottom: 1px solid rgba($epf-red, 0.3);
+        padding-bottom: 0.5rem;
       }
 
-      input, textarea {
-        padding: 0.5rem 0.75rem;
-        border: 1px solid $gray-dark;
-        border-radius: 4px;
-        font-size: 1rem;
-        outline: none;
-        background: rgba(255, 255, 255, 0.7);
+      .recap-global {
+        margin-bottom: 2rem;
 
-        &:focus {
-          border-color: $epf-purple;
+        .recap-global-label {
+          font-size: 0.85rem;
+          margin-bottom: 0.4rem;
+          text-align: center;
+          font-weight: 500;
+        }
+
+        .recap-progress-bar {
+          height: 10px;
+          border-radius: 5px;
+          background: rgba($gray-dark, 0.2);
+          overflow: hidden;
+
+          .recap-progress-fill {
+            height: 100%;
+            background: $epf-red;
+            border-radius: 5px;
+            transition: width 0.4s ease;
+          }
+        }
+      }
+
+      .recap-section {
+        margin-bottom: 1.2rem;
+
+        h4 {
+          color: $gray-dark;
+          font-size: 0.9rem;
+          margin-bottom: 0.4rem;
+          padding: 0.3rem 0.5rem;
+          border-radius: 4px;
+          transition: all 0.3s;
+
+          &.active {
+            color: $epf-red;
+            background: rgba($epf-red, 0.1);
+          }
+
+          &.done {
+            color: $epf-purple;
+            background: rgba($epf-purple, 0.1);
+          }
+        }
+
+        .recap-mini-bar {
+          height: 6px;
+          border-radius: 3px;
+          background: rgba($gray-dark, 0.2);
+          overflow: hidden;
+
+          .recap-mini-fill {
+            height: 100%;
+            background: $epf-purple;
+            border-radius: 3px;
+            transition: width 0.4s ease;
+          }
+        }
+
+        p {
+          font-size: 0.8rem;
+          margin: 0.2rem 0 0.2rem 0.5rem;
+          color: $gray-dark;
+          word-break: break-word;
         }
       }
     }
 
-    button {
-      width: 100%;
-      margin-top: 1rem;
-    }
+    .formulaire-container {
+      flex: 1;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba($black, 0.1);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
 
-    .success-message {
-      margin-top: 1rem;
-      color: green;
-      text-align: center;
-      margin-bottom: 1rem;
-    }
+      h1 {
+        color: $epf-red;
+        margin-bottom: 2rem;
+      }
 
-    .error-message {
-      margin-top: 1rem;
-      color: $epf-red;
-      text-align: center;
-      margin-bottom: 1rem;
+      h3 {
+        color: $epf-purple;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid rgba($epf-purple, 0.3);
+        padding-bottom: 0.5rem;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+
+        label {
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+        }
+
+        input, textarea, select {
+          padding: 0.5rem 0.75rem;
+          border: 1px solid $gray-dark;
+          border-radius: 4px;
+          font-size: 1rem;
+          outline: none;
+          background: rgba(255, 255, 255, 0.7);
+          width: 100%;
+
+          &:focus {
+            border-color: $epf-purple;
+          }
+        }
+
+        .file-field {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.5rem 0.75rem;
+          border: 1px solid $gray-dark;
+          border-radius: 4px;
+          background: rgba(255, 255, 255, 0.7);
+
+          input[type="file"] {
+            border: none;
+            background: transparent;
+            padding: 0;
+            width: auto;
+            font-size: 0;
+            color: transparent;
+
+            &::file-selector-button,
+            &::-webkit-file-upload-button {
+              font-size: 0.9rem;
+              color: $gray-dark;
+              padding: 0.4rem 1rem;
+              border: 1px solid $gray-dark;
+              border-radius: 4px;
+              background: rgba(255, 255, 255, 0.9);
+              cursor: pointer;
+            }
+
+            &:focus {
+              outline: none;
+            }
+          }
+
+          .file-name {
+            font-size: 0.9rem;
+            color: $gray-dark;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .error {
+          color: $epf-red;
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
+        }
+
+        .info-message {
+          color: #6b7280;
+          font-size: 0.8125rem;
+          margin: 0 0 0.25rem;
+        }
+      }
+
+      .form-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+
+        button {
+          width: auto;
+          padding: 0.5rem 1.5rem;
+
+          &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      .success-message {
+        margin-top: 1rem;
+        color: green;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .error-message {
+        margin-top: 1rem;
+        color: $epf-red;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
     }
   }
 }

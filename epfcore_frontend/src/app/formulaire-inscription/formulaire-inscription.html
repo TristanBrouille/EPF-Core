@@ -1,66 +1,216 @@
-<div class="formulaire-page position-relative">
-  <button type="button" class="btn-red m-3" routerLink="/candidat">
-    ← Retour
-  </button>
+<div class="formulaire-page">
 
-  <div class="formulaire-container" >
-    <h1 class="text-center">Dossier de candidature</h1>
 
-    <form [formGroup]="formulaireForm" (ngSubmit)="onSubmit()">
+  <div class="formulaire-layout">
 
-      <h3>Parcours académique</h3>
-
-      <div class="form-group">
-        <label>Dernier diplôme</label>
-        <input type="text" formControlName="dernierDiplome" placeholder="Ex: Baccalauréat Scientifique" />
-      </div>
-
-      <div class="form-group">
-        <label>Établissement</label>
-        <input type="text" formControlName="etablissement" placeholder="Ex: Lycée Louis le Grand" />
-      </div>
-
-      <div class="form-group">
-        <label>Niveau d'étude</label>
-        <input type="text" formControlName="niveauEtude" placeholder="Ex: Bac+2" />
-      </div>
-
-      <div class="form-group">
-        <label>Année d'obtention</label>
-        <input type="number" formControlName="anneeObtention" placeholder="Ex: 2023" />
-      </div>
-
-      <h3>Choix programme / campus</h3>
-
-      <div class="form-group">
-        <label>Programme choisi</label>
-        <input type="text" formControlName="programmeChoisi" placeholder="Ex: Cycle Ingénieur" />
-      </div>
-
-      <div class="form-group">
-        <label>Campus choisi</label>
-        <input type="text" formControlName="campusChoisi" placeholder="Ex: Cachan" />
-      </div>
-
-      <h3>Motivations</h3>
-
-      <div class="form-group">
-        <label>Lettre de motivation</label>
-        <textarea formControlName="motivations" rows="6" placeholder="Décrivez vos motivations..."></textarea>
-      </div>
-
-      @if (successMessage) {
-        <div class="success-message">{{ successMessage }}</div>
-      }
-
-      @if (errorMessage) {
-        <div class="error-message">{{ errorMessage }}</div>
-      }
-
-      <button type="submit" class="btn-red">
-        {{ isExisting ? 'Mettre à jour' : 'Sauvegarder' }}
+    <div class="formulaire-recap-wrapper">
+      <button type="button" class="btn-red btn-retour" routerLink="/candidat">
+        ← Retour
       </button>
+      <!-- Récapitulatif gauche -->
+      <div class="formulaire-recap">
 
-    </form>
+        <h3>Récapitulatif</h3>
+
+        <!-- Progression globale -->
+        <div class="recap-global">
+          <p class="recap-global-label">Complétion globale</p>
+          <div class="recap-progress-bar">
+            <div class="recap-progress-fill" [style.width.%]="completionTotal"></div>
+          </div>
+        </div>
+
+        <!-- Section 1 -->
+        <div class="recap-section">
+          <h4 [class.active]="currentStep === 1" [class.done]="completionStep1 === 100">
+            {{ completionStep1 === 100 ? '✓' : '1' }} Infos complémentaires
+          </h4>
+          <div class="recap-mini-bar">
+            <div class="recap-mini-fill" [style.width.%]="completionStep1"></div>
+          </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="recap-section">
+          <h4 [class.active]="currentStep === 2" [class.done]="completionStep2 === 100">
+            {{ completionStep2 === 100 ? '✓' : '2' }} Dernières études
+          </h4>
+          <div class="recap-mini-bar">
+            <div class="recap-mini-fill" [style.width.%]="completionStep2"></div>
+          </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="recap-section">
+          <h4 [class.active]="currentStep === 3" [class.done]="completionStep3 === 100">
+            {{ completionStep3 === 100 ? '✓' : '3' }} Choix de parcours
+          </h4>
+          <div class="recap-mini-bar">
+            <div class="recap-mini-fill" [style.width.%]="completionStep3"></div>
+          </div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="recap-section">
+          <h4 [class.active]="currentStep === 4" [class.done]="completionStep4 === 100">
+            {{ completionStep4 === 100 ? '✓' : '4' }} Documents supplémentaires
+          </h4>
+          <div class="recap-mini-bar">
+            <div class="recap-mini-fill" [style.width.%]="completionStep4"></div>
+          </div>
+        </div>
+
+        <button type="submit" form="formulaireForm" class="btn-red">
+          {{ 'Sauvegarder' }}
+        </button>
+      </div>
+    </div>
+    <!-- Formulaire droite -->
+    <div class="formulaire-container">
+      <h1 class="text-center">Dossier de candidature</h1>
+
+      <form [formGroup]="formulaireForm" (ngSubmit)="onSubmit()" id="formulaireForm">
+
+        @if (currentStep === 1) {
+          <h3>Informations complémentaires</h3>
+
+          <div class="form-group">
+            <label>Genre</label>
+            <select formControlName="genre">
+              <option value="">-- Sélectionner --</option>
+              <option value="Homme">Homme</option>
+              <option value="Femme">Femme</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="tel" formControlName="telephone" placeholder="Ex: 0612345678" />
+            @if (formulaireForm.get('telephone')?.invalid && formulaireForm.get('telephone')?.touched) {
+              <div class="error">Le téléphone est obligatoire et doit contenir 10 chiffres</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Nationalité</label>
+            <input type="text" formControlName="nationalite" placeholder="Ex: Française" />
+          </div>
+
+          <div class="form-group">
+            <label>Adresse</label>
+            <input type="text" formControlName="adresse" placeholder="Ex: 12 rue de la Paix, Paris" />
+          </div>
+        }
+
+        @if (currentStep === 2) {
+          <h3>Dernières études</h3>
+
+          <div class="form-group">
+            <label>Dernier diplôme</label>
+            <input type="text" formControlName="dernierDiplome" placeholder="Ex: Baccalauréat Scientifique" />
+          </div>
+
+          <div class="form-group">
+            <label>Établissement</label>
+            <input type="text" formControlName="etablissement" placeholder="Ex: Lycée Louis le Grand" />
+          </div>
+
+          <div class="form-group">
+            <label>Année d'obtention</label>
+            <select formControlName="anneeObtention">
+              <option [ngValue]="null">-- Sélectionner --</option>
+              @for (year of obtentionYears; track year) {
+                <option [ngValue]="year">{{ year }}</option>
+              }
+            </select>
+          </div>
+        }
+
+        @if (currentStep === 3) {
+          <h3>Choix de parcours</h3>
+
+          <div class="form-group">
+            <label>Programme choisi</label>
+            <input type="text" formControlName="programmeChoisi" placeholder="Ex: Cycle Ingénieur" />
+          </div>
+
+          <div class="form-group">
+            <label>Campus</label>
+            <select formControlName="campusVille">
+              <option value="">-- Sélectionner --</option>
+              <option value="Cachan">Cachan</option>
+              <option value="Montpellier">Montpellier</option>
+              <option value="Troyes">Troyes</option>
+              <option value="Saint-Nazaire">Saint-Nazaire</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Année d'intégration</label>
+            <select formControlName="anneeIntegration">
+              <option value="">-- Sélectionner --</option>
+              <option value="1">1ère année</option>
+              <option value="2">2ème année</option>
+              <option value="3">3ème année</option>
+              <option value="4">4ème année</option>
+              <option value="5">5ème année</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Majeur</label>
+            <p class="info-message">Ce champ est obligatoire uniquement pour les 4ème et 5ème années</p>
+            <input type="text" formControlName="majeur" placeholder="Ex: Informatique" />
+            @if (formulaireForm.get('majeur')?.invalid && formulaireForm.get('majeur')?.touched) {
+              <div class="error">Le majeur est obligatoire</div>
+            }
+          </div>
+        }
+
+        @if (currentStep === 4) {
+          <h3>Documents supplémentaires</h3>
+
+          @if (!formulaireId) {
+            <div class="error-message">
+              Veuillez d'abord sauvegarder votre dossier avant d'ajouter vos documents.
+            </div>
+          }
+
+          @for (docType of documentTypes; track docType.key) {
+            <div class="form-group">
+              <label>{{ docType.label }}</label>
+              <div class="file-field">
+                <input type="file" accept=".pdf,.jpg,.jpeg,.png" (change)="onFileSelected($event, docType.key)" [disabled]="!formulaireId" />
+                <span class="file-name">{{ getDisplayFileName(docType.key) }}</span>
+              </div>
+            </div>
+          }
+        }
+
+        @if (successMessage) {
+          <div class="success-message">{{ successMessage }}</div>
+        }
+
+        @if (errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
+
+        <div class="form-navigation">
+          <button type="button" class="btn-red" (click)="prevStep()" [disabled]="currentStep === 1">
+            ← Précédent
+          </button>
+          @if (currentStep < totalSteps) {
+            <button type="button" class="btn-red" (click)="nextStep()">
+              Suivant →
+            </button>
+          } @else {
+            <button type="submit" form="formulaireForm" class="btn-red" [disabled]="!isFormComplete">
+              Soumettre
+            </button>
+          }
+        </div>
+
+      </form>
+    </div>
   </div>
 </div>

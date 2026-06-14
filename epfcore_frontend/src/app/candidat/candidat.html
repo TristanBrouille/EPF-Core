@@ -9,7 +9,7 @@
         <p><strong>Date de naissance :</strong> {{ user.birthday }}</p>
 
         @if (!hasFormulaire) {
-          <button class="btn-red mt-3" routerLink="/formulaire-inscription">
+          <button class="btn-red mt-3" (click)="createFormulaire()">
             Créer mon dossier de candidature
           </button>
         } @else {

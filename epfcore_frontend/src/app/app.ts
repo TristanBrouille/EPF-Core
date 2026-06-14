@@ -15,6 +15,8 @@ import {filter} from 'rxjs';
 })
 export class App {
   protected showLayout = true;
+  protected showSidebar = true;
+
   constructor(private router: Router) {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -22,6 +24,10 @@ export class App {
         this.showLayout =
           event.urlAfterRedirects !== '/login' &&
           event.urlAfterRedirects !== '/register-candidat';
+
+        this.showSidebar =
+          event.urlAfterRedirects !== '/candidat' &&
+          event.urlAfterRedirects !== '/formulaire-inscription';
       });
   }
 
