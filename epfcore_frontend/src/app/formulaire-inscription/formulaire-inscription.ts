@@ -29,6 +29,11 @@ export class FormulaireInscription implements OnInit {
   uploadedDocuments: Map<string, DocumentFormulaire> = new Map();
   selectedFiles: { [key: string]: File | null } = {};
 
+  readonly obtentionYears: number[] = Array.from(
+    { length: new Date().getFullYear() - 1900 + 1 },
+    (_, i) => new Date().getFullYear() - i
+  );
+
   readonly documentTypes: DocumentTypeDef[] = [
     { key: 'CV', label: 'CV' },
     { key: 'LETTRE_MOTIVATION', label: 'Lettre de motivation' },
@@ -47,7 +52,7 @@ export class FormulaireInscription implements OnInit {
     this.formulaireForm = this.fb.group({
 
       genre: [''],
-      telephone: [null],
+      telephone: [null, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       nationalite: [''],
       adresse: [''],
 
@@ -65,11 +70,15 @@ export class FormulaireInscription implements OnInit {
       this.selectedFiles[docType.key] = null;
     }
 
+    this.formulaireForm.get('anneeIntegration')?.valueChanges.subscribe(() => this.updateMajeurValidators());
+    this.updateMajeurValidators();
+
     try {
       const existing = await this.formulaireService.getMyFormulaire();
       this.isExisting = true;
       this.formulaireId = existing.id;
       this.formulaireForm.patchValue(existing);
+      this.updateMajeurValidators();
       await this.loadDocuments();
       this.cdr.detectChanges();
     } catch (error: any) {
@@ -77,6 +86,27 @@ export class FormulaireInscription implements OnInit {
         console.error(error);
       }
     }
+  }
+
+  get isMajeurRequired(): boolean {
+    const annee = Number(this.formulaireForm.get('anneeIntegration')?.value);
+    return annee === 4 || annee === 5;
+  }
+
+  private updateMajeurValidators(): void {
+    const majeurControl = this.formulaireForm.get('majeur');
+    if (!majeurControl) {
+      return;
+    }
+    if (this.isMajeurRequired) {
+      majeurControl.enable({ emitEvent: false });
+      majeurControl.setValidators([Validators.required]);
+    } else {
+      majeurControl.setValue('', { emitEvent: false });
+      majeurControl.disable({ emitEvent: false });
+      majeurControl.clearValidators();
+    }
+    majeurControl.updateValueAndValidity({ emitEvent: false });
   }
 
   private async loadDocuments(): Promise<void> {
@@ -167,9 +197,20 @@ export class FormulaireInscription implements OnInit {
     }
   }
 
+  private isFieldFilled(field: string): boolean {
+    const control = this.formulaireForm.get(field);
+    if (!control) {
+      return false;
+    }
+    if (control.disabled) {
+      return true;
+    }
+    return !!control.value && control.valid;
+  }
+
   get completionStep1(): number {
     const fields = ['genre', 'telephone', 'nationalite', 'adresse'];
-    const filled = fields.filter(f => this.formulaireForm.get(f)?.value).length;
+    const filled = fields.filter(f => this.isFieldFilled(f)).length;
     return Math.round((filled / fields.length) * 100);
   }
 
@@ -181,7 +222,7 @@ export class FormulaireInscription implements OnInit {
 
   get completionStep3(): number {
     const fields = ['programmeChoisi', 'campusVille', 'anneeIntegration', 'majeur'];
-    const filled = fields.filter(f => this.formulaireForm.get(f)?.value).length;
+    const filled = fields.filter(f => this.isFieldFilled(f)).length;
     return Math.round((filled / fields.length) * 100);
   }
 
@@ -200,7 +241,7 @@ export class FormulaireInscription implements OnInit {
       'dernierDiplome', 'etablissement', 'anneeObtention',
       'programmeChoisi', 'campusVille', 'anneeIntegration', 'majeur'
     ];
-    return fields.every(f => this.formulaireForm.get(f)?.value)
+    return fields.every(f => this.isFieldFilled(f))
       && this.documentTypes.every(d => this.isDocumentProvided(d.key));
   }
 }

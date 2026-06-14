@@ -87,7 +87,7 @@
             <label>Téléphone</label>
             <input type="tel" formControlName="telephone" placeholder="Ex: 0612345678" />
             @if (formulaireForm.get('telephone')?.invalid && formulaireForm.get('telephone')?.touched) {
-              <div class="error">Le téléphone doit contenir 10 chiffres</div>
+              <div class="error">Le téléphone est obligatoire et doit contenir 10 chiffres</div>
             }
           </div>
 
@@ -117,10 +117,12 @@
 
           <div class="form-group">
             <label>Année d'obtention</label>
-            <input type="number" formControlName="anneeObtention" min="1900" max="2100" />
-            @if (formulaireForm.get('anneeObtention')?.invalid && formulaireForm.get('anneeObtention')?.touched) {
-              <div class="error">L'année doit contenir 4 chiffres</div>
-            }
+            <select formControlName="anneeObtention">
+              <option [ngValue]="null">-- Sélectionner --</option>
+              @for (year of obtentionYears; track year) {
+                <option [ngValue]="year">{{ year }}</option>
+              }
+            </select>
           </div>
         }
 
@@ -147,17 +149,21 @@
             <label>Année d'intégration</label>
             <select formControlName="anneeIntegration">
               <option value="">-- Sélectionner --</option>
-              <option value="1">1A</option>
-              <option value="2">2A</option>
-              <option value="3">3A</option>
-              <option value="4">4A</option>
-              <option value="5">5A</option>
+              <option value="1">1ère année</option>
+              <option value="2">2ème année</option>
+              <option value="3">3ème année</option>
+              <option value="4">4ème année</option>
+              <option value="5">5ème année</option>
             </select>
           </div>
 
           <div class="form-group">
             <label>Majeur</label>
+            <p class="info-message">Ce champ est obligatoire uniquement pour les 4ème et 5ème années</p>
             <input type="text" formControlName="majeur" placeholder="Ex: Informatique" />
+            @if (formulaireForm.get('majeur')?.invalid && formulaireForm.get('majeur')?.touched) {
+              <div class="error">Le majeur est obligatoire</div>
+            }
           </div>
         }
 
