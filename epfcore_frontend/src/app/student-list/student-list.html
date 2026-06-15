@@ -1,0 +1,43 @@
+<div class="history-wrapper">
+  <h3 class="page-title">Liste des étudiants</h3>
+
+    <div class="filter-bar">
+      <input
+        type="text"
+        placeholder="Rechercher par nom, prénom ou email"
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+
+    <div class="table-card">
+      <table class="hist-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>email</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of filteredStudents; track s.id) {
+            <tr>
+              <td>{{ s.user.lastname }}</td>
+              <td>{{ s.user.firstname }}</td>
+              <td>{{ s.user.email }}</td>
+              <td>
+                <button (click)="goToStudent(s.id)" class="pdf-button">
+                  Voir le dossier
+                </button>
+              </td>
+            </tr>
+          }
+          @if (filteredStudents.length === 0) {
+            <tr>
+              <td colspan="3" class="empty-state">Aucun étudiant trouvé.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+</div>

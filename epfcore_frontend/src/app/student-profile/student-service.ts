@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Student } from '../model/student';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +12,18 @@ export class StudentService {
   private documentUrl = 'http://localhost:8080/api/document_student';
 
   constructor(private http: HttpClient) { }
+
+  getAll(): Promise<Student[]> {
+    return firstValueFrom(
+      this.http.get<Student[]>(`${this.baseUrl}`, { withCredentials: true })
+    );
+  }
+
+  getStudentById(id: number): Promise<Student> {
+    return firstValueFrom(
+      this.http.get<Student>(`${this.baseUrl}/${id}`, { withCredentials: true })
+    );
+  }
 
   getCurrentStudent(): Promise<Student> {
     return firstValueFrom(
