@@ -1,0 +1,37 @@
+<div class="w-50 mx-auto mt-4">
+<div class="mb-3">
+  <label for="nomSalle" class="form-label">Nom de votre salle</label>
+  <input type="text" class="form-control" id="nomSalle" [(ngModel)]="salle.nomSalle" placeholder="A201">
+</div>
+<div class="mb-3">
+  <label for="capacite" class="form-label">Capacité maximale de la salle</label>
+  <input type="number" class="form-control" id="capacite" [(ngModel)]="salle.capacite" placeholder="46">
+</div>
+<div class="mb-3">
+  <label for="equipement" class="form-label">Equipements de la salle</label>
+  <input type="texte" class="form-control" id="equipement" [(ngModel)]="salle.equipement">
+</div>
+<div class="mb-3">
+  <label for="campus">Campus</label>
+  <select id="campus" [(ngModel)]="salle.campus" class="form-control">
+    <option [value]="null" disabled selected>Choisir un campus</option>
+    
+    <option *ngFor="let c of campusList" [value]="c.id">
+      {{ c.ville }}
+    </option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label for="typeSalle">Type de salle</label>
+  <select id="typeSalle" [(ngModel)]="salle.typeSalle" class="form-control">
+    <option value="" disabled selected>Choisir un type de salle</option>
+    <option *ngFor="let t of typeSalleList" [value]="t">{{t}}</option>
+  </select>
+</div>
+
+
+<div class="d-grid gap-2 col-3 mx-auto">
+    <button class="btn btn-warning" (click)="saveSalle()" routerLink="/creerSalle">Ajouter/modifier</button>
+ </div>
+</div>

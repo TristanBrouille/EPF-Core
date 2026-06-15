@@ -48,7 +48,11 @@ public class SecurityConfig {
                         .logoutSuccessHandler((_, response, _) -> response.setStatus(HttpServletResponse.SC_OK))
                 )
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/login", "/register", "/candidats/register").permitAll()
+                        auth.requestMatchers("/login", "/register").permitAll()
+                            //Attention je pense que ce n'est pas bon mais je n'arrive pas à faire autrement si tu arrive à les supprimer Tristan pas de soucis
+                            .requestMatchers("/salle/enums/**").permitAll() 
+                            .requestMatchers(org.springframework.http.HttpMethod.POST, "/salle").permitAll()
+                            //fin de mon ajout
                                 .anyRequest().authenticated())
                 .build();
     }

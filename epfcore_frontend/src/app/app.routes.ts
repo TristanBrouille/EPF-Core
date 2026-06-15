@@ -16,6 +16,8 @@ import { EntretienForm } from './gestionnaire-admission/entretien-form/entretien
 import { EntretienBilan } from './gestionnaire-admission/entretien-bilan/entretien-bilan';
 import { EntretiensSuivi } from './gestionnaire-admission/entretiens-suivi/entretiens-suivi';
 import { ArchiveDocuments } from './archive-documents/archive-documents';
+import { creerSalleComponent } from './creerSalle/creerSalle';
+//import {Dashboard} from './dashboard/dashboard';
 
 export const routes: Routes = [
   {path: 'login', component: Login},
@@ -36,4 +38,8 @@ export const routes: Routes = [
   {path: 'admin/entretiens/nouveau', component: EntretienForm},
   {path: 'admin/entretiens/:id/bilan', component: EntretienBilan},
   {path: 'admin/entretiens/:id', component: EntretienDetail},
+  {path: 'history-student', component: HistoryStudent },
+ // {path: 'dashboard', component: Dashboard},
+  {path: 'login', component: Login},
+  {path: 'creerSalle', component:creerSalleComponent},
 ];
