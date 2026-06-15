@@ -22,6 +22,18 @@ export class FormulaireService {
     );
   }
 
+  getAllSoumis(): Promise<Formulaire[]> {
+    return firstValueFrom(
+      this.httpClient.get<Formulaire[]>(this.url('soumis'))
+    );
+  }
+
+  getById(id: number): Promise<Formulaire> {
+    return firstValueFrom(
+      this.httpClient.get<Formulaire>(this.url(`${id}`))
+    );
+  }
+
   create(formulaire: Formulaire): Promise<Formulaire> {
     return firstValueFrom(
       this.httpClient.post<Formulaire>(this.baseUrl, formulaire)

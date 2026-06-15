@@ -1,0 +1,102 @@
+<div class="admin-page">
+  <button type="button" class="btn-red btn-retour" (click)="goBack()">← Retour</button>
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="success-message">{{ successMessage }}</div>
+  }
+
+  @if (entretien) {
+    <h1>Détail de l'entretien</h1>
+
+    <div class="card">
+      <h3>Candidat</h3>
+      <div class="grid">
+        <div>
+          <label>Prénom</label>
+          <p>{{ entretien.candidat?.firstname }}</p>
+        </div>
+        <div>
+          <label>Nom</label>
+          <p>{{ entretien.candidat?.lastname }}</p>
+        </div>
+        <div>
+          <label>Email</label>
+          <p>{{ entretien.candidat?.email }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Interviewer</h3>
+      @if (entretien.interviewer) {
+        <div class="grid">
+          <div>
+            <label>Prénom</label>
+            <p>{{ entretien.interviewer.firstname }}</p>
+          </div>
+          <div>
+            <label>Nom</label>
+            <p>{{ entretien.interviewer.lastname }}</p>
+          </div>
+          <div>
+            <label>Email</label>
+            <p>{{ entretien.interviewer.email }}</p>
+          </div>
+        </div>
+      } @else {
+        <p>Aucun interviewer assigné</p>
+      }
+    </div>
+
+    <div class="card">
+      <h3>Entretien</h3>
+      <div class="grid">
+        <div>
+          <label>Date et heure</label>
+          <p>{{ entretien.dateHeure | date:'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <div>
+          <label>Type</label>
+          <p>{{ entretien.typeEntretien }}</p>
+        </div>
+        @if (entretien.typeEntretien === 'VISIO') {
+          <div>
+            <label>Lien de visioconférence</label>
+            <p>{{ entretien.lienVisio || '-' }}</p>
+          </div>
+        } @else {
+          <div>
+            <label>Campus</label>
+            <p>{{ entretien.campusVille || '-' }}</p>
+          </div>
+          <div>
+            <label>Salle</label>
+            <p>{{ entretien.salle || '-' }}</p>
+          </div>
+        }
+        <div>
+          <label>Statut</label>
+          <select [(ngModel)]="entretien.statut" (change)="updateStatut()">
+            @for (statut of statutOptions; track statut) {
+              <option [value]="statut">{{ statut }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label>Note</label>
+          <p>{{ entretien.note ?? '-' }}</p>
+        </div>
+        <div class="full">
+          <label>Commentaire</label>
+          <p>{{ entretien.commentaire || '-' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-red btn-delete" (click)="deleteEntretien()">Supprimer l'entretien</button>
+  }
+</div>

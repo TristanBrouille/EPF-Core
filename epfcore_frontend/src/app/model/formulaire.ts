@@ -1,5 +1,9 @@
+import { PersonExpose } from './person-expose';
+
 export interface Formulaire {
   id?: number;
+  user?: PersonExpose;
+  dateSoumission?: string;
   dernierDiplome?: string;
   etablissement?: string;
   niveauEtude?: string;

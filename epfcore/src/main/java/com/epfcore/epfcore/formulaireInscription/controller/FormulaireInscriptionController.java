@@ -3,6 +3,7 @@ package com.epfcore.epfcore.formulaireInscription.controller;
 import com.epfcore.epfcore.formulaireInscription.dto.FormulaireInscriptionDTO;
 import com.epfcore.epfcore.formulaireInscription.service.FormulaireInscriptionService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,16 +40,25 @@ public class FormulaireInscriptionController {
         return ResponseEntity.ok(formulaireService.getByEmail(authentication.getName()));
     }
 
+    @PreAuthorize("hasAuthority('GESTIONNAIRE_ADMISSION')")
     @GetMapping("/{id}")
     public ResponseEntity<FormulaireInscriptionDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(formulaireService.getById(id));
     }
 
+    @PreAuthorize("hasAuthority('GESTIONNAIRE_ADMISSION')")
+    @GetMapping("/soumis")
+    public ResponseEntity<List<FormulaireInscriptionDTO>> getAllSoumis() {
+        return ResponseEntity.ok(formulaireService.getAllSoumis());
+    }
+
+    @PreAuthorize("hasAuthority('GESTIONNAIRE_ADMISSION')")
     @GetMapping
     public ResponseEntity<List<FormulaireInscriptionDTO>> getAll() {
         return ResponseEntity.ok(formulaireService.getAll());
     }
 
+    @PreAuthorize("hasAuthority('GESTIONNAIRE_ADMISSION')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
         formulaireService.delete(id, authentication);

@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface FormulaireInscriptionRepository extends JpaRepository<FormulaireInscription, Long> {
     Optional<FormulaireInscription> findByUserId(Long userId);
-    List<FormulaireInscription> findAll();
+    List<FormulaireInscription> findBySoumisTrue();
 }
 
