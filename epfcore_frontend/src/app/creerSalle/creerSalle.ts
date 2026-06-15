@@ -86,7 +86,7 @@ ngOnInit(): void {
     this.salleApi.addSalle(salleToSave as any).subscribe({
       next: () => {
         alert('La salle a été créée avec succès !');
-        this.router.navigate(['/']);
+        this.router.navigate(['/salles']);
       },
       error: (err) => console.error('Erreur lors du CREATE :', err)
     });
