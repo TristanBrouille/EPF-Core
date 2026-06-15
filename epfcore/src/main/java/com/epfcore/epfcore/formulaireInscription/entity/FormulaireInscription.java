@@ -40,6 +40,9 @@ public class FormulaireInscription {
     @Column(name = "date_creation")
     private LocalDateTime dateCreation;
 
+    @Column(name = "date_soumission")
+    private LocalDateTime dateSoumission;
+
     @ManyToOne
     @JoinColumn(name = "campus_id")
     private Campus campus;

@@ -1,0 +1,118 @@
+<div class="admin-page">
+  <button type="button" class="btn-red btn-retour" (click)="goBack()">← Retour</button>
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (formulaire) {
+    <div class="page-header">
+      <h1>Dossier de candidature</h1>
+      <button type="button" class="btn-red" (click)="createEntretien()">+ Créer un entretien</button>
+    </div>
+
+    <div class="card">
+      <h3>Candidat</h3>
+      <div class="grid">
+        <div>
+          <label>Prénom</label>
+          <p>{{ formulaire.user?.firstname }}</p>
+        </div>
+        <div>
+          <label>Nom</label>
+          <p>{{ formulaire.user?.lastname }}</p>
+        </div>
+        <div>
+          <label>Email</label>
+          <p>{{ formulaire.user?.email }}</p>
+        </div>
+        <div>
+          <label>Date de naissance</label>
+          <p>{{ formulaire.user?.birthday }}</p>
+        </div>
+        <div>
+          <label>Genre</label>
+          <p>{{ formulaire.genre }}</p>
+        </div>
+        <div>
+          <label>Téléphone</label>
+          <p>{{ formulaire.telephone }}</p>
+        </div>
+        <div>
+          <label>Nationalité</label>
+          <p>{{ formulaire.nationalite }}</p>
+        </div>
+        <div class="full">
+          <label>Adresse</label>
+          <p>{{ formulaire.adresse }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Dernières études</h3>
+      <div class="grid">
+        <div>
+          <label>Dernier diplôme</label>
+          <p>{{ formulaire.dernierDiplome }}</p>
+        </div>
+        <div>
+          <label>Établissement</label>
+          <p>{{ formulaire.etablissement }}</p>
+        </div>
+        <div>
+          <label>Niveau d'étude</label>
+          <p>{{ formulaire.niveauEtude }}</p>
+        </div>
+        <div>
+          <label>Année d'obtention</label>
+          <p>{{ formulaire.anneeObtention }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Parcours visé</h3>
+      <div class="grid">
+        <div>
+          <label>Programme choisi</label>
+          <p>{{ formulaire.programmeChoisi }}</p>
+        </div>
+        <div>
+          <label>Campus</label>
+          <p>{{ formulaire.campusVille }}</p>
+        </div>
+        <div>
+          <label>Année d'intégration</label>
+          <p>{{ formulaire.anneeIntegration }}</p>
+        </div>
+        <div>
+          <label>Majeur</label>
+          <p>{{ formulaire.majeur }}</p>
+        </div>
+        <div>
+          <label>Statut</label>
+          <p>{{ formulaire.soumis ? 'Soumis' : 'Brouillon' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Documents</h3>
+      <div class="grid">
+        @for (docType of documentTypes; track docType.key) {
+          <div>
+            <label>{{ docType.label }}</label>
+            @if (isDocumentProvided(docType.key)) {
+              <button type="button" class="btn-preview" (click)="previewDocument(docType.key)">
+                Aperçu
+              </button>
+            } @else {
+              <span class="file-name missing">Non fourni</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

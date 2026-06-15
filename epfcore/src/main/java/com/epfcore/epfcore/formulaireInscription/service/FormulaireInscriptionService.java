@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -62,7 +63,13 @@ public class FormulaireInscriptionService {
         existing.setNiveauEtude(dto.niveauEtude());
         existing.setAnneeObtention(dto.anneeObtention());
         existing.setProgrammeChoisi(dto.programmeChoisi());
+
+        boolean wasSoumis = Boolean.TRUE.equals(existing.getSoumis());
         existing.setSoumis(dto.soumis());
+        if (Boolean.TRUE.equals(dto.soumis()) && !wasSoumis) {
+            existing.setDateSoumission(LocalDateTime.now());
+        }
+
         existing.setGenre(dto.genre());
         existing.setTelephone(dto.telephone());
         existing.setNationalite(dto.nationalite());
@@ -94,6 +101,13 @@ public class FormulaireInscriptionService {
 
     public List<FormulaireInscriptionDTO> getAll() {
         return formulaireRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    public List<FormulaireInscriptionDTO> getAllSoumis() {
+        return formulaireRepository.findBySoumisTrue()
                 .stream()
                 .map(this::toDTO)
                 .toList();
@@ -155,7 +169,7 @@ public class FormulaireInscriptionService {
                 formulaire.getNiveauEtude(),
                 formulaire.getAnneeObtention(),
                 formulaire.getProgrammeChoisi(),
-                formulaire.getDateCreation(),
+                formulaire.getDateSoumission(),
                 formulaire.getCampus() != null ? formulaire.getCampus().getVille() : null,
                 formulaire.getSoumis(),
                 formulaire.getGenre(),

@@ -44,6 +44,11 @@ public class FormulaireInscriptionController {
         return ResponseEntity.ok(formulaireService.getById(id));
     }
 
+    @GetMapping("/soumis")
+    public ResponseEntity<List<FormulaireInscriptionDTO>> getAllSoumis() {
+        return ResponseEntity.ok(formulaireService.getAllSoumis());
+    }
+
     @GetMapping
     public ResponseEntity<List<FormulaireInscriptionDTO>> getAll() {
         return ResponseEntity.ok(formulaireService.getAll());
