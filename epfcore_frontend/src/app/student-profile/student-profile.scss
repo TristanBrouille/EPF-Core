@@ -15,7 +15,6 @@
   max-width: 1000px;
   background: $white;
   border-radius: 16px;
-  overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
@@ -153,13 +152,21 @@ p {
   color: $white;
   border: none;
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: 600;
   transition: 0.2s;
-
+  font-size: 15px;
+  
   &:hover {
     background: darken($epf-red, 10%);
     transform: translateY(-1px);
   }
+}
+
+.button-container {
+    display: flex;
+    gap: 15px; 
+    justify-content: center; 
+    align-items: center;
 }

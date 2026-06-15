@@ -77,4 +77,6 @@ public class StudentService {
                 .orElseThrow(() -> new RuntimeException("Student non trouvé pour email: " + email));
     }
 
+    
+
 }

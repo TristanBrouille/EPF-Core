@@ -5,6 +5,7 @@ import {RegisterCandidat} from './register-candidat/register-candidat';
 import {Home} from './home/home';
 import {FormulaireInscription} from './formulaire-inscription/formulaire-inscription';
 import { StudentProfile } from './student-profile/student-profile';
+import { HistoryStudent } from './history-student/history-student';
 
 export const routes: Routes = [
   {path: 'login', component: Login},
@@ -13,5 +14,6 @@ export const routes: Routes = [
   {path: 'home', component: Home},
   {path: 'formulaire-inscription', component: FormulaireInscription},
   {path: '', redirectTo: 'home', pathMatch: 'full' },
-  {path: 'student-profile', component: StudentProfile }
+  {path: 'student-profile', component: StudentProfile },
+  {path: 'history-student', component: HistoryStudent }
 ];

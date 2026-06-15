@@ -119,9 +119,23 @@
                 </a>
             </div>
 
-            <button (click)="downloadPDF()" class="pdf-button">
-                Télécharger en PDF
+            <div class="button-container">
+                <button (click)="downloadpdf()" class="pdf-button">
+                    Télécharger mes informations personnelles
+                </button>
+
+                <button (click)="certificate()" class="pdf-button">
+                    Télécharger mon certificat de scolarité
+                </button>
+            </div>
+
+            <button (click)="goToHistory()" class="pdf-button">
+                Consulter mon historique de demande de documents
             </button>
+
+
+
+
 
         </div>
 

@@ -2,8 +2,6 @@ package com.epfcore.epfcore.student.controller;
 
 import java.security.Principal;
 import java.util.List;
-import org.springframework.http.MediaType;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.epfcore.epfcore.student.entity.Student;
-import com.epfcore.epfcore.student.service.GenerationPdfService;
 import com.epfcore.epfcore.student.service.StudentService;
 
 @RestController
@@ -23,11 +20,11 @@ import com.epfcore.epfcore.student.service.StudentService;
 public class StudentController {
 
     private final StudentService studentService;
-    private final GenerationPdfService pdfService;
 
-    public StudentController(StudentService studentService, GenerationPdfService pdfService) {
+    
+
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
-        this.pdfService = pdfService;
     }
 
     @GetMapping
@@ -77,19 +74,4 @@ public class StudentController {
 
         return ResponseEntity.ok(student);
     }
-
-    @GetMapping("/{id}/pdf")
-    public ResponseEntity<byte[]> generatePdf(@PathVariable Long id) {
-
-        Student student = studentService.getStudentById(id);
-
-        byte[] pdf = pdfService.generateStudentPdfHtml(student);
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=student-" + student.getStudentNumber() + ".pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdf);
-    }
-
 }

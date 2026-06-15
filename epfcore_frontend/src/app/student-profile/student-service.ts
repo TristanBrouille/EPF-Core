@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Student } from '../model/student';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
 
   private baseUrl = 'http://localhost:8080/api/students';
+  private documentUrl = 'http://localhost:8080/api/document_student';
 
   constructor(private http: HttpClient) { }
 
@@ -18,12 +20,20 @@ export class StudentService {
     );
   }
 
-  downloadPdf(studentId: number): Promise<Blob> {
+  async certificate(studentId: number): Promise<Blob> {
     return firstValueFrom(
-      this.http.get(`${this.baseUrl}/${studentId}/pdf`, {
-        responseType: 'blob',
-        withCredentials: true
+      this.http.get(`${this.documentUrl}/generate/certificate/${studentId}`, {
+        responseType: 'blob'
       })
     );
   }
+
+  async downloadpdf(studentId: number): Promise<Blob> {
+    return firstValueFrom(
+      this.http.get(`${this.documentUrl}/generate/pdf/${studentId}`, {
+        responseType: 'blob'
+      })
+    );
+  }
+
 }
