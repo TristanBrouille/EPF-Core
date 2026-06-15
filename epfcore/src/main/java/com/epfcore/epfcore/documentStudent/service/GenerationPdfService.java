@@ -36,7 +36,7 @@ public class GenerationPdfService {
 
         List<DocumentStudent> existing = documentRepository.findByUserId(userId);
         Optional<DocumentStudent> existingInfos = existing.stream()
-                .filter(d -> d.getDocumentType() == DocumentType.INFOS)
+                .filter(d -> d.getDocumentType() == DocumentType.INFOS_STUDENT)
                 .findFirst();
 
         if (existingInfos.isPresent()) {
@@ -51,7 +51,7 @@ public class GenerationPdfService {
 
         DocumentStudent document = new DocumentStudent();
         document.setUserId(userId);
-        document.setDocumentType(DocumentType.INFOS);
+        document.setDocumentType(DocumentType.INFOS_STUDENT);
         document.setStatus(DocumentStatus.APPROVED);
         document.setCreationDate(LocalDateTime.now());
         document.setProcessingDate(LocalDateTime.now());

@@ -64,13 +64,13 @@ export class HistoryStudent implements OnInit {
   }
 
   docIconClass(type: string): string {
-    return { CERTIFICATE: 'doc-cert', INFOS: 'doc-infos', }[type] ?? '';
+    return { CERTIFICATE_SCOLAR: 'doc-cert', INFOS_STUDENT: 'doc-infos', }[type] ?? '';
   }
 
   docIconTi(type: string): string {
     return ({
-      CERTIFICATE: 'ti-certificate',
-      INFOS: 'ti-user'
+      CERTIFICATE_SCOLAR: 'ti-certificate',
+      INFOS_STUDENT: 'ti-user'
     } as Record<string, string>)[type] ?? 'ti-file';
   }
 
@@ -106,8 +106,8 @@ export class HistoryStudent implements OnInit {
 
   documentTypeLabel(type: string): string {
     return ({
-      CERTIFICATE: 'Certificat de scolarité',
-      INFOS: 'Informations personnelles',
+      CERTIFICATE_SCOLAR: 'Certificat de scolarité',
+      INFOS_STUDENT: 'Informations personnelles',
     } as Record<string, string>)[type] ?? type;
   }
 }

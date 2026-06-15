@@ -18,7 +18,7 @@ public class DocumentStudent {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(name = "document_type", nullable = false, length = 15)
+    @Column(name = "document_type", nullable = false, length = 35)
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
 

@@ -37,7 +37,7 @@ public class GenerationCertificateService {
 
         List<DocumentStudent> existing = documentRepository.findByUserId(userId);
         Optional<DocumentStudent> existingCertificate = existing.stream()
-                .filter(d -> d.getDocumentType() == DocumentType.CERTIFICATE)
+                .filter(d -> d.getDocumentType() == DocumentType.CERTIFICATE_SCOLAR)
                 .findFirst();
 
         if (existingCertificate.isPresent()) {
@@ -49,7 +49,7 @@ public class GenerationCertificateService {
 
         DocumentStudent document = new DocumentStudent();
         document.setUserId(userId);
-        document.setDocumentType(DocumentType.CERTIFICATE);
+        document.setDocumentType(DocumentType.CERTIFICATE_SCOLAR);
         document.setStatus(DocumentStatus.APPROVED);
         document.setCreationDate(LocalDateTime.now());
         document.setProcessingDate(LocalDateTime.now());

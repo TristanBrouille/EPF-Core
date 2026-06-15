@@ -1,5 +1,5 @@
 package com.epfcore.epfcore.documentStudent.entity;
 
 public enum DocumentType {
-        CERTIFICATE, INFOS
+        CERTIFICATE_SCOLAR, INFOS_STUDENT
 }

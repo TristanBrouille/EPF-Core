@@ -11,8 +11,8 @@
     </select>
     <select [(ngModel)]="filterType">
       <option value="">Tous les types</option>
-      <option value="CERTIFICATE">Certificat de scolarité</option>
-      <option value="INFOS">Infos personnelles</option>
+      <option value="CERTIFICATE_SCOLAR">Certificat de scolarité</option>
+      <option value="INFOS_STUDENT">Infos personnelles</option>
     </select>
   </div>
 
@@ -46,14 +46,14 @@
             </span>
           </td>
           <td>
-            @if (r.documentType === 'CERTIFICATE') {
+            @if (r.documentType.trim() === 'CERTIFICATE_SCOLAR') {
             <button (click)="certificate()" class="pdf-button">
-              Télécharger le certificat 
+              Télécharger le certificat
             </button>
             }
-            @if (r.documentType === 'INFOS') {
+            @if (r.documentType === 'INFOS_STUDENT') {
             <button (click)="downloadpdf()" class="pdf-button">
-              Télécharger les infos 
+              Télécharger les infos
             </button>
             }
           </td>
