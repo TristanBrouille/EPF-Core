@@ -1,38 +1,41 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Student } from '../model/student';
-import { StudentService } from './student-service';
-import { Router } from '@angular/router';
+import { StudentService } from '../student-profile/student-service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
-  selector: 'app-student-profile',
-  standalone: true,
+  selector: 'app-student-search',
   imports: [CommonModule],
-  templateUrl: './student-profile.html',
-  styleUrls: ['./student-profile.scss'],
+  templateUrl: './student-search.html',
+  styleUrl: './student-search.scss',
 })
-export class StudentProfile implements OnInit {
+export class StudentSearch implements OnInit {
 
   student: Student | null = null;
+  
+    constructor(
+      protected readonly router: Router,
+      private route: ActivatedRoute,
+      private studentService: StudentService,
+      private cdr: ChangeDetectorRef
+    ) { }
 
-  constructor(
-    protected readonly router: Router,
-    private studentService: StudentService,
-    private cdr: ChangeDetectorRef
-  ) { }
 
-  async ngOnInit(): Promise<void> {
-    await this.loadStudentConnecte();
-  }
-
-  async loadStudentConnecte(): Promise<void> {
-    try {
-      this.student = await this.studentService.getCurrentStudent();
+      ngOnInit(): void {
+    const studentId = Number(this.route.snapshot.paramMap.get('id'));
+    if (!studentId) return;
+ 
+    this.studentService.getStudentById(studentId).then(student => {
+      this.student = student;
       this.cdr.detectChanges();
-    } catch (err) {
-      console.error('Erreur chargement student connecté', err);
-    }
+    }).catch(err => {
+      console.error('Erreur lors du chargement de l\'étudiant', err);
+    });
   }
+
+
 
   get initialesAvatar(): string {
     if (!this.student) return '';
@@ -89,7 +92,4 @@ export class StudentProfile implements OnInit {
     }
   }
 
-  goToHistory() {
-    this.router.navigate(['/history-student']);
-  }
 }

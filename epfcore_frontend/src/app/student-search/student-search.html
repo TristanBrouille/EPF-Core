@@ -15,7 +15,7 @@
 
             <div class="student-badge" [class.active]="student.scholarship">
                 <span class="right">Bourse : </span>
-                {{ student.scholarship === 'Boursier' ? 'Boursier' : 'Non boursier' }}
+                {{ student.scholarship ? 'Boursier' : 'Non boursier' }}
             </div>
 
             <div class="student-meta">
@@ -30,8 +30,6 @@
                 {{ student.academicYear }}
 
             </div>
-
-
         </div>
 
         <div class="student-content">
@@ -64,9 +62,6 @@
                         <label>Date d'anniversaire</label>
                         <p>{{ student.user.birthDate }}</p>
                     </div>
-
-
-
                     <div>
                         <label>Téléphone</label>
                         <p>{{ telephoneFormate }}</p>
@@ -120,17 +115,13 @@
 
             <div class="button-container">
                 <button (click)="downloadpdf()" class="pdf-button">
-                    Télécharger mes informations personnelles
+                    Télécharger les informations personnelles
                 </button>
 
                 <button (click)="certificate()" class="pdf-button">
-                    Télécharger mon certificat de scolarité
+                    Télécharger le certificat de scolarité
                 </button>
             </div>
-
-            <button (click)="goToHistory()" class="pdf-button">
-                Consulter mon historique de demande de documents
-            </button>
         </div>
     </div>
 </div>

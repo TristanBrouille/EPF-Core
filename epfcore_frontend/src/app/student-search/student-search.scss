@@ -19,6 +19,7 @@
   overflow: hidden;
 }
 
+/* SIDEBAR */
 .student-sidebar {
   width: 280px;
   background: linear-gradient(135deg, $epf-red, darken($epf-red, 15%));
@@ -42,6 +43,7 @@
   background: rgba(255, 255, 255, 0.2);
   font-size: 32px;
   font-weight: bold;
+  
 }
 
 .student-badge {
@@ -63,6 +65,7 @@
   opacity: 0.9;
 }
 
+/* CONTENT */
 .student-content {
   flex: 1;
   padding: 30px;
@@ -84,6 +87,7 @@
   color: $epf-red;
 }
 
+/* GRID */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -117,6 +121,7 @@ p {
   color: $epf-purple;
 }
 
+/* EMAIL */
 .email-link {
   color: $epf-red;
   text-decoration: none;
@@ -127,6 +132,7 @@ p {
   text-decoration: underline;
 }
 
+/* RESPONSIVE */
 @media (max-width: 800px) {
   .student-card {
     flex-direction: column;
