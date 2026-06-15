@@ -8,17 +8,27 @@ import { StudentProfile } from './student-profile/student-profile';
 import { HistoryStudent } from './history-student/history-student';
 import { StudentList } from './student-list/student-list';
 import { StudentSearch } from './student-search/student-search';
-
+import { FormulairesList } from './gestionnaire-admission/formulaires-list/formulaires-list';
+import { FormulaireDetail } from './gestionnaire-admission/formulaire-detail/formulaire-detail';
+import { EntretiensSchedule } from './gestionnaire-admission/entretiens-schedule/entretiens-schedule';
+import { EntretienDetail } from './gestionnaire-admission/entretien-detail/entretien-detail';
+import { EntretienForm } from './gestionnaire-admission/entretien-form/entretien-form';
 
 export const routes: Routes = [
-  { path: 'login', component: Login },
-  { path: 'candidat', component: Candidat },
-  { path: 'register-candidat', component: RegisterCandidat },
-  { path: 'home', component: Home },
-  { path: 'formulaire-inscription', component: FormulaireInscription },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'student-profile', component: StudentProfile },
-  { path: 'history-student', component: HistoryStudent },
+  {path: 'login', component: Login},
+  {path: 'candidat', component: Candidat},
+  {path: 'register-candidat', component: RegisterCandidat},
+  {path: 'home', component: Home},
+  {path: 'formulaire-inscription', component: FormulaireInscription},
+  {path: '', redirectTo: 'home', pathMatch: 'full' },
+  {path: 'student-profile', component: StudentProfile },
+  {path: 'history-student', component: HistoryStudent },
+  {path: 'student-profile', component: StudentProfile },
+  {path: 'admin/formulaires', component: FormulairesList},
+  {path: 'admin/formulaires/:id', component: FormulaireDetail},
+  {path: 'admin/entretiens', component: EntretiensSchedule},
+  {path: 'admin/entretiens/nouveau', component: EntretienForm},
+  {path: 'admin/entretiens/:id', component: EntretienDetail},
   { path: 'student-list', component: StudentList },
   { path: 'student-search/:id', component: StudentSearch }
 ];

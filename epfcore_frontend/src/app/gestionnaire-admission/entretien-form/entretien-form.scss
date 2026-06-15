@@ -1,0 +1,62 @@
+@use '../../../variables' as *;
+
+.admin-page {
+  padding: 1.5rem;
+  max-width: 600px;
+
+  h1 {
+    margin: 1rem 0 1.5rem;
+  }
+}
+
+.error-message {
+  color: $epf-red;
+  margin-bottom: 1rem;
+}
+
+.btn-retour {
+  margin-bottom: 1rem;
+}
+
+.entretien-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: $white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-weight: 600;
+    color: $gray-dark;
+  }
+
+  input, select, textarea {
+    padding: 0.5rem;
+    border: 1px solid $gray-light;
+    border-radius: 4px;
+  }
+
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .error {
+    color: $epf-red;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+}

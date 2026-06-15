@@ -52,6 +52,7 @@ export class FormulaireInscription implements OnInit {
   async ngOnInit(): Promise<void> {
     this.formulaireForm = this.fb.group({
 
+      niveauEtude: [''],
       genre: [''],
       telephone: [null, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       nationalite: [''],
@@ -229,7 +230,7 @@ export class FormulaireInscription implements OnInit {
   }
 
   get completionStep2(): number {
-    const fields = ['dernierDiplome', 'etablissement', 'anneeObtention'];
+    const fields = ['niveauEtude', 'dernierDiplome', 'etablissement', 'anneeObtention'];
     const filled = fields.filter(f => this.formulaireForm.get(f)?.value).length;
     return Math.round((filled / fields.length) * 100);
   }
@@ -252,7 +253,7 @@ export class FormulaireInscription implements OnInit {
   get isFormComplete(): boolean {
     const fields = [
       'genre', 'telephone', 'nationalite', 'adresse',
-      'dernierDiplome', 'etablissement', 'anneeObtention',
+      'niveauEtude', 'dernierDiplome', 'etablissement', 'anneeObtention',
       'programmeChoisi', 'campusVille', 'anneeIntegration', 'majeur'
     ];
     return fields.every(f => this.isFieldFilled(f))

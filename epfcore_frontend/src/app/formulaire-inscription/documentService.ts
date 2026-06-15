@@ -29,4 +29,12 @@ export class DocumentService {
       )
     );
   }
+
+  download(formulaireId: number, documentType: string): Promise<Blob> {
+    return firstValueFrom(
+      this.httpClient.get(`${this.baseUrl}/${formulaireId}/documents/${documentType}`, {
+        responseType: 'blob',
+      })
+    );
+  }
 }

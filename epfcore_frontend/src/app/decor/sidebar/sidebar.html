@@ -1,26 +1,40 @@
 <mat-nav-list>
-  <a mat-list-item class="nav-item" routerLink="/home">
-    <mat-icon>home</mat-icon>
-    <span class="label">Accueil</span>
-  </a>
+  @if (!isGestionnaireAdmission) {
+    <a mat-list-item class="nav-item" routerLink="/home">
+      <mat-icon>home</mat-icon>
+      <span class="label">Accueil</span>
+    </a>
 
-  <a mat-list-item class="nav-item" routerLink="/">
-    <mat-icon>dashboard</mat-icon>
-    <span class="label">Tableau de bord</span>
-  </a>
+    <a mat-list-item class="nav-item" routerLink="/">
+      <mat-icon>dashboard</mat-icon>
+      <span class="label">Tableau de bord</span>
+    </a>
 
-  <a mat-list-item class="nav-item">
-    <mat-icon>school</mat-icon>
-    <span class="label">Cours</span>
-  </a>
+    <a mat-list-item class="nav-item">
+      <mat-icon>school</mat-icon>
+      <span class="label">Cours</span>
+    </a>
 
-  <a mat-list-item class="nav-item">
-    <mat-icon>rocket</mat-icon>
-    <span class="label">Projets</span>
-  </a>
+    <a mat-list-item class="nav-item">
+      <mat-icon>rocket</mat-icon>
+      <span class="label">Projets</span>
+    </a>
 
-  <a mat-list-item class="nav-item">
-    <mat-icon>bar_chart</mat-icon>
-    <span class="label">Statistiques</span>
-  </a>
+    <a mat-list-item class="nav-item">
+      <mat-icon>bar_chart</mat-icon>
+      <span class="label">Statistiques</span>
+    </a>
+  }
+
+  @if (isGestionnaireAdmission) {
+    <a mat-list-item class="nav-item" routerLink="/admin/formulaires">
+      <mat-icon>folder_shared</mat-icon>
+      <span class="label">Candidatures</span>
+    </a>
+
+    <a mat-list-item class="nav-item" routerLink="/admin/entretiens">
+      <mat-icon>event</mat-icon>
+      <span class="label">Entretiens</span>
+    </a>
+  }
 </mat-nav-list>

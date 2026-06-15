@@ -1,0 +1,33 @@
+<div class="admin-page">
+  <div class="page-header">
+    <h1>Emploi du temps des entretiens</h1>
+    <button type="button" class="btn-red" (click)="createEntretien()">+ Nouvel entretien</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  <div class="week-navigation">
+    <button type="button" class="btn-red" (click)="previousWeek()">← Semaine précédente</button>
+    <span class="week-label">{{ weekStart | date:'dd/MM/yyyy' }} - {{ weekDays[5] | date:'dd/MM/yyyy' }}</span>
+    <button type="button" class="btn-red" (click)="nextWeek()">Semaine suivante →</button>
+  </div>
+
+  <div class="week-grid">
+    @for (day of weekDays; track day.getTime()) {
+      <div class="day-column">
+        <h4>{{ dayLabel(day) }}</h4>
+        @for (entretien of entretiensForDay(day); track entretien.id) {
+          <div class="entretien-card" [class]="entretien.statut?.toLowerCase()" (click)="openEntretien(entretien.id)">
+            <span class="time">{{ timeLabel(entretien.dateHeure) }}</span>
+            <span class="candidat">{{ entretien.candidat?.firstname }} {{ entretien.candidat?.lastname }}</span>
+            <span class="type">{{ entretien.typeEntretien }}</span>
+          </div>
+        } @empty {
+          <p class="empty">Aucun entretien</p>
+        }
+      </div>
+    }
+  </div>
+</div>

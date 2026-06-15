@@ -1,0 +1,89 @@
+@use '../../../variables' as *;
+
+.admin-page {
+  padding: 1.5rem;
+
+  h1 {
+    margin: 1rem 0 1.5rem;
+  }
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    margin: 1rem 0 1.5rem;
+  }
+}
+
+.error-message {
+  color: $epf-red;
+  margin-bottom: 1rem;
+}
+
+.btn-retour {
+  margin-bottom: 1rem;
+}
+
+.card {
+  background: $white;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: $epf-red;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    color: $gray-dark;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  p {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .full {
+    grid-column: 1 / -1;
+  }
+}
+
+.btn-preview {
+  font-size: 0.9rem;
+  color: $gray-dark;
+  padding: 0.5rem 1rem;
+  border: 1px solid $gray-dark;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.file-name {
+  font-size: 0.9rem;
+  color: $gray-dark;
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid $gray-dark;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.7);
+
+  &.missing {
+    font-style: italic;
+  }
+}
