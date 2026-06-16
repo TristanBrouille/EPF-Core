@@ -136,7 +136,8 @@ public class EntretienCandidatureService {
                 candidatUser.getFirstname(),
                 candidatUser.getLastname(),
                 candidatUser.getEmail(),
-                candidatUser.getBirthDate()
+                candidatUser.getBirthDate(),
+                candidatUser.getRole()
         );
 
         User interviewerUser = entretien.getInterviewer();
@@ -145,7 +146,9 @@ public class EntretienCandidatureService {
                         interviewerUser.getFirstname(),
                         interviewerUser.getLastname(),
                         interviewerUser.getEmail(),
-                        interviewerUser.getBirthDate())
+                        interviewerUser.getBirthDate(),
+                        interviewerUser.getRole()
+                )
                 : null;
 
         return new EntretienCandidatureDTO(

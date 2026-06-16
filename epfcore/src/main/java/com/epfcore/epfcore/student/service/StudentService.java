@@ -22,7 +22,7 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student getStudentById(Long id) {
+    public Student  getStudentById(Long id) {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Student non trouvé avev Id : " + id));

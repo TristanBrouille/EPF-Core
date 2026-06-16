@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {MatListItem, MatNavList} from '@angular/material/list';
 import {RouterLink} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
-import {AuthState} from '../../auth/auth-state';
+import {loginService} from '../../login/loginService';
+import {AsyncPipe} from '@angular/common';
+import {User} from '../../model/user';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,16 +12,31 @@ import {AuthState} from '../../auth/auth-state';
     MatNavList,
     MatListItem,
     RouterLink,
-    MatIcon
+    MatIcon,
+    AsyncPipe
   ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
 
-  constructor(private readonly authState: AuthState) {}
+  public user = signal<User | undefined>(undefined);
 
-  get isGestionnaireAdmission(): boolean {
-    return this.authState.hasRole('GESTIONNAIRE_ADMISSION');
+  constructor(private readonly loginService : loginService) {}
+
+  async ngOnInit() {
+    try {
+      const userData = await this.loginService.me();
+      this.user.set(userData);
+    } catch (error) {
+      console.error("Erreur lors de la récupération de l'utilisateur", error);
+      this.user.set(undefined);
+    }
   }
+
+
+
+  public isGestionnaireAdmission = computed(() => {
+    return this.user()?.role?.includes('GESTIONNAIRE_ADMISSION') ?? false;
+  });
 }

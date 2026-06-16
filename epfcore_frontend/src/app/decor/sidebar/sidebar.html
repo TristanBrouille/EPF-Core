@@ -1,5 +1,5 @@
 <mat-nav-list>
-  @if (!isGestionnaireAdmission) {
+  @if (!(isGestionnaireAdmission())) {
     <a mat-list-item class="nav-item" routerLink="/home">
       <mat-icon>home</mat-icon>
       <span class="label">Accueil</span>
@@ -26,7 +26,7 @@
     </a>
   }
 
-  @if (isGestionnaireAdmission) {
+  @if (isGestionnaireAdmission()) {
     <a mat-list-item class="nav-item" routerLink="/admin/formulaires">
       <mat-icon>folder_shared</mat-icon>
       <span class="label">Candidatures</span>
