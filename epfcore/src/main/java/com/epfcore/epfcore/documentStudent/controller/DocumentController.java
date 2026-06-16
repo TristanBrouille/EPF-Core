@@ -3,25 +3,36 @@ package com.epfcore.epfcore.documentStudent.controller;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.epfcore.epfcore.documentStudent.dto.DocumentStudentDto;
+import com.epfcore.epfcore.documentStudent.dto.DocumentStudentDTO;
 import com.epfcore.epfcore.documentStudent.entity.DocumentStudent;
 import com.epfcore.epfcore.documentStudent.service.DocumentStudentService;
 import com.epfcore.epfcore.documentStudent.service.GenerationCertificateService;
 import com.epfcore.epfcore.documentStudent.service.GenerationPdfService;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+@CrossOrigin(origins = "http://localhost:4200", methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.PATCH,
+        RequestMethod.DELETE,
+        RequestMethod.OPTIONS
+})
 @RestController
 @RequestMapping("/api/document_student")
 public class DocumentController {
@@ -87,12 +98,26 @@ public class DocumentController {
         return ResponseEntity.ok().headers(headers).body(pdf);
     }
 
-    @GetMapping("/user/{userId}/summary")
-    public ResponseEntity<List<DocumentStudentDto>> getByUserIdSummary(@PathVariable Integer userId) {
-        List<DocumentStudentDto> summaries = documentService.getByUserId(userId)
-                .stream()
-                .map(DocumentStudentDto::new)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(summaries);
+    @PatchMapping("/{id}/archive")
+    public ResponseEntity<DocumentStudent> archiveDocument(
+            @PathVariable Integer id,
+            @RequestParam(defaultValue = "system") String archivedBy) {
+        return ResponseEntity.ok(documentService.archive(id, archivedBy));
     }
+
+    @GetMapping("/user/{userId}/archived")
+    public ResponseEntity<List<DocumentStudentDTO>> getArchivedByUserId(@PathVariable Integer userId) {
+        return ResponseEntity.ok(documentService.getArchivedByUserId(userId));
+    }
+
+    @PatchMapping("/{id}/unarchive")
+    public ResponseEntity<DocumentStudent> unarchive(@PathVariable Integer id) {
+        return ResponseEntity.ok(documentService.unarchive(id));
+    }
+
+    @GetMapping("/archived")
+    public ResponseEntity<List<DocumentStudentDTO>> getAllArchived() {
+        return ResponseEntity.ok(documentService.getAllArchived());
+    }
+
 }
