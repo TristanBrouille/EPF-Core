@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.epfcore.epfcore.student.dto.StudentDTO;
 import com.epfcore.epfcore.student.entity.Student;
 import com.epfcore.epfcore.student.service.StudentService;
 
@@ -28,12 +30,12 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getAllStudents() {
+    public List<StudentDTO> getAllStudents() {
         return studentService.getAllStudents();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudentById(id));
     }
 
@@ -70,7 +72,7 @@ public class StudentController {
         }
 
         String email = principal.getName();
-        Student student = studentService.findByUserEmail(email);
+        StudentDTO student = studentService.findByUserEmail(email);
 
         return ResponseEntity.ok(student);
     }

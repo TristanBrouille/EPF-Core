@@ -13,6 +13,7 @@ import { FormulaireDetail } from './gestionnaire-admission/formulaire-detail/for
 import { EntretiensSchedule } from './gestionnaire-admission/entretiens-schedule/entretiens-schedule';
 import { EntretienDetail } from './gestionnaire-admission/entretien-detail/entretien-detail';
 import { EntretienForm } from './gestionnaire-admission/entretien-form/entretien-form';
+import { ArchiveDocuments } from './archive-documents/archive-documents';
 
 export const routes: Routes = [
   {path: 'login', component: Login},
@@ -21,14 +22,14 @@ export const routes: Routes = [
   {path: 'home', component: Home},
   {path: 'formulaire-inscription', component: FormulaireInscription},
   {path: '', redirectTo: 'home', pathMatch: 'full' },
-  {path: 'student-profile', component: StudentProfile },
   {path: 'history-student', component: HistoryStudent },
   {path: 'student-profile', component: StudentProfile },
+  {path: 'student-list', component: StudentList },
+  {path: 'student-search/:id', component: StudentSearch },
+  {path: 'archive-documents', component: ArchiveDocuments },
   {path: 'admin/formulaires', component: FormulairesList},
   {path: 'admin/formulaires/:id', component: FormulaireDetail},
   {path: 'admin/entretiens', component: EntretiensSchedule},
   {path: 'admin/entretiens/nouveau', component: EntretienForm},
   {path: 'admin/entretiens/:id', component: EntretienDetail},
-  { path: 'student-list', component: StudentList },
-  { path: 'student-search/:id', component: StudentSearch }
 ];

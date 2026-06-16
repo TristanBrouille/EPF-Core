@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.epfcore.epfcore.student.dto.StudentDTO;
 import com.epfcore.epfcore.student.entity.Student;
 import com.epfcore.epfcore.student.repository.StudentRepository;
 
@@ -18,24 +19,30 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> getAllStudents() {
+        return studentRepository.findAll()
+                .stream()
+                .map(StudentDTO::new)
+                .toList();
     }
 
-    public Student getStudentById(Long id) {
+    public StudentDTO getStudentById(Long id) {
         return studentRepository.findById(id)
+                .map(StudentDTO::new)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Student non trouvé avev Id : " + id));
+                        "Student non trouvé avec Id : " + id));
     }
 
-    public Student getStudentByNumStudent(String studentNumber) {
+    public StudentDTO getStudentByNumStudent(String studentNumber) {
         return studentRepository.findByStudentNumber(studentNumber)
+                .map(StudentDTO::new)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Student non trouvé avec studentNumber : " + studentNumber));
     }
 
-    public Student getStudentByUserId(Long userId) {
+    public StudentDTO getStudentByUserId(Long userId) {
         return studentRepository.findByUserId(userId)
+                .map(StudentDTO::new)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Student non trouvé avec userId : " + userId));
     }
@@ -72,11 +79,11 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-    public Student findByUserEmail(String email) {
+    public StudentDTO findByUserEmail(String email) {
         return studentRepository.findByUserEmail(email)
-                .orElseThrow(() -> new RuntimeException("Student non trouvé pour email: " + email));
+                .map(StudentDTO::new)
+                .orElseThrow(() -> new RuntimeException(
+                        "Student non trouvé pour email: " + email));
     }
-
-    
 
 }

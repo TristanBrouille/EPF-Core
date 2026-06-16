@@ -81,7 +81,7 @@ public class GenerationCertificateService {
         String address = student.getAddress();
         LocalDate birthDate = student.getUser().getBirthDate();
         String birthDateFormatee = birthDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        String campus = student.getCampus();
+        String campus = student.getCampus().getVille();
         String major = student.getMajor();
         LocalDate enrollmentDate = student.getEnrollmentDate();
 
