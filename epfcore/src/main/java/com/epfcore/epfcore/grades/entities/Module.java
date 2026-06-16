@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+// Faire une liste de modules, pour ajouter un module, add() et pour récupérer les infos du module : get().
+
 @Entity
 public class Module {
 

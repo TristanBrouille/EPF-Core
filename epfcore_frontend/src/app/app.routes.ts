@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import {Bulletin} from './bulletin/bulletin';
 import { BulletinComponent } from './bulletin.component/bulletin.component';
+import { CarnetNotesComponent } from './carnetNotes/carnetNotes';
 import { Login } from './login/login';
 import { Candidat } from './candidat/candidat';
 import { RegisterCandidat } from './register-candidat/register-candidat';
@@ -24,7 +25,9 @@ import { ListeReservationsComponent } from './listeReservation/listeReservation'
 import { ListeSallesComponent } from './listeSalles/listeSalles';
 
 export const routes: Routes = [
-  {path: 'bulletin', component: BulletinComponent}
+  {path: 'bulletin', component: BulletinComponent},
+  {path: 'carnetnotes', component: CarnetNotesComponent},
+  { path: '**', redirectTo: 'login' }
   {path: 'login', component: Login},
   {path: 'candidat', component: Candidat},
   {path: 'register-candidat', component: RegisterCandidat},
