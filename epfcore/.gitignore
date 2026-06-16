@@ -34,5 +34,13 @@ build/
 
 src/main/resources/env.properties
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 upload-dir/
 
+=======
+>>>>>>> ddcb301 (Merge pull request #35)
+=======
+upload-dir/
+
+>>>>>>> 7a6a205 (Ajout stockage document pour formulaire et formulaire de candidature completer)

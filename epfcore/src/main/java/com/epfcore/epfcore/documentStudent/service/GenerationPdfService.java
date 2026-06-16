@@ -95,7 +95,7 @@ public class GenerationPdfService {
         String EnrollmentDateFormatee = enrollmentDate.format(formatter1);
         Boolean bourse = student.getScholarship();
         String bourseFormatee = Boolean.TRUE.equals(bourse) ? "Boursier" : "Non boursier";
-        String campus = student.getCampus();
+        String campus = student.getCampus().getVille();
         String academicYear = student.getAcademicYear();
 
         return """

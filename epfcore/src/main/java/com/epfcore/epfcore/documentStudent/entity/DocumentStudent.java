@@ -7,10 +7,6 @@ import java.time.LocalDateTime;
 @Table(name = "document_student")
 public class DocumentStudent {
 
-    public static final String DocumentType = null;
-
-    public static final String DocumentStatus = null;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -34,6 +30,12 @@ public class DocumentStudent {
 
     @Column(name = "file_url", columnDefinition = "TEXT")
     private String fileUrl;
+
+    @Column(name = "archived_at")
+    private LocalDateTime archivedAt;
+
+    @Column(name = "archived_by", length = 100)
+    private String archivedBy;
 
     public DocumentStudent() {
     }
@@ -92,5 +94,21 @@ public class DocumentStudent {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
+    }
+
+    public LocalDateTime getArchivedAt() {
+        return archivedAt;
+    }
+
+    public void setArchivedAt(LocalDateTime archivedAt) {
+        this.archivedAt = archivedAt;
+    }
+
+    public String getArchivedBy() {
+        return archivedBy;
+    }
+
+    public void setArchivedBy(String archivedBy) {
+        this.archivedBy = archivedBy;
     }
 }

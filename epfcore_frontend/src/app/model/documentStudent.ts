@@ -1,11 +1,17 @@
+import { User } from './user';
+
 export interface DocumentStudent {
   id: number;
-  userId: number;
-  documentType: DocumentType;
-  status: DocumentStatus;
+  documentType: string;
+  status: string;
   creationDate: string;
   processingDate?: string;
-  fileUrl?: string;
+  archivedAt?: string;
+  archivedBy?: string;
+  userId: number;
+  firstname: string;
+  lastname: string;
+  studentId: number;
 }
 
 export enum DocumentType {
@@ -17,6 +23,7 @@ export enum DocumentStatus {
   PENDING = 'PENDING',
   IN_PROGRESS = 'IN_PROGRESS',
   APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED'
+  REJECTED = 'REJECTED',
+  ARCHIVED = 'ARCHIVED'
 }
 

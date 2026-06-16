@@ -1,0 +1,63 @@
+<div class="history-wrapper">
+  <div class="archive-header">
+    <h2 class="archive-title">
+      <i class="ti ti-archive" aria-hidden="true"></i>
+      Documents archivés
+    </h2>
+  </div>
+  <div class="filter-bar">
+    <input type="text" placeholder="Rechercher par nom, prénom ou type de document..." [(ngModel)]="searchTerm" />
+    <select [(ngModel)]="filterType">
+      <option value="">Tous les types</option>
+      <option value="CERTIFICATE_SCOLAR">Certificat de scolarité</option>
+      <option value="INFOS_STUDENT">Infos personnelles</option>
+    </select>
+  </div>
+  <div class="table-card">
+    <table class="hist-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Type de document</th>
+          <th>Date d'archivage</th>
+          <th>Téléchargement</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (group of groupedArchives(); track group.userId) {
+        @for (doc of group.docs; track doc.id; let i = $index; let last = $last) {
+        <tr class="archived-row"
+            [class.group-end]="last"
+            [class.row-hovered]="hoveredUserId() === group.userId"
+            (mouseenter)="hoveredUserId.set(group.userId)"
+            (mouseleave)="hoveredUserId.set(null)">
+          @if (i === 0) {
+          <td class="date-cell" [attr.rowspan]="group.docs.length">{{ group.lastname }}</td>
+          <td class="date-cell" [attr.rowspan]="group.docs.length">{{ group.firstname }}</td>
+          }
+          <td>
+            <span class="doc-icon" [ngClass]="docIconClass(doc.documentType)">
+              <i class="ti" [ngClass]="docIconTi(doc.documentType)" aria-hidden="true"></i>
+            </span>
+            <span class="doc-label">{{ documentTypeLabel(doc.documentType) }}</span>
+          </td>
+          <td class="date-cell">{{ doc.archivedAt ? (doc.archivedAt | date:'dd MMM yyyy à HH:mm') : '—' }}</td>
+          <td>
+            <button (click)="downloadArchive(doc)" class="pdf-button">
+              <i class="ti ti-download" aria-hidden="true"></i>
+              Télécharger
+            </button>
+          </td>
+        </tr>
+        }
+        }
+        @if (groupedArchives().length === 0) {
+        <tr>
+          <td colspan="5" class="empty-state">Aucun document archivé.</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

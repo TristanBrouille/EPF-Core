@@ -1,80 +1,47 @@
-package com.epfcore.epfcore.student.entity;
+package com.epfcore.epfcore.student.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import com.epfcore.epfcore.campus.entity.Campus;
-import com.epfcore.epfcore.security.domain.User;
+import com.epfcore.epfcore.security.domain.UserDTO;
+import com.epfcore.epfcore.student.entity.Gender;
+import com.epfcore.epfcore.student.entity.Student;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+public class StudentDTO {
 
-@Entity
-@Table(name = "student")
-public class Student {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "student_number", unique = true)
     private String studentNumber;
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    private UserDTO user;   
     private Gender gender;
-
     private String nationality;
-
     private String phone;
-
-    @Column(columnDefinition = "TEXT")
     private String address;
-
-    @Column(name = "academic_year")
     private String academicYear;
-
-    private String major;
-
+    private String major;  
     private String program;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "campus_id")
-    private Campus campus;
-
-    @Column(nullable = false)
-    private Boolean scholarship = false;
-
-    @Column(name = "last_degree")
+    private String campus;
+    private Boolean scholarship;
     private String lastDegree;
-
-    @Column(name = "photo_url", columnDefinition = "TEXT")
     private String photoUrl;
-
-    @Column(name = "enrollment_date")
     private LocalDate enrollmentDate;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    public StudentDTO() {}
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    public StudentDTO(Student student) {
+        this.id = student.getId();
+        this.studentNumber = student.getStudentNumber();
+        this.user = new UserDTO(student.getUser()); 
+        this.gender = student.getGender();
+        this.nationality = student.getNationality();
+        this.phone = student.getPhone();
+        this.address = student.getAddress();
+        this.academicYear = student.getAcademicYear();
+        this.major = student.getMajor();
+        this.program = student.getProgram();
+        this.campus = student.getCampus().getVille();
+        this.scholarship = student.getScholarship();
+        this.lastDegree = student.getLastDegree();
+        this.photoUrl = student.getPhotoUrl();
+        this.enrollmentDate = student.getEnrollmentDate();
     }
 
     public Long getId() {
@@ -93,11 +60,11 @@ public class Student {
         this.studentNumber = studentNumber;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
@@ -157,6 +124,13 @@ public class Student {
         this.program = program;
     }
 
+    public String getCampus() {
+        return campus;
+    }
+
+    public void setCampus(String campus) {
+        this.campus = campus;
+    }
 
     public Boolean getScholarship() {
         return scholarship;
@@ -189,21 +163,5 @@ public class Student {
     public void setEnrollmentDate(LocalDate enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
     }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Campus getCampus() {
-        return campus;
-    }
-
-    public void setCampus(Campus campus) {
-        this.campus = campus;
-    }
-
+    
 }

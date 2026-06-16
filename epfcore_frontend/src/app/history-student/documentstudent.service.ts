@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { DocumentStudent } from '../model/documentStudent';
-
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -50,6 +50,43 @@ export class DocumentStudentService {
             this.http.get(`${this.baseUrl}/generate/pdf/${studentId}`, {
                 responseType: 'blob'
             })
+        );
+    }
+
+    archiveDocument(id: number, archivedBy: string = 'system'): Promise<DocumentStudent> {
+        return firstValueFrom(
+            this.http.patch<DocumentStudent>(
+                `${this.baseUrl}/${id}/archive?archivedBy=${archivedBy}`,
+                {}
+            )
+        );
+    }
+
+    getArchivedDocumentsByUser(userId: number): Promise<DocumentStudent[]> {
+        return firstValueFrom(
+            this.http.get<DocumentStudent[]>(
+                `${this.baseUrl}/user/${userId}/archived`,
+                {}
+            )
+        );
+    }
+
+    unarchiveDocument(id: number): Promise<DocumentStudent> {
+        return firstValueFrom(
+            this.http.patch<DocumentStudent>(
+                `${this.baseUrl}/${id}/unarchive`,
+                {},
+                { withCredentials: true }
+            )
+        );
+    }
+
+    getAllArchivedDocuments(): Promise<DocumentStudent[]> {
+        return firstValueFrom(
+            this.http.get<DocumentStudent[]>(
+                `${this.baseUrl}/archived`,
+                { withCredentials: true }
+            )
         );
     }
 }
