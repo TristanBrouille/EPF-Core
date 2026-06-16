@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Impersonate User</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width" style="width: 100%; margin-bottom: 15px;">
+    <mat-label>Search Users</mat-label>
+    <input matInput [formControl]="searchControl" placeholder="Ex. Jean" autocomplete="off">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-list>
+    @if (filteredUsers$ | async; as users) {
+      @for (user of users; track user.id) {
+        <mat-list-item (click)="impersonateUser(user)" style="cursor: pointer;">
+          <span matListItemTitle><strong>{{ user.firstname }} {{ user.lastname }}</strong></span>
+          <span matListItemLine>Role: {{ user.role || 'Aucun' }}</span>
+          <span matListItemLine>ID: {{ user.id }}</span>
+
+          <button mat-icon-button matListItemMeta (click)="impersonateUser(user); $event.stopPropagation()">
+            <mat-icon>login</mat-icon>
+          </button>
+        </mat-list-item>
+      } @empty {
+        <mat-list-item>Aucun utilisateur trouvé</mat-list-item>
+      }
+    } @else {
+      <mat-list-item>Chargement des utilisateurs...</mat-list-item>
+    }
+  </mat-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

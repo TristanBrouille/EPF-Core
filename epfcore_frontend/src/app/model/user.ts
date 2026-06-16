@@ -4,6 +4,7 @@ export interface User {
   lastname: string;
   email: string;
   birthDate: Date;
+  role : string;
 }
 
 export interface UserLog{
@@ -14,4 +15,11 @@ export interface UserLog{
 export interface UserRole {
   email: string;
   authorities: string[];
+}
+
+export interface UserDto {
+  id: number;
+  firstname: string;
+  lastname: string;
+  role : string;
 }

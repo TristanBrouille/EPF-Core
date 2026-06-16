@@ -7,7 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
+
+import java.util.Optional;
 
 @Repository
 public interface UserJpaRepository extends JpaRepository<User, Long>, UserRepository {
@@ -24,5 +27,19 @@ public interface UserJpaRepository extends JpaRepository<User, Long>, UserReposi
     default User ofEmail(String email){
         return findByEmail(email);
     }
-}
+    
+    @Override
+    default Optional<User> ofId(Long id) {
+        return findById(id);
+    }
 
+    @Override
+    default User save(User user) {
+        return save(user);
+    }
+
+    @Override
+    default Collection<User> ofAll() {
+        return findAll();
+    }
+}

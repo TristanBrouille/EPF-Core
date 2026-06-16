@@ -181,7 +181,8 @@ public class FormulaireInscriptionService {
                 user.getFirstname(),
                 user.getLastname(),
                 user.getEmail(),
-                user.getBirthDate()
+                user.getBirthDate(),
+                user.getRole()
         );
         return new FormulaireInscriptionDTO(
                 formulaire.getId(),
