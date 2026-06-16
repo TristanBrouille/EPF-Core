@@ -83,6 +83,16 @@ export class EntretiensSchedule implements OnInit {
     }
   }
 
+  formatStatut(statut?: string): string {
+    const labels: Record<string, string> = {
+      PLANIFIE: 'planifié',
+      REALISE: 'réalisé',
+      ANNULE: 'annulé',
+      NO_SHOW: 'non assisté',
+    };
+    return statut ? (labels[statut] ?? statut) : '';
+  }
+
   createEntretien(): void {
     this.router.navigate(['/admin/entretiens/nouveau']);
   }

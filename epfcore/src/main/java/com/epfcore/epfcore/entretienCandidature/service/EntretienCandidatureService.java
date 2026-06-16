@@ -162,7 +162,8 @@ public class EntretienCandidatureService {
                 entretien.getStatut(),
                 entretien.getNote(),
                 entretien.getCommentaire(),
-                entretien.getDateCreation()
+                entretien.getDateCreation(),
+                entretien.getFormulaire().getDecisionAdmission()
         );
     }
 }

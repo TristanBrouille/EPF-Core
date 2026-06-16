@@ -1,5 +1,7 @@
 import { PersonExpose } from './person-expose';
 
+export type DecisionAdmission = 'EN_ATTENTE' | 'ADMIS' | 'REFUSE';
+
 export interface Formulaire {
   id?: number;
   user?: PersonExpose;
@@ -17,4 +19,5 @@ export interface Formulaire {
   adresse?: string;
   anneeIntegration?: number | null;
   majeur?: string;
+  decisionAdmission?: DecisionAdmission;
 }

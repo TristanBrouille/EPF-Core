@@ -80,6 +80,13 @@
     font-weight: 700;
   }
 
+  .statut {
+    font-size: 0.7rem;
+    font-style: italic;
+    opacity: 0.85;
+    margin-top: 2px;
+  }
+
   &.realise {
     background: $epf-purple;
   }

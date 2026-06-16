@@ -68,6 +68,10 @@ public class FormulaireInscription {
     @Column(name = "majeur")
     private String majeur;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "decision_admission")
+    private DecisionAdmission decisionAdmission = DecisionAdmission.EN_ATTENTE;
+
     @PrePersist
     public void prePersist() {
         this.dateCreation = LocalDateTime.now();

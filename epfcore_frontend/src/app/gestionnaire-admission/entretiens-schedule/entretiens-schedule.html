@@ -23,6 +23,7 @@
             <span class="time">{{ timeLabel(entretien.dateHeure) }}</span>
             <span class="candidat">{{ entretien.candidat?.firstname }} {{ entretien.candidat?.lastname }}</span>
             <span class="type">{{ entretien.typeEntretien }}</span>
+            <span class="statut">{{ formatStatut(entretien.statut) }}</span>
           </div>
         } @empty {
           <p class="empty">Aucun entretien</p>

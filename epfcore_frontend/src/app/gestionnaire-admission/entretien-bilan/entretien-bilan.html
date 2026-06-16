@@ -1,0 +1,68 @@
+<div class="admin-page">
+  <button type="button" class="btn-red btn-retour" (click)="goBack()">← Retour</button>
+
+  <h1>Bilan de l'entretien</h1>
+
+  @if (entretien) {
+    <div class="card info-card">
+      <p><strong>Candidat :</strong> {{ entretien.candidat?.firstname }} {{ entretien.candidat?.lastname }}</p>
+      <p><strong>Date :</strong> {{ entretien.dateHeure | date:'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="success-message">{{ successMessage }}</div>
+  }
+
+  @if (decisionVerrouillee) {
+    <div class="decision-finale">
+      Décision finale : <strong>{{ entretien?.decisionAdmission }}</strong>
+    </div>
+  }
+
+  <div class="colonnes">
+    <form class="bilan-form" (ngSubmit)="onSubmit()">
+      <h3>Bilan</h3>
+
+      <div class="form-group">
+        <label for="note">Note <span class="hint">(0 – 20)</span></label>
+        <input id="note" type="number" min="0" max="20" step="0.5" [(ngModel)]="note" name="note" placeholder="Ex : 14" [disabled]="decisionVerrouillee" />
+        @if (noteInvalide) {
+          <p class="error">La note doit être comprise entre 0 et 20.</p>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="commentaire">Commentaire</label>
+        <textarea id="commentaire" rows="6" [(ngModel)]="commentaire" name="commentaire" placeholder="Observations, points forts, axes d'amélioration…" [disabled]="decisionVerrouillee"></textarea>
+      </div>
+
+      @if (!decisionVerrouillee) {
+        <button type="submit" class="btn-red" [disabled]="noteInvalide">Enregistrer le bilan</button>
+      }
+    </form>
+
+    <div class="decision-panel">
+      <h3>Décision d'admission</h3>
+
+      @if (decisionVerrouillee) {
+        <p class="decision-locked">La décision a été prise et ne peut plus être modifiée.</p>
+      } @else {
+        <div class="form-group">
+          <label for="decision">Décision</label>
+          <select id="decision" [(ngModel)]="selectedDecision" name="decision">
+            @for (opt of decisionOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+
+        <button type="button" class="btn-red" [disabled]="selectedDecision === 'EN_ATTENTE'" (click)="confirmerDecision()">Valider la décision</button>
+      }
+    </div>
+  </div>
+</div>

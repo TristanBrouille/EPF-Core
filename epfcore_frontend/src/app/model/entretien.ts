@@ -1,4 +1,5 @@
 import { PersonExpose } from './person-expose';
+import { DecisionAdmission } from './formulaire';
 
 export type TypeEntretien = 'PRESENTIEL' | 'VISIO' | 'TELEPHONE';
 export type StatutEntretien = 'PLANIFIE' | 'REALISE' | 'ANNULE' | 'NO_SHOW';
@@ -25,4 +26,5 @@ export interface EntretienCandidature {
   note?: number | null;
   commentaire?: string;
   dateCreation?: string;
+  decisionAdmission?: DecisionAdmission;
 }
