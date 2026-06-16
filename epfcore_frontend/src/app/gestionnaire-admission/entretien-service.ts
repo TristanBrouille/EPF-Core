@@ -22,6 +22,12 @@ export class EntretienService {
     );
   }
 
+  getMesEntretiens(): Promise<EntretienCandidature[]> {
+    return firstValueFrom(
+      this.httpClient.get<EntretienCandidature[]>(this.url('mes-entretiens'))
+    );
+  }
+
   getById(id: number): Promise<EntretienCandidature> {
     return firstValueFrom(
       this.httpClient.get<EntretienCandidature>(this.url(`${id}`))

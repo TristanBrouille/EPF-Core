@@ -5,6 +5,7 @@ import com.epfcore.epfcore.campus.repository.CampusRepository;
 import com.epfcore.epfcore.documentFormulaire.repository.DocumentFormulaireRepository;
 import com.epfcore.epfcore.documentFormulaire.storage.StorageService;
 import com.epfcore.epfcore.formulaireInscription.dto.FormulaireInscriptionDTO;
+import com.epfcore.epfcore.formulaireInscription.entity.DecisionAdmission;
 import com.epfcore.epfcore.formulaireInscription.entity.FormulaireInscription;
 import com.epfcore.epfcore.formulaireInscription.repository.FormulaireInscriptionRepository;
 import com.epfcore.epfcore.security.domain.Roles;
@@ -109,8 +110,16 @@ public class FormulaireInscriptionService {
     public List<FormulaireInscriptionDTO> getAllSoumis() {
         return formulaireRepository.findBySoumisTrue()
                 .stream()
+                .filter(f -> f.getDecisionAdmission() == null || f.getDecisionAdmission() == DecisionAdmission.EN_ATTENTE)
                 .map(this::toDTO)
                 .toList();
+    }
+
+    public FormulaireInscriptionDTO updateDecision(Long id, DecisionAdmission decision) {
+        FormulaireInscription formulaire = formulaireRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Formulaire not found"));
+        formulaire.setDecisionAdmission(decision);
+        return toDTO(formulaireRepository.save(formulaire));
     }
 
     public void delete(Long id, Authentication authentication) {
@@ -177,7 +186,8 @@ public class FormulaireInscriptionService {
                 formulaire.getNationalite(),
                 formulaire.getAdresse(),
                 formulaire.getAnneeIntegration(),
-                formulaire.getMajeur()
+                formulaire.getMajeur(),
+                formulaire.getDecisionAdmission()
         );
     }
 

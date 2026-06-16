@@ -1,7 +1,7 @@
 import { firstValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Formulaire } from '../model/formulaire';
+import { DecisionAdmission, Formulaire } from '../model/formulaire';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +43,12 @@ export class FormulaireService {
   update(formulaire: Formulaire): Promise<Formulaire> {
     return firstValueFrom(
       this.httpClient.put<Formulaire>(this.baseUrl, formulaire)
+    );
+  }
+
+  updateDecision(id: number, decision: DecisionAdmission): Promise<Formulaire> {
+    return firstValueFrom(
+      this.httpClient.patch<Formulaire>(this.url(`${id}/decision`), null, { params: { decision } })
     );
   }
 

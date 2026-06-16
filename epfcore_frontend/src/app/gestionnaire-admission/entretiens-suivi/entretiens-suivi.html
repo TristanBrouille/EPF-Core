@@ -1,0 +1,73 @@
+<div class="admin-page">
+  <h1>Suivi des entretiens</h1>
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  <div class="colonnes">
+    <div class="colonne">
+      <h2 class="titre-retard">
+        Entretiens en retard
+        <span class="badge">{{ retardes.length }}</span>
+      </h2>
+      <p class="description">Date passée, statut toujours PLANIFIÉ</p>
+
+      @if (retardes.length === 0) {
+        <p class="vide">Aucun entretien en retard.</p>
+      } @else {
+        @for (e of retardes; track e.id) {
+          <div class="card-entretien retard" (click)="openEntretien(e.id)">
+            <span class="nom">{{ e.candidat?.firstname }} {{ e.candidat?.lastname }}</span>
+            <span class="info">{{ e.dateHeure | date:'dd/MM/yyyy HH:mm' }}</span>
+            <span class="info">{{ e.typeEntretien }}</span>
+          </div>
+        }
+      }
+    </div>
+
+    <div class="colonne">
+      <h2 class="titre-annule">
+        Annulés / Non assistés
+        <span class="badge">{{ annulesEtNoShow.length }}</span>
+      </h2>
+      <p class="description">Sans décision prise</p>
+
+      @if (annulesEtNoShow.length === 0) {
+        <p class="vide">Aucun entretien annulé ou non assisté.</p>
+      } @else {
+        @for (e of annulesEtNoShow; track e.id) {
+          <div class="card-entretien annule">
+            <span class="nom">{{ e.candidat?.firstname }} {{ e.candidat?.lastname }}</span>
+            <span class="info">{{ e.dateHeure | date:'dd/MM/yyyy HH:mm' }}</span>
+            <span class="info">{{ formatStatut(e.statut) }}</span>
+            <div class="card-actions">
+              <button type="button" class="btn-action btn-replanifier" (click)="replanifier(e, $event)">Replanifier</button>
+              <button type="button" class="btn-action btn-refuser" (click)="refuser(e, $event)">Refuser</button>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    <div class="colonne">
+      <h2 class="titre-decision">
+        En attente de décision
+        <span class="badge">{{ sansDecision.length }}</span>
+      </h2>
+      <p class="description">Entretien réalisé, décision d'admission non prise</p>
+
+      @if (sansDecision.length === 0) {
+        <p class="vide">Aucun dossier en attente de décision.</p>
+      } @else {
+        @for (e of sansDecision; track e.id) {
+          <div class="card-entretien decision" (click)="openEntretien(e.id)">
+            <span class="nom">{{ e.candidat?.firstname }} {{ e.candidat?.lastname }}</span>
+            <span class="info">{{ e.dateHeure | date:'dd/MM/yyyy' }}</span>
+            <span class="info">{{ e.typeEntretien }}</span>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

@@ -19,9 +19,28 @@
         }
 
         @if (isSoumis) {
-          <p class="mt-3">
-            Votre dossier de candidature est en cours d'examen. Un email vous sera envoyé pour vous prévenir d'un futur rendez-vous.
-          </p>
+          @if (entretienActif) {
+            <p class="mt-3"><strong>Voici les détails de votre entretien :</strong></p>
+            <div class="entretien-details">
+              <p><strong>Date et heure :</strong> {{ entretienActif.dateHeure | date:'dd/MM/yyyy HH:mm' }}</p>
+              <p><strong>Type :</strong> {{ entretienActif.typeEntretien }}</p>
+              @if (entretienActif.typeEntretien === 'VISIO') {
+                <p><strong>Lien :</strong> {{ entretienActif.lienVisio }}</p>
+              } @else if (entretienActif.typeEntretien === 'PRESENTIEL') {
+                <p><strong>Campus :</strong> {{ entretienActif.campusVille }}</p>
+                @if (entretienActif.salle) {
+                  <p><strong>Salle :</strong> {{ entretienActif.salle }}</p>
+                }
+              }
+              @if (entretienActif.interviewer) {
+                <p><strong>Interviewer :</strong> {{ entretienActif.interviewer.firstname }} {{ entretienActif.interviewer.lastname }}</p>
+              }
+            </div>
+          } @else {
+            <p class="mt-3">
+              Votre dossier de candidature est en cours d'examen. Un email vous sera envoyé pour vous prévenir d'un futur rendez-vous.
+            </p>
+          }
         }
       </div>
 
