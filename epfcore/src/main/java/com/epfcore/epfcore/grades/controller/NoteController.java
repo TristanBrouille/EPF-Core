@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
- 
+
 import java.util.*;
  
 /**
@@ -26,7 +26,13 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")   // À restreindre en production
+@CrossOrigin(
+  origins = "http://localhost:4200",
+  methods = {RequestMethod.GET, RequestMethod.POST,
+             RequestMethod.PUT, RequestMethod.PATCH,
+             RequestMethod.DELETE},
+  allowedHeaders = "*"
+)
 public class NoteController {
  
     @Autowired
@@ -145,23 +151,50 @@ public class NoteController {
  
     // ── Moyennes ──────────────────────────────────────────────────────────────
  
+    // @GetMapping("/carnets/{carnetId}/moyennes")
+    // public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
+    //     try {
+    //         List<Etudiant> etudiants = noteService.findEtudiantsByCarnet(carnetId);
+    //         List<Map<String, Object>> result = new ArrayList<>();
+    //         for (Etudiant e : etudiants) {
+    //             Float moy = noteService.calculerMoyenneEtudiant(carnetId, e.getId());
+    //             Map<String, Object> row = new LinkedHashMap<>();
+    //             row.put("etudiantId",  e.getId());
+    //             row.put("numero",      e.getNumero());
+    //             row.put("nomComplet",  e.getNomComplet());
+    //             row.put("moyenne",     moy);
+    //             result.add(row);
+    //         }
+    //         return ResponseEntity.ok(result);
+    //     } catch (Exception e) {
+    //         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    //     }
+    // }
+
     @GetMapping("/carnets/{carnetId}/moyennes")
     public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
         try {
             List<Etudiant> etudiants = noteService.findEtudiantsByCarnet(carnetId);
             List<Map<String, Object>> result = new ArrayList<>();
+
             for (Etudiant e : etudiants) {
                 Float moy = noteService.calculerMoyenneEtudiant(carnetId, e.getId());
+
                 Map<String, Object> row = new LinkedHashMap<>();
-                row.put("etudiantId",  e.getId());
-                row.put("numero",      e.getNumero());
-                row.put("nomComplet",  e.getNomComplet());
-                row.put("moyenne",     moy);
+                row.put("etudiantId", e.getId());
+                row.put("studentNumber", e.getStudentNumber());
+                row.put("userId", e.getUserId());
+                row.put("campus", e.getCampus());
+                row.put("moyenne", moy);
+
                 result.add(row);
             }
+
             return ResponseEntity.ok(result);
+
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
         }
     }
  

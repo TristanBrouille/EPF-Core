@@ -9,7 +9,8 @@ import {
 @Injectable({ providedIn: 'root' })
 export class NoteService {
 
-  private readonly API = '/api';  // proxy Angular → Spring Boot
+  // private readonly API = '/api';  // proxy Angular → Spring Boot
+  private readonly API = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
