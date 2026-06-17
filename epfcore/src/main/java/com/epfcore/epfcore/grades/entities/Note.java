@@ -35,8 +35,8 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "valeurNote")
-    private Float valeur_note;   // Float (nullable) : null = absent
+    @Column(name = "valeur_Note")
+    private Float valeurNote;   // Float (nullable) : null = absent
 
     @Column(name = "absent", nullable = false)
     private boolean absent = false;
@@ -63,7 +63,7 @@ public class Note {
     public Note() {}
 
     public Note(Float valeur_note, Etudiant etudiant, Evaluation evaluation, String source) {
-        this.valeur_note = valeur_note;
+        this.valeurNote = valeur_note;
         this.etudiant    = etudiant;
         this.evaluation  = evaluation;
         this.source      = source;
@@ -72,8 +72,8 @@ public class Note {
 
     // ── Getters / Setters ─────────────────────────────────────────────────────
     public long getId()                        { return id; }
-    public Float getValeurNote()               { return valeur_note; }
-    public void  setValeurNote(Float v)        { this.valeur_note = v; this.absent = (v == null); }
+    public Float getValeurNote()               { return valeurNote; }
+    public void  setValeurNote(Float v)        { this.valeurNote = v; this.absent = (v == null); }
     public boolean isAbsent()                  { return absent; }
     public void  setAbsent(boolean absent)     { this.absent = absent; }
     public String getCommentaire()             { return commentaire; }
