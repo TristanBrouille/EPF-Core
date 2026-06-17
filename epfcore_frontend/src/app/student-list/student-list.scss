@@ -1,4 +1,5 @@
 @use '../../_variables.scss' as *;
+@use "sass:color";
 
 .history-wrapper {
   padding: 2rem 1.5rem;
@@ -96,7 +97,7 @@
     font-size: 13px;
 
     &:hover {
-      background: darken($epf-red, 10%);
+      background: color.adjust($epf-red, $lightness: -10%);
       transform: translateY(-1px);
     }
   }

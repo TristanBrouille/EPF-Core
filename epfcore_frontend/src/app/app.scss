@@ -1,3 +1,7 @@
+
+@use '../variables.scss' as *;
+@use "sass:color";
+
 .layout {
   height: 100vh;
 }
@@ -18,4 +22,97 @@ mat-sidenav.sidebar {
   min-width: 60px;
   max-width: 200px;
   box-sizing: border-box;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.modal-box {
+  background: $white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+}
+
+.modal-body {
+  padding: 28px 28px 0;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: $gray-dark;
+  margin: 0 0 8px;
+}
+
+.modal-text {
+  font-size: 14px;
+  color: #6c757d;
+  line-height: 1.6;
+  margin: 0 0 24px;
+
+  strong {
+    font-weight: 500;
+    color: $gray-dark;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px 28px;
+  border-top: 1px solid $gray-light;
+}
+
+.btn-modal-cancel {
+  flex: 1;
+  height: 40px;
+  border-radius: 25px;
+  border: 1px solid $gray-light;
+  background: $white;
+  color: $gray-dark;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover { background: #f8f9fa; }
+}
+
+.btn-modal-confirm {
+  flex: 1;
+  height: 40px;
+  border-radius: 25px;
+  border: none;
+  background: $epf-red;
+  color: $white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  &:hover { background: color.adjust($epf-red,$lightness: -8%); }
+
+  i { font-size: 14px; }
+}
+
+.modal-title{
+  color:$epf-red;
 }

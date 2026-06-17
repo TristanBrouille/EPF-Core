@@ -1,4 +1,5 @@
 @use '../../_variables.scss' as *;
+@use "sass:color";
 
 .history-wrapper {
   padding: 2rem 1.5rem;
@@ -43,12 +44,29 @@
         color: #212529;
       }
 
-      &.pending .scard-label  { color: #854f0b; }
-      &.pending .scard-value  { color: #854f0b; }
-      &.approved .scard-label { color: #3b6d11; }
-      &.approved .scard-value { color: #3b6d11; }
-      &.rejected .scard-label { color: #a32d2d; }
-      &.rejected .scard-value { color: #a32d2d; }
+      &.pending .scard-label {
+        color: #854f0b;
+      }
+
+      &.pending .scard-value {
+        color: #854f0b;
+      }
+
+      &.approved .scard-label {
+        color: #3b6d11;
+      }
+
+      &.approved .scard-value {
+        color: #3b6d11;
+      }
+
+      &.rejected .scard-label {
+        color: #a32d2d;
+      }
+
+      &.rejected .scard-value {
+        color: #a32d2d;
+      }
     }
   }
 
@@ -59,7 +77,8 @@
     flex-wrap: wrap;
     align-items: center;
 
-    input, select {
+    input,
+    select {
       font-size: 13px;
       padding: 6px 12px;
       border-radius: 8px;
@@ -75,7 +94,10 @@
       }
     }
 
-    input { flex: 1; min-width: 160px; }
+    input {
+      flex: 1;
+      min-width: 160px;
+    }
   }
 
   .table-card {
@@ -115,8 +137,14 @@
     }
 
     tbody tr {
-      &:last-child td { border-bottom: none; }
-      &:hover { background: #f8f9fa; transition: background 0.15s; }
+      &:last-child td {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background: #f8f9fa;
+        transition: background 0.15s;
+      }
     }
   }
 
@@ -131,10 +159,25 @@
     margin-right: 8px;
     vertical-align: middle;
 
-    &.doc-cert  { background: #eaf3de; color: #3b6d11; }
-    &.doc-infos { background: #e6f1fb; color: #185fa5; }
-    &.doc-conv  { background: #faeeda; color: #854f0b; }
-    &.doc-att   { background: #eeedfe; color: #3c3489; }
+    &.doc-cert {
+      background: #eaf3de;
+      color: #3b6d11;
+    }
+
+    &.doc-infos {
+      background: #e6f1fb;
+      color: #185fa5;
+    }
+
+    &.doc-conv {
+      background: #faeeda;
+      color: #854f0b;
+    }
+
+    &.doc-att {
+      background: #eeedfe;
+      color: #3c3489;
+    }
   }
 
   .doc-label {
@@ -153,10 +196,27 @@
     font-weight: 500;
     white-space: nowrap;
 
-    &.badge-pending    { background: #faeeda; color: #854f0b; }
-    &.badge-processing { background: #e6f1fb; color: #185fa5; }
-    &.badge-approved   { background: #eaf3de; color: #3b6d11; }
-    &.badge-rejected   { background: #fcebeb; color: #a32d2d; }
+    &.badge-pending {
+      background: #faeeda;
+      color: #854f0b;
+    }
+
+    &.badge-processing {
+      background: #e6f1fb;
+      color: #185fa5;
+    }
+
+    &.badge-approved {
+      background: #eaf3de;
+      color: #3b6d11;
+    }
+
+    &.badge-rejected {
+      background: #f5d5d5;
+      color: $gray-dark;
+    }
+
+    &.badge-archived  { background: #fcebeb; color: #a32d2d; }
   }
 
   .dot {
@@ -165,10 +225,25 @@
     border-radius: 50%;
     display: inline-block;
 
-    &.dot-pending    { background: #ba7517; }
-    &.dot-processing { background: #185fa5; }
-    &.dot-approved   { background: #3b6d11; }
-    &.dot-rejected   { background: #a32d2d; }
+    &.dot-pending {
+      background: #ba7517;
+    }
+
+    &.dot-processing {
+      background: #185fa5;
+    }
+
+    &.dot-approved {
+      background: #3b6d11;
+    }
+
+    &.dot-rejected {
+      background: $gray-dark;
+    }
+
+    &.dot-archived  { background: #a32d2d; }
+
+
   }
 
   .date-cell {
@@ -206,19 +281,19 @@
   }
 
   .pdf-button {
-  background: $epf-red;
-  color: $white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
-  font-size: 13px;
-  
-  &:hover {
-    background: darken($epf-red, 10%);
-    transform: translateY(-1px);
+    background: $epf-red;
+    color: $white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+    font-size: 13px;
+
+    &:hover {
+      background: color.adjust($epf-red, $lightness: -10%);
+      transform: translateY(-1px);
+    }
   }
-}
 }

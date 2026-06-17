@@ -52,14 +52,14 @@ export class HistoryStudent implements OnInit {
   badgeClass(status: string): string {
     return {
       PENDING: 'badge-pending', IN_PROGRESS: 'badge-processing',
-      APPROVED: 'badge-approved', REJECTED: 'badge-rejected'
+      APPROVED: 'badge-approved', REJECTED: 'badge-rejected', ARCHIVED: 'badge-archived'
     }[status] ?? '';
   }
 
   dotClass(status: string): string {
     return {
       PENDING: 'dot-pending', IN_PROGRESS: 'dot-processing',
-      APPROVED: 'dot-approved', REJECTED: 'dot-rejected'
+      APPROVED: 'dot-approved', REJECTED: 'dot-rejected', ARCHIVED: 'dot-archived'
     }[status] ?? '';
   }
 

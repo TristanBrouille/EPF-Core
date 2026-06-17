@@ -1,5 +1,6 @@
 
 @use '../../_variables.scss' as *;
+@use "sass:color";
 
 .student-page {
   min-height: 100vh;
@@ -21,7 +22,7 @@
 
 .student-sidebar {
   width: 280px;
-  background: linear-gradient(135deg, $epf-red, darken($epf-red, 15%));
+  background: linear-gradient(135deg, $epf-red, color.adjust($epf-red, $lightness: -15%));
   color: $black;
   padding: 30px 20px;
   text-align: center;
@@ -153,7 +154,7 @@ p {
   font-size: 15px;
   
   &:hover {
-    background: darken($epf-red, 10%);
+    background: color.adjust($epf-red, $lightness: -10%);
     transform: translateY(-1px);
   }
 }
