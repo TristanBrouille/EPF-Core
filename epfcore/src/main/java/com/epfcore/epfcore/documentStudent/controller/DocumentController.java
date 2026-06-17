@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,22 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.epfcore.epfcore.documentStudent.dto.DocumentStudentDTO;
 import com.epfcore.epfcore.documentStudent.entity.DocumentStudent;
 import com.epfcore.epfcore.documentStudent.service.DocumentStudentService;
 import com.epfcore.epfcore.documentStudent.service.GenerationCertificateService;
 import com.epfcore.epfcore.documentStudent.service.GenerationPdfService;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-@CrossOrigin(origins = "http://localhost:4200", methods = {
-        RequestMethod.GET,
-        RequestMethod.POST,
-        RequestMethod.PUT,
-        RequestMethod.PATCH,
-        RequestMethod.DELETE,
-        RequestMethod.OPTIONS
-})
+
+
 @RestController
 @RequestMapping("/api/document_student")
 public class DocumentController {

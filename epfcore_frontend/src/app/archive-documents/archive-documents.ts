@@ -34,31 +34,11 @@ export class ArchiveDocuments implements OnInit {
     @Inject(StudentService) private studentService: StudentService
   ) { }
 
-  // ngOnInit(): void {
-  //   this.studentService.getCurrentStudent().then(student => {
-  //     this.student = student;
-  //     this.documentService.getArchivedDocumentsByUser(student.user.id).then(data => {
-  //       this.archives.set(data);
-  //     });
-  //   });
-  // }
-
   ngOnInit(): void {
     this.documentService.getAllArchivedDocuments().then(data => {
       this.archives.set(data);
     });
   }
-
-
-
-  // filteredArchives(): DocumentStudent[] {
-  //   return this.archives().filter(r => {
-  //     const matchSearch = !this.searchTerm ||
-  //       r.documentType.toLowerCase().includes(this.searchTerm.toLowerCase());
-  //     const matchType = !this.filterType || r.documentType === this.filterType;
-  //     return matchSearch && matchType;
-  //   });
-  // }
 
   filteredArchives(): DocumentStudent[] {
     return this.archives().filter(r => {
@@ -107,29 +87,6 @@ export class ArchiveDocuments implements OnInit {
       INFOS_STUDENT: 'Informations personnelles',
     } as Record<string, string>)[type] ?? type;
   }
-
-  // async downloadArchive(doc: DocumentStudent): Promise<void> {
-  //   if (!this.student) return;
-  //   try {
-  //     let pdfBlob: Blob;
-  //     let filename: string;
-  //     if (doc.documentType.trim() === 'CERTIFICATE_SCOLAR') {
-  //       pdfBlob = await this.studentService.certificate(this.student.id);
-  //       filename = `certificat_scolarite_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
-  //     } else {
-  //       pdfBlob = await this.studentService.downloadpdf(this.student.id);
-  //       filename = `infos_personnelles_${this.student.user.firstname}_${this.student.user.lastname}.pdf`;
-  //     }
-  //     const url = window.URL.createObjectURL(pdfBlob);
-  //     const a = document.createElement('a');
-  //     a.href = url;
-  //     a.download = filename;
-  //     a.click();
-  //     window.URL.revokeObjectURL(url);
-  //   } catch (err) {
-  //     console.error('Erreur téléchargement archive', err);
-  //   }
-  // }
 
   async downloadArchive(doc: DocumentStudent): Promise<void> {
     try {

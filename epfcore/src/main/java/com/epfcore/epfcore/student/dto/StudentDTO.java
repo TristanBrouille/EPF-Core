@@ -2,7 +2,6 @@ package com.epfcore.epfcore.student.dto;
 
 import java.time.LocalDate;
 
-import com.epfcore.epfcore.security.domain.UserDTO;
 import com.epfcore.epfcore.student.entity.Gender;
 import com.epfcore.epfcore.student.entity.Student;
 
@@ -10,7 +9,7 @@ public class StudentDTO {
 
     private Long id;
     private String studentNumber;
-    private UserDTO user;   
+    private UserDocDTO user;   
     private Gender gender;
     private String nationality;
     private String phone;
@@ -29,7 +28,7 @@ public class StudentDTO {
     public StudentDTO(Student student) {
         this.id = student.getId();
         this.studentNumber = student.getStudentNumber();
-        this.user = new UserDTO(student.getUser()); 
+        this.user = new UserDocDTO(student.getUser()); 
         this.gender = student.getGender();
         this.nationality = student.getNationality();
         this.phone = student.getPhone();
@@ -60,11 +59,11 @@ public class StudentDTO {
         this.studentNumber = studentNumber;
     }
 
-    public UserDTO getUser() {
+    public UserDocDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(UserDocDTO user) {
         this.user = user;
     }
 
