@@ -50,8 +50,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/login", "/register").permitAll()
                             //Attention je pense que ce n'est pas bon mais je n'arrive pas à faire autrement si tu arrive à les supprimer Tristan pas de soucis
+                            //idéalement il faudrait qu'on puisse y avoir droit qu'en étant connecté mais j'ai essayé .hasRole('USER') sans succès
                             .requestMatchers("/salle/enums/**").permitAll() 
                             .requestMatchers(org.springframework.http.HttpMethod.POST, "/salle").permitAll()
+                            .requestMatchers(org.springframework.http.HttpMethod.GET, "/salle").permitAll()
+                            .requestMatchers("/salle/salle/**").permitAll()
+                            .requestMatchers("/reservation/**").permitAll()
+                            .requestMatchers(org.springframework.http.HttpMethod.POST, "/reservation").permitAll()
+                            .requestMatchers(org.springframework.http.HttpMethod.GET, "/reservation").permitAll()
                             //fin de mon ajout
                                 .anyRequest().authenticated())
                 .build();

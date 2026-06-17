@@ -1,74 +1,31 @@
 :host {
   display: flex;
-  justify-content: center; /* centre horizontalement */
-  align-items: center;     /* centre verticalement */
-  min-height: 100vh;       /* prend toute la hauteur de la page */
-  background-color: #ff4d4d;
+  justify-content: center; 
+  align-items: center;   
+  min-height: 100vh;     
 }
 
 .w-50 {
   display: flex;
-  flex-direction: column; /* empile les enfants verticalement */
-  gap: 2rem;              /* espace vertical entre chaque .mb-3 */
+  flex-direction: column;
+  gap: 2rem;             
 }
 
 .w-50 .mb-3 {
   display: flex;
-  flex-direction: column; /* empile label et input verticalement */
-  gap: 0.5rem;           /* espace entre label et champ */
+  flex-direction: column; 
+  gap: 0.5rem;           
 }
 
 .w-50 .form-control,
 .w-50 .form-select {
-  border-radius: 0.5rem; /* arrondit légèrement les champs */
-  padding: 0.5rem 0.75rem; /* optionnel : ajoute un peu de padding */
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
 }
 
 .w-50 {
-  background-color: #ffffff; /* fond rouge */
-  padding: 2rem;             /* ajoute un peu d’espace intérieur */
-  border-radius: 1rem;        /* arrondit les coins du conteneur */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* optionnel : ombre pour relief */
+  background-color: #cd6172;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
-
-// .modal-header {
-//    justify-content: flex-start;
-//  }
-
-// .btn-close {
-//   margin-left: 0;
-// }
-
-// .modal-header {
-//   .modal-title {
-//     margin-left: auto;
-//   }
-// }
-
-// .rating {
-//   font-size: 2rem;
-//   cursor: pointer;
-//   color: #ccc;
-
-//   span {
-//     transition: 0.2s;
-//   }
-
-//   .filled {
-//     color: gold;
-//   }
-
-//   span:hover {
-//     transform: scale(1.2);
-//   }
-// }
-
-// .rating-container {
-//   display: flex;
-//   align-items: center;
-//   gap: 18px;
-// }
-
-// .note {
-//   margin: 0;
-// }

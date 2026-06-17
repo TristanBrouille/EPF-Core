@@ -1,4 +1,3 @@
-// 1. AJOUTE CETTE INTERFACE ICI (juste au-dessus du @Component)
 export interface Campus {
   id?: number;
   ville: string;

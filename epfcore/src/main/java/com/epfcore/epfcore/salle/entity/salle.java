@@ -1,25 +1,17 @@
-package com.epfcore.epfcore.salle;
+package com.epfcore.epfcore.salle.entity;
 import jakarta.persistence.*;
 import com.epfcore.epfcore.campus.entity.Campus;
-
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.RestController;
-
-enum TypeSalle{Amphi, Autres, Exterieur, Labo, Projet, TD, Techlab}
-
 
 @Entity
 @Table(name = "salles")
 public class salle {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //Indique l'auto-incrément (PRIMARY KEY AUTO_INCREMENT)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
     private String nomSalle;
-    private int capacite;
+    private Integer capacite;
     private String equipement;
     
     @ManyToOne
@@ -31,7 +23,7 @@ public class salle {
 
     public salle() {}
 
-    public salle(Integer id, String nomSalle, int capacite, String equipement, Campus campus, TypeSalle typeSalle) {
+    public salle(Integer id, String nomSalle, Integer capacite, String equipement, Campus campus, TypeSalle typeSalle) {
         this.id = id;
         this.nomSalle = nomSalle;
         this.capacite = capacite;
@@ -56,11 +48,11 @@ public class salle {
         this.nomSalle = nomSalle;
     }
 
-    public int getCapacite() {
+    public Integer getCapacite() {
         return capacite;
     }
 
-    public void setCapacite(int capacite) {
+    public void setCapacite(Integer capacite) {
         this.capacite = capacite;
     }
 
