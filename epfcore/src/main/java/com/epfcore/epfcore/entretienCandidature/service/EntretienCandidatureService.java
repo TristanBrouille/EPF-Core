@@ -2,6 +2,7 @@ package com.epfcore.epfcore.entretienCandidature.service;
 
 import com.epfcore.epfcore.campus.entity.Campus;
 import com.epfcore.epfcore.campus.repository.CampusRepository;
+import com.epfcore.epfcore.email.EmailService;
 import com.epfcore.epfcore.entretienCandidature.dto.EntretienCandidatureDTO;
 import com.epfcore.epfcore.entretienCandidature.dto.InterviewerDTO;
 import com.epfcore.epfcore.entretienCandidature.entity.EntretienCandidature;
@@ -26,17 +27,20 @@ public class EntretienCandidatureService {
     private final FormulaireInscriptionRepository formulaireRepository;
     private final UserJpaRepository userRepository;
     private final CampusRepository campusRepository;
+    private final EmailService emailService;
 
     public EntretienCandidatureService(
             EntretienCandidatureRepository entretienRepository,
             FormulaireInscriptionRepository formulaireRepository,
             UserJpaRepository userRepository,
-            CampusRepository campusRepository
+            CampusRepository campusRepository,
+            EmailService emailService
     ) {
         this.entretienRepository = entretienRepository;
         this.formulaireRepository = formulaireRepository;
         this.userRepository = userRepository;
         this.campusRepository = campusRepository;
+        this.emailService = emailService;
     }
 
     public EntretienCandidatureDTO create(EntretienCandidatureDTO dto) {
@@ -47,7 +51,14 @@ public class EntretienCandidatureService {
         entretien.setFormulaire(formulaire);
         applyDto(entretien, dto);
 
-        return toDTO(entretienRepository.save(entretien));
+        EntretienCandidature saved = entretienRepository.save(entretien);
+
+        try {
+            emailService.sendEntretienEmail(saved);
+        } catch (Exception ignored) {
+        }
+
+        return toDTO(saved);
     }
 
     public EntretienCandidatureDTO update(Long id, EntretienCandidatureDTO dto) {

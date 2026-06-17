@@ -14,6 +14,18 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: shinygamy12@gmail.com
+    password: ycbrkfbcgnsdgevl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   config:
     import: optional:classpath:env.properties
 
@@ -27,3 +39,7 @@ recaptcha:
 
 storage:
   location: upload-dir
+
+app:
+  mail:
+    from-name: "Admission EPF"

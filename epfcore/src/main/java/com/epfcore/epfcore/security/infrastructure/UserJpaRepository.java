@@ -3,6 +3,7 @@ package com.epfcore.epfcore.security.infrastructure;
 import com.epfcore.epfcore.security.domain.Roles;
 import com.epfcore.epfcore.security.domain.User;
 import com.epfcore.epfcore.security.domain.UserRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -34,8 +35,9 @@ public interface UserJpaRepository extends JpaRepository<User, Long>, UserReposi
     }
 
     @Override
-    default User save(User user) {
-        return save(user);
+    @SuppressWarnings("unchecked")
+    default @NonNull User save(@NonNull User user) {
+        return saveAndFlush(user);
     }
 
     @Override
