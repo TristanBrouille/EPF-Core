@@ -1,5 +1,5 @@
-
 @use '../../_variables.scss' as *;
+@use "sass:color";
 
 .student-page {
   min-height: 100vh;
@@ -22,7 +22,7 @@
 /* SIDEBAR */
 .student-sidebar {
   width: 280px;
-  background: linear-gradient(135deg, $epf-red, darken($epf-red, 15%));
+  background: linear-gradient(135deg, $epf-red, color.adjust($epf-red, $lightness: -15%));
   color: $black;
   padding: 30px 20px;
   text-align: center;
@@ -43,7 +43,7 @@
   background: rgba(255, 255, 255, 0.2);
   font-size: 32px;
   font-weight: bold;
-  
+
 }
 
 .student-badge {
@@ -157,21 +157,19 @@ p {
   font-weight: 600;
   transition: 0.2s;
   font-size: 15px;
-  
+
   &:hover {
-    background: darken($epf-red, 10%);
+    background: color.adjust($epf-red, $lightness: -10%);
     transform: translateY(-1px);
   }
 }
 
 .button-container {
-    display: flex;
-    gap: 15px; 
-    justify-content: center; 
-    align-items: center;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
 }
-
-
 
 .no-docs {
   color: #6c757d;
@@ -184,33 +182,13 @@ p {
   background: #fafafa;
 }
 
-.badge-archived {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  border-radius: 99px;
-  font-size: 12px;
-  font-weight: 500;
-  background: #e9ecef;
-  color: #6c757d;
-
-  .dot-archived {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #adb5bd;
-    display: inline-block;
-  }
-}
-
 .btn-archive {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: transparent;
-  border: 1px solid #dee2e6;
-  color: #6c757d;
+  border: 1px solid $epf-red;
+  color: $epf-red;
   padding: 5px 12px;
   border-radius: 25px;
   font-size: 12px;
@@ -224,7 +202,34 @@ p {
     border-color: #adb5bd;
   }
 
-  i { font-size: 13px; }
+  i {
+    font-size: 13px;
+  }
+}
+
+.btn-unarchive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid $black;
+  color: $black;
+  padding: 5px 12px;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background: #e9ecef;
+    color: #212529;
+    border-color: #adb5bd;
+  }
+
+  i {
+    font-size: 13px;
+  }
 }
 
 .archive-success {
@@ -240,3 +245,172 @@ p {
   color: #adb5bd;
   font-size: 13px;
 }
+
+.hist-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* Proportions par défaut (avec documents archivés, colonne Statut plus large) */
+.hist-table th:nth-child(1),
+.hist-table td:nth-child(1) {
+  width: 45%;
+}
+
+.hist-table th:nth-child(2),
+.hist-table td:nth-child(2) {
+  width: 35%;
+}
+
+.hist-table th:nth-child(3),
+.hist-table td:nth-child(3) {
+  width: 20%;
+}
+
+/* Proportions resserrées quand aucun document n'est archivé */
+.hist-table.compact th:nth-child(1),
+.hist-table.compact td:nth-child(1) {
+  width: 45%;
+}
+
+.hist-table.compact th:nth-child(2),
+.hist-table.compact td:nth-child(2) {
+  width: 35%;
+}
+
+.hist-table.compact th:nth-child(3),
+.hist-table.compact td:nth-child(3) {
+  width: 20%;
+}
+
+.badge-archived {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+
+  &.badge-pending {
+    background: #faeeda;
+    color: #854f0b;
+  }
+
+  &.badge-processing {
+    background: #e6f1fb;
+    color: #185fa5;
+  }
+
+  &.badge-approved {
+    background: #eaf3de;
+    color: #3b6d11;
+  }
+
+  &.badge-rejected {
+    background: #f5d5d5;
+    color: $gray-dark;
+  }
+
+  &.badge-archived {
+    background: #fcebeb;
+    color: #a32d2d;
+  }
+}
+
+.dot-archived {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &.dot-pending {
+    background: #ba7517;
+  }
+
+  &.dot-processing {
+    background: #185fa5;
+  }
+
+  &.dot-approved {
+    background: #3b6d11;
+  }
+
+  &.dot-rejected {
+    background: $gray-dark;
+  }
+
+  &.dot-archived {
+    background: #a32d2d;
+  }
+}
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+
+  &.badge-pending {
+    background: #faeeda;
+    color: #854f0b;
+  }
+
+  &.badge-processing {
+    background: #e6f1fb;
+    color: #185fa5;
+  }
+
+  &.badge-approved {
+    background: #eaf3de;
+    color: #3b6d11;
+  }
+
+  &.badge-rejected {
+    background: #f5d5d5;
+    color: $gray-dark;
+  }
+
+  &.badge-archived {
+    background: #fcebeb;
+    color: #a32d2d;
+  }
+}
+
+.dot-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &.dot-pending {
+    background: #ba7517;
+  }
+
+  &.dot-processing {
+    background: #185fa5;
+  }
+
+  &.dot-approved {
+    background: #3b6d11;
+  }
+
+  &.dot-rejected {
+    background: $gray-dark;
+  }
+
+  &.dot-archived {
+    background: #a32d2d;
+  }
+}
+
+
+
+
+
+
