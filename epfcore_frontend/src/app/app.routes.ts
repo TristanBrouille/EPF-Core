@@ -13,6 +13,8 @@ import { FormulaireDetail } from './gestionnaire-admission/formulaire-detail/for
 import { EntretiensSchedule } from './gestionnaire-admission/entretiens-schedule/entretiens-schedule';
 import { EntretienDetail } from './gestionnaire-admission/entretien-detail/entretien-detail';
 import { EntretienForm } from './gestionnaire-admission/entretien-form/entretien-form';
+import { EntretienBilan } from './gestionnaire-admission/entretien-bilan/entretien-bilan';
+import { EntretiensSuivi } from './gestionnaire-admission/entretiens-suivi/entretiens-suivi';
 import { ArchiveDocuments } from './archive-documents/archive-documents';
 
 export const routes: Routes = [
@@ -30,6 +32,8 @@ export const routes: Routes = [
   {path: 'admin/formulaires', component: FormulairesList},
   {path: 'admin/formulaires/:id', component: FormulaireDetail},
   {path: 'admin/entretiens', component: EntretiensSchedule},
+  {path: 'admin/entretiens/suivi', component: EntretiensSuivi},
   {path: 'admin/entretiens/nouveau', component: EntretienForm},
+  {path: 'admin/entretiens/:id/bilan', component: EntretienBilan},
   {path: 'admin/entretiens/:id', component: EntretienDetail},
 ];

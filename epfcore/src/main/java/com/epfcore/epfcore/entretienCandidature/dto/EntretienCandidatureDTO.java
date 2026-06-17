@@ -2,6 +2,7 @@ package com.epfcore.epfcore.entretienCandidature.dto;
 
 import com.epfcore.epfcore.entretienCandidature.entity.StatutEntretien;
 import com.epfcore.epfcore.entretienCandidature.entity.TypeEntretien;
+import com.epfcore.epfcore.formulaireInscription.entity.DecisionAdmission;
 import com.epfcore.epfcore.security.exposition.UserExpose;
 
 import java.time.LocalDateTime;
@@ -20,5 +21,6 @@ public record EntretienCandidatureDTO(
         StatutEntretien statut,
         Double note,
         String commentaire,
-        LocalDateTime dateCreation
+        LocalDateTime dateCreation,
+        DecisionAdmission decisionAdmission
 ) {}

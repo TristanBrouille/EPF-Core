@@ -80,11 +80,16 @@
         }
         <div>
           <label>Statut</label>
-          <select [(ngModel)]="entretien.statut" (change)="updateStatut()">
-            @for (statut of statutOptions; track statut) {
-              <option [value]="statut">{{ statut }}</option>
-            }
-          </select>
+          @if (statutLocked) {
+            <p>{{ formatStatut(entretien.statut) }}</p>
+          } @else {
+            <select [(ngModel)]="selectedStatut">
+              @for (statut of statutOptions; track statut) {
+                <option [value]="statut">{{ formatStatut(statut) }}</option>
+              }
+            </select>
+            <button type="button" class="btn-red btn-valider" [style.visibility]="showValiderButton ? 'visible' : 'hidden'" (click)="confirmStatut()">Valider</button>
+          }
         </div>
         <div>
           <label>Note</label>
@@ -96,6 +101,12 @@
         </div>
       </div>
     </div>
+
+    @if (entretien.statut === 'REALISE') {
+      <button type="button" class="btn-red btn-bilan" (click)="goToBilan()">
+        {{ entretien.decisionAdmission === 'ADMIS' || entretien.decisionAdmission === 'REFUSE' ? 'Afficher la décision' : 'Modifier le bilan / Prendre décision' }}
+      </button>
+    }
 
     <button type="button" class="btn-red btn-delete" (click)="deleteEntretien()">Supprimer l'entretien</button>
   }

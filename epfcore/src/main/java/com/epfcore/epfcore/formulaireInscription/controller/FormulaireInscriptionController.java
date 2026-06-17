@@ -1,6 +1,7 @@
 package com.epfcore.epfcore.formulaireInscription.controller;
 
 import com.epfcore.epfcore.formulaireInscription.dto.FormulaireInscriptionDTO;
+import com.epfcore.epfcore.formulaireInscription.entity.DecisionAdmission;
 import com.epfcore.epfcore.formulaireInscription.service.FormulaireInscriptionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,6 +57,15 @@ public class FormulaireInscriptionController {
     @GetMapping
     public ResponseEntity<List<FormulaireInscriptionDTO>> getAll() {
         return ResponseEntity.ok(formulaireService.getAll());
+    }
+
+    @PreAuthorize("hasAuthority('GESTIONNAIRE_ADMISSION')")
+    @PatchMapping("/{id}/decision")
+    public ResponseEntity<FormulaireInscriptionDTO> updateDecision(
+            @PathVariable Long id,
+            @RequestParam DecisionAdmission decision
+    ) {
+        return ResponseEntity.ok(formulaireService.updateDecision(id, decision));
     }
 
     @PreAuthorize("hasAuthority('GESTIONNAIRE_ADMISSION')")

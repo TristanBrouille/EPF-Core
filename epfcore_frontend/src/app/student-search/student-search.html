@@ -122,7 +122,7 @@
                 }
 
                 @if (documents().length > 0) {
-                <table class="hist-table">
+                <table class="hist-table" [class.compact]="!hasArchivedDocs()">
                     <thead>
                         <tr>
                             <th>Type</th>
@@ -143,35 +143,30 @@
                                 @if (doc.status === 'ARCHIVED') {
                                 <span class="badge-archived">
                                     <span class="dot-archived"></span>
-                                    Archivé le {{ doc.archivedAt | date:'dd/MM/yyyy' }}
+                                    ARCHIVED
                                 </span>
                                 } @else {
                                 <span class="badge-status badge-{{ doc.status.toLowerCase() }}">
+                                    <span class="dot-status" [ngClass]="dotClass(doc.status)"></span>
                                     {{ doc.status }}
                                 </span>
                                 }
                             </td>
                             <td>
                                 @if (doc.status !== 'ARCHIVED') {
-                                <button (click)="archiveDocument(doc.id)" class="btn-archive">
+                                <button (click)="askArchive(doc)" class="btn-archive">
                                     <i class="ti ti-archive"></i>
                                     Archiver
                                 </button>
                                 } @else {
-                                <button (click)="unarchiveDocument(doc.id)" class="btn-unarchive">
+                                <button (click)="askUnarchive(doc)" class="btn-unarchive">
                                     <i class="ti ti-archive-off"></i>
                                     Désarchiver
                                 </button>
                                 }
                             </td>
                         </tr>
-                        @if (archiveSuccess === doc.id) {
-                        <tr>
-                            <td colspan="4" class="archive-success">
-                                ✓ Document archivé avec succès.
-                            </td>
-                        </tr>
-                        }
+
                         }
                     </tbody>
                 </table>
@@ -189,6 +184,10 @@
             </div>
         </div>
     </div>
+
+    
+
+
 </div>
 } @else {
 <div class="loading">Chargement...</div>

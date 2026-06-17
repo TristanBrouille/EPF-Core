@@ -15,8 +15,14 @@ export class EntretienDetail implements OnInit {
   entretien: EntretienCandidature | null = null;
   errorMessage = '';
   successMessage = '';
+  selectedStatut: StatutEntretien = 'PLANIFIE';
+  statutLocked = false;
 
   readonly statutOptions: StatutEntretien[] = ['PLANIFIE', 'REALISE', 'ANNULE', 'NO_SHOW'];
+
+  get showValiderButton(): boolean {
+    return !this.statutLocked && this.selectedStatut !== 'PLANIFIE';
+  }
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -29,6 +35,8 @@ export class EntretienDetail implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     try {
       this.entretien = await this.entretienService.getById(id);
+      this.selectedStatut = this.entretien.statut ?? 'PLANIFIE';
+      this.statutLocked = this.entretien.statut !== 'PLANIFIE';
     } catch (error) {
       this.errorMessage = "Impossible de récupérer l'entretien";
       console.error(error);
@@ -36,12 +44,16 @@ export class EntretienDetail implements OnInit {
     this.cdr.detectChanges();
   }
 
-  async updateStatut(): Promise<void> {
+  async confirmStatut(): Promise<void> {
     if (!this.entretien?.id) {
       return;
     }
     try {
-      this.entretien = await this.entretienService.update(this.entretien.id, this.entretien);
+      this.entretien = await this.entretienService.update(this.entretien.id, {
+        ...this.entretien,
+        statut: this.selectedStatut,
+      });
+      this.statutLocked = true;
       this.successMessage = 'Statut mis à jour';
       this.errorMessage = '';
     } catch (error) {
@@ -67,6 +79,20 @@ export class EntretienDetail implements OnInit {
       console.error(error);
     }
     this.cdr.detectChanges();
+  }
+
+  goToBilan(): void {
+    this.router.navigate(['/admin/entretiens', this.entretien!.id, 'bilan']);
+  }
+
+  formatStatut(statut?: string): string {
+    const labels: Record<string, string> = {
+      PLANIFIE: 'planifié',
+      REALISE: 'réalisé',
+      ANNULE: 'annulé',
+      NO_SHOW: 'non assisté',
+    };
+    return statut ? (labels[statut] ?? statut) : '';
   }
 
   goBack(): void {

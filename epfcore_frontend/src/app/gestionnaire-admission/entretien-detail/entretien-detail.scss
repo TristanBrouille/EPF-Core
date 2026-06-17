@@ -40,6 +40,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
+  align-items: start;
 
   label {
     display: block;
@@ -62,6 +63,16 @@
   .full {
     grid-column: 1 / -1;
   }
+}
+
+.btn-valider {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.btn-bilan {
+  margin-bottom: 0.75rem;
+  display: block;
 }
 
 .btn-delete {

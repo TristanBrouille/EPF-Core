@@ -1,12 +1,15 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { loginService } from '../login/loginService';
 import { Router, RouterLink } from '@angular/router';
 import { FormulaireService } from '../formulaire-inscription/formulaireService';
 import { Formulaire } from '../model/formulaire';
+import { EntretienService } from '../gestionnaire-admission/entretien-service';
+import { EntretienCandidature } from '../model/entretien';
 
 @Component({
   selector: 'app-candidat',
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
   templateUrl: './candidat.html',
   styleUrl: './candidat.scss',
 })
@@ -14,11 +17,18 @@ export class Candidat implements OnInit {
   user: any = null;
   hasFormulaire: boolean = false;
   formulaire: Formulaire | null = null;
+  entretienPlanifie: EntretienCandidature | null = null;
+  entretienRealise: EntretienCandidature | null = null;
   errorMessage: string = '';
+
+  get entretienActif(): EntretienCandidature | null {
+    return this.entretienRealise ?? this.entretienPlanifie;
+  }
 
   constructor(
     private authService: loginService,
     private formulaireService: FormulaireService,
+    private entretienService: EntretienService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -40,11 +50,25 @@ export class Candidat implements OnInit {
       this.hasFormulaire = true;
       if (this.formulaire.soumis) {
         this.currentStep = 2;
+        await this.checkEntretien();
       }
     } catch (error: any) {
       if (error.status === 404) {
         this.hasFormulaire = false;
       }
+    }
+  }
+
+  async checkEntretien(): Promise<void> {
+    try {
+      const entretiens = await this.entretienService.getMesEntretiens();
+      this.entretienPlanifie = entretiens.find(e => e.statut === 'PLANIFIE') ?? null;
+      this.entretienRealise = entretiens.find(e => e.statut === 'REALISE') ?? null;
+      if (this.entretienRealise) {
+        this.currentStep = 3;
+      }
+    } catch {
+      // silencieux : l'absence d'entretien n'est pas une erreur
     }
   }
 
@@ -78,11 +102,13 @@ export class Candidat implements OnInit {
   }
 
   get currentStepMessage(): string {
+    if (this.currentStep === 2) {
+      return this.entretienPlanifie ? 'Un entretien est prévu.' : 'Un entretien sera prévu bientôt.';
+    }
     const messages: { [key: number]: string } = {
       1: 'Remplissage et soumission du dossier de candidature.',
-      2: 'Un entretien sera prévu bientôt.',
-      3: 'Le jury est en concertation pour votre dossier.',
-      4: 'Vous avez rçue une réponse par mail du jury',
+      3: 'Le jury va prendre une décision.',
+      4: 'Vous avez reçu une réponse par mail du jury.',
     };
     return messages[this.currentStep] ?? '';
   }
