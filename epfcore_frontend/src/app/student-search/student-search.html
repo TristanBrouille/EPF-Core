@@ -113,6 +113,66 @@
                 </a>
             </div>
 
+            <div class="card">
+                <h3>Documents générés</h3>
+
+                @if (documents().length === 0) {
+                <p class="no-docs">Aucun document généré pour cet étudiant. Cliquez sur les boutons d'en-dessous pour
+                    générer les documents</p>
+                }
+
+                @if (documents().length > 0) {
+                <table class="hist-table" [class.compact]="!hasArchivedDocs()">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (doc of documents(); track doc.id) {
+                        <tr [class.archived-row]="doc.status === 'ARCHIVED'">
+                            <td>
+                                <span class="doc-icon" [ngClass]="docIconClass(doc.documentType)">
+                                    <i class="ti" [ngClass]="docIconTi(doc.documentType)"></i>
+                                </span>
+                                <span class="doc-label">{{ documentTypeLabel(doc.documentType) }}</span>
+                            </td>
+                            <td>
+                                @if (doc.status === 'ARCHIVED') {
+                                <span class="badge-archived">
+                                    <span class="dot-archived"></span>
+                                    ARCHIVED
+                                </span>
+                                } @else {
+                                <span class="badge-status badge-{{ doc.status.toLowerCase() }}">
+                                    <span class="dot-status" [ngClass]="dotClass(doc.status)"></span>
+                                    {{ doc.status }}
+                                </span>
+                                }
+                            </td>
+                            <td>
+                                @if (doc.status !== 'ARCHIVED') {
+                                <button (click)="askArchive(doc)" class="btn-archive">
+                                    <i class="ti ti-archive"></i>
+                                    Archiver
+                                </button>
+                                } @else {
+                                <button (click)="askUnarchive(doc)" class="btn-unarchive">
+                                    <i class="ti ti-archive-off"></i>
+                                    Désarchiver
+                                </button>
+                                }
+                            </td>
+                        </tr>
+
+                        }
+                    </tbody>
+                </table>
+                }
+            </div>
+
             <div class="button-container">
                 <button (click)="downloadpdf()" class="pdf-button">
                     Télécharger les informations personnelles
@@ -124,6 +184,10 @@
             </div>
         </div>
     </div>
+
+    
+
+
 </div>
 } @else {
 <div class="loading">Chargement...</div>

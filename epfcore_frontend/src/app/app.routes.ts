@@ -15,6 +15,7 @@ import { EntretienDetail } from './gestionnaire-admission/entretien-detail/entre
 import { EntretienForm } from './gestionnaire-admission/entretien-form/entretien-form';
 import { EntretienBilan } from './gestionnaire-admission/entretien-bilan/entretien-bilan';
 import { EntretiensSuivi } from './gestionnaire-admission/entretiens-suivi/entretiens-suivi';
+import { ArchiveDocuments } from './archive-documents/archive-documents';
 
 export const routes: Routes = [
   {path: 'login', component: Login},
@@ -23,9 +24,11 @@ export const routes: Routes = [
   {path: 'home', component: Home},
   {path: 'formulaire-inscription', component: FormulaireInscription},
   {path: '', redirectTo: 'home', pathMatch: 'full' },
-  {path: 'student-profile', component: StudentProfile },
   {path: 'history-student', component: HistoryStudent },
   {path: 'student-profile', component: StudentProfile },
+  {path: 'student-list', component: StudentList },
+  {path: 'student-search/:id', component: StudentSearch },
+  {path: 'archive-documents', component: ArchiveDocuments },
   {path: 'admin/formulaires', component: FormulairesList},
   {path: 'admin/formulaires/:id', component: FormulaireDetail},
   {path: 'admin/entretiens', component: EntretiensSchedule},
@@ -33,6 +36,4 @@ export const routes: Routes = [
   {path: 'admin/entretiens/nouveau', component: EntretienForm},
   {path: 'admin/entretiens/:id/bilan', component: EntretienBilan},
   {path: 'admin/entretiens/:id', component: EntretienDetail},
-  { path: 'student-list', component: StudentList },
-  { path: 'student-search/:id', component: StudentSearch }
 ];

@@ -22,4 +22,16 @@ public class Campus {
 
     @Column(name = "code_postal")
     private Integer codePostal;
+
+    public Campus() {
+    }
+
+    public Campus(Long id, String ville, String adresse, Integer codePostal) {
+        this.id = id;
+        this.ville = ville;
+        this.adresse = adresse;
+        this.codePostal = codePostal;
+    }
+
+    
 }

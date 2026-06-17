@@ -4,71 +4,31 @@
 .history-wrapper {
   padding: 2rem 1.5rem;
 
-  .page-title {
-    font-size: 22px;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-  }
 
-  .page-sub {
-    font-size: 14px;
-    color: #6c757d;
-    margin-bottom: 1.5rem;
-  }
-
-  .summary-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+  .archive-header {
     margin-bottom: 1.5rem;
 
-    @media (max-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    .archive-title {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: $epf-red;
 
-    .scard {
-      background: #f8f9fa;
-      border-radius: 10px;
-      padding: 0.75rem 1rem;
-      border: 1px solid #e9ecef;
-
-      .scard-label {
-        font-size: 12px;
+      i {
+        font-size: 20px;
         color: #6c757d;
-        margin-bottom: 4px;
-      }
-
-      .scard-value {
-        font-size: 24px;
-        font-weight: 600;
-        color: #212529;
-      }
-
-      &.pending .scard-label {
-        color: #854f0b;
-      }
-
-      &.pending .scard-value {
-        color: #854f0b;
-      }
-
-      &.approved .scard-label {
-        color: #3b6d11;
-      }
-
-      &.approved .scard-value {
-        color: #3b6d11;
-      }
-
-      &.rejected .scard-label {
-        color: #a32d2d;
-      }
-
-      &.rejected .scard-value {
-        color: #a32d2d;
       }
     }
+
+    .archive-subtitle {
+      font-size: 14px;
+      color: #6c757d;
+    }
   }
+
 
   .filter-bar {
     display: flex;
@@ -99,6 +59,7 @@
       min-width: 160px;
     }
   }
+
 
   .table-card {
     background: #fff;
@@ -141,9 +102,26 @@
         border-bottom: none;
       }
 
-      &:hover {
-        background: #f8f9fa;
-        transition: background 0.15s;
+
+      &.archived-row {
+        background: #fafafa;
+        color: #6c757d;
+
+        td {
+          color: #212529;
+        }
+
+        td[rowspan] {
+          border-bottom: 2px solid #212529;
+        }
+
+        &.group-end td {
+          border-bottom: 2px solid #000;
+        }
+
+        &.row-hovered {
+          background: #f1f3f5;
+        }
       }
     }
   }
@@ -158,6 +136,7 @@
     font-size: 15px;
     margin-right: 8px;
     vertical-align: middle;
+    opacity: 0.75;
 
     &.doc-cert {
       background: #eaf3de;
@@ -168,25 +147,16 @@
       background: #e6f1fb;
       color: #185fa5;
     }
-
-    &.doc-conv {
-      background: #faeeda;
-      color: #854f0b;
-    }
-
-    &.doc-att {
-      background: #eeedfe;
-      color: #3c3489;
-    }
   }
 
   .doc-label {
     font-weight: 500;
     font-size: 13px;
     vertical-align: middle;
+    color: #6c757d;
   }
 
-  .badge-status {
+  .badge-archived {
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -195,89 +165,22 @@
     font-size: 12px;
     font-weight: 500;
     white-space: nowrap;
+    background: #e9ecef;
+    color: #6c757d;
 
-    &.badge-pending {
-      background: #faeeda;
-      color: #854f0b;
+    .dot-archived {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      background: #adb5bd;
     }
-
-    &.badge-processing {
-      background: #e6f1fb;
-      color: #185fa5;
-    }
-
-    &.badge-approved {
-      background: #eaf3de;
-      color: #3b6d11;
-    }
-
-    &.badge-rejected {
-      background: #f5d5d5;
-      color: $gray-dark;
-    }
-
-    &.badge-archived  { background: #fcebeb; color: #a32d2d; }
-  }
-
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
-
-    &.dot-pending {
-      background: #ba7517;
-    }
-
-    &.dot-processing {
-      background: #185fa5;
-    }
-
-    &.dot-approved {
-      background: #3b6d11;
-    }
-
-    &.dot-rejected {
-      background: $gray-dark;
-    }
-
-    &.dot-archived  { background: #a32d2d; }
-
-
   }
 
   .date-cell {
     color: #6c757d;
     font-size: 12px;
     white-space: nowrap;
-  }
-
-  .btn-icon {
-    border: none;
-    background: none;
-    color: #6c757d;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 4px 6px;
-    border-radius: 6px;
-    transition: background 0.15s, color 0.15s;
-
-    &:hover:not(:disabled) {
-      background: #e9ecef;
-      color: #212529;
-    }
-
-    &:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: #6c757d;
-    font-size: 14px;
   }
 
   .pdf-button {
@@ -290,10 +193,24 @@
     font-weight: 600;
     transition: 0.2s;
     font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    i {
+      font-size: 14px;
+    }
 
     &:hover {
       background: color.adjust($epf-red, $lightness: -10%);
       transform: translateY(-1px);
     }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+    font-size: 14px;
   }
 }

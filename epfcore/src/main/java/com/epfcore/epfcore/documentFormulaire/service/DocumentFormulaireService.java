@@ -70,7 +70,9 @@ public class DocumentFormulaireService {
         document.setFileUrl(storedFilename);
         document.setFileName(originalFilename);
 
+
         return toDocumentDTO(documentRepository.save(document));
+
     }
 
     public List<DocumentFormulaireDTO> getByFormulaireId(Long formulaireId, Authentication authentication) {
@@ -81,7 +83,9 @@ public class DocumentFormulaireService {
 
         return documentRepository.findByFormulaireId(formulaireId)
                 .stream()
+
                 .map(this::toDocumentDTO)
+            
                 .toList();
     }
 
@@ -127,7 +131,9 @@ public class DocumentFormulaireService {
         return user;
     }
 
+
     private DocumentFormulaireDTO toDocumentDTO(DocumentFormulaire document) {
+
         return new DocumentFormulaireDTO(
                 document.getId(),
                 document.getFormulaire().getId(),
