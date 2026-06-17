@@ -70,13 +70,86 @@ export class CarnetNotesComponent implements OnInit {
   }
 
   // ── Liste des carnets ──────────────────────────────────────────────────────
+  // loadCarnets(): void {
+  //   this.loading = true;
+  //   this.noteService.getAllCarnets().subscribe({
+  //     next: (data: CarnetDeNotes[]) => { this.carnets = data; this.loading = false; },
+  //     error: (e: ImportResult)   => { this.errorMsg = 'Erreur chargement carnets'; this.loading = false; }
+  //   });
+  // }
+
+  // loadCarnets(): void {
+  //   this.loading = false;
+
+  //   this.noteService.getAllCarnets().subscribe({
+  //     next: (data) => {
+  //       console.log('✔ Carnets reçus :', data);
+  //       this.carnets = data;
+  //       this.loading = false;
+  //     },
+  //     error: (err) => {
+  //       console.error('❌ Erreur API getAllCarnets :', err);
+  //       this.errorMsg = 'Erreur chargement carnets';
+  //       this.loading = false;
+  //     }
+  //   });
+  // }
+
   loadCarnets(): void {
+    console.log('LOAD CARNETS APPELÉ'); ///////////////////////////////////////////////////////
     this.loading = true;
+    ///////////////
+    console.log('START LOAD');
+
+    this.loading = true;
+
     this.noteService.getAllCarnets().subscribe({
-      next: (data: CarnetDeNotes[]) => { this.carnets = data; this.loading = false; },
-      error: (e: ImportResult)   => { this.errorMsg = 'Erreur chargement carnets'; this.loading = false; }
+      next: data => {
+        console.log('NEXT');
+
+        this.carnets = [...data];
+
+        console.log('BEFORE FALSE');
+
+        this.loading = false;
+
+        console.log('AFTER FALSE');
+      },
+      error: err => {
+        console.log('ERROR', err);
+
+        this.loading = false;
+      }
     });
+    //////////////////
+    // this.noteService.getAllCarnets().subscribe({
+    //   next: data => {
+    //     console.log('AVANT affectation', this.carnets);
+    //     console.log('DATA reçue', data);
+
+    //     this.carnets = [...data];
+
+    //     console.log('APRÈS affectation', this.carnets);
+
+    //     this.loading = false;
+    //   }
+    // });
+    // this.noteService.getAllCarnets().subscribe({
+    //   next: data => {
+    //     console.log('Carnets reçus :', data);      // ← ouvrez F12 Console
+    //     console.log('Nombre :', data.length);
+    //     //this.carnets = data;
+    //     this.carnets = [...data];
+    //     this.loading = false;
+    //   },
+    //   error: e => {
+    //     console.error('Erreur complète :', e);
+    //     this.errorMsg = 'Erreur : ' + e.status + ' ' + e.message;
+    //     this.loading = false;
+    //   }
+    // });
   }
+
 
   // ── Créer un carnet ────────────────────────────────────────────────────────
   showCreate(): void   { this.currentView = 'create'; this.clearMessages(); }
@@ -109,29 +182,57 @@ export class CarnetNotesComponent implements OnInit {
     this.loadMoyennes(carnet.id);
   }
 
+  // backToList(): void {
+  //   this.selectedCarnet = null;
+  //   this.currentView    = 'list';
+  //   this.loadCarnets();
+  // }
   backToList(): void {
+
     this.selectedCarnet = null;
-    this.currentView    = 'list';
-    this.loadCarnets();
-  }
+
+    this.currentView = 'list';
+
+    }
+
+  // loadEvaluations(carnetId: number): void {
+  //   this.noteService.getEvaluations(carnetId).subscribe({
+  //     next: (evals: Evaluation[]) => { this.evaluations = evals; },
+  //     error: ()   => { this.errorMsg = 'Erreur chargement évaluations'; }
+  //   });
+  // }
+
+  // loadMoyennes(carnetId: number): void {
+  //   this.noteService.getMoyennes(carnetId).subscribe({
+  //     next: (data: MoyenneRow[]) => {
+  //       this.moyennes = data;
+  //       // Initialiser la grille depuis les moyennes (liste des étudiants)
+  //       this.etudiantsAffichage = data.map(r => ({
+  //         id: r.etudiantId, numero: r.numero, nomComplet: r.nomComplet
+  //       }));
+  //     },
+  //     error: () => {}
+  //   });
+  // }
 
   loadEvaluations(carnetId: number): void {
     this.noteService.getEvaluations(carnetId).subscribe({
-      next: (evals: Evaluation[]) => { this.evaluations = evals; },
-      error: ()   => { this.errorMsg = 'Erreur chargement évaluations'; }
+      next: (evals) => {
+        console.log('EVALUATIONS', evals);
+        this.evaluations = evals;
+      }
     });
   }
 
   loadMoyennes(carnetId: number): void {
     this.noteService.getMoyennes(carnetId).subscribe({
-      next: (data: MoyenneRow[]) => {
+      next: (data) => {
+        console.log('MOYENNES', data);
         this.moyennes = data;
-        // Initialiser la grille depuis les moyennes (liste des étudiants)
         this.etudiantsAffichage = data.map(r => ({
           id: r.etudiantId, numero: r.numero, nomComplet: r.nomComplet
         }));
-      },
-      error: () => {}
+      }
     });
   }
 

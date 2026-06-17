@@ -35,7 +35,7 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "valeur_note")
+    @Column(name = "valeurNote")
     private Float valeur_note;   // Float (nullable) : null = absent
 
     @Column(name = "absent", nullable = false)

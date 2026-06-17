@@ -51,13 +51,31 @@ public class NoteService {
 
     /** Récupère tous les carnets. */
     @Transactional(readOnly = true)
+    // public List<CarnetDeNotes> findAllCarnets() {
+    //     return em.createQuery(
+    //         "SELECT c FROM CarnetDeNotes c " +
+    //         "LEFT JOIN FETCH c.uniteEnseignement " +
+    //         "LEFT JOIN FETCH c.evaluations " +
+    //         "ORDER BY c.anneeAcademique DESC, c.intitule", CarnetDeNotes.class)
+    //         .getResultList();
+    // }
+
     public List<CarnetDeNotes> findAllCarnets() {
         return em.createQuery(
-            "SELECT c FROM CarnetDeNotes c " +
+            "SELECT DISTINCT c FROM CarnetDeNotes c " +
             "LEFT JOIN FETCH c.uniteEnseignement " +
-            "LEFT JOIN FETCH c.evaluations " +
             "ORDER BY c.anneeAcademique DESC, c.intitule", CarnetDeNotes.class)
             .getResultList();
+    }
+
+    @Transactional(readOnly = true)
+    public long countEvaluationsByCarnet(long carnetId) {
+        Long count = em.createQuery(
+            "SELECT COUNT(e) FROM Evaluation e WHERE e.carnet.id = :id",
+            Long.class)
+            .setParameter("id", carnetId)
+            .getSingleResult();
+        return count != null ? count : 0L;
     }
 
     /** Récupère un carnet par id. */

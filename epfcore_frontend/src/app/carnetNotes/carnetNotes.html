@@ -5,6 +5,13 @@
 
 <div class="cn-wrapper">
 
+  <p>LOADING = {{ loading }}</p>
+
+  <p>VIEW = {{ currentView }}</p>
+  <p>NB CARNETS = {{ carnets.length }}</p>
+
+  <pre>{{ carnets | json }}</pre>
+
   <!-- ── Bandeau en-tête ──────────────────────────────────────────────────── -->
   <div class="cn-header">
     <div class="cn-header-left">
@@ -48,12 +55,18 @@
 
     <div *ngIf="loading" class="cn-loading">Chargement…</div>
 
-    <div *ngIf="!loading && carnets.length === 0" class="cn-empty">
+    <!-- <div *ngIf="!loading && carnets.length === 0" class="cn-empty">
       Aucun carnet de notes. Cliquez sur <strong>+ Nouveau carnet</strong> pour commencer.
-    </div>
+    </div> -->
 
     <div class="carnet-grid" *ngIf="!loading && carnets.length > 0">
+      <!-- uuuuu -->
+      <p>JE PASSE ICI</p>
+      <!-- uuuuu -->
       <div class="carnet-card" *ngFor="let c of carnets" (click)="ouvrirCarnet(c)">
+        <!-- uuuuu -->
+        <p>{{ c.intitule }}</p>
+        <!-- uuuuu -->
         <div class="carnet-card-header">
           <span class="carnet-card-title">{{ c.intitule }}</span>
           <span class="badge" [class.badge-publie]="c.statut === 'PUBLIE'"

@@ -26,13 +26,13 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(
-  origins = "http://localhost:4200",
-  methods = {RequestMethod.GET, RequestMethod.POST,
-             RequestMethod.PUT, RequestMethod.PATCH,
-             RequestMethod.DELETE},
-  allowedHeaders = "*"
-)
+// @CrossOrigin(
+//   origins = "http://localhost:4200",
+//   methods = {RequestMethod.GET, RequestMethod.POST,
+//              RequestMethod.PUT, RequestMethod.PATCH,
+//              RequestMethod.DELETE},
+//   allowedHeaders = "*"
+// )
 public class NoteController {
  
     @Autowired
@@ -213,7 +213,9 @@ public class NoteController {
             m.put("uniteEnseignementId",      c.getUniteEnseignement().getId());
             m.put("uniteEnseignementIntitule", c.getUniteEnseignement().getIntitule());
         }
-        m.put("nbEvaluations", c.getEvaluations().size());
+        //m.put("nbEvaluations", c.getEvaluations().size());
+        Long nbEvals = (Long) noteService.countEvaluationsByCarnet(c.getId());
+        m.put("nbEvaluations", nbEvals != null ? nbEvals : 0);
         return m;
     }
  
