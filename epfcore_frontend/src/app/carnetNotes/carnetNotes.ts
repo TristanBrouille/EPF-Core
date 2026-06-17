@@ -162,14 +162,17 @@ export class CarnetNotesComponent implements OnInit {
     }
     this.loading = true;
     this.noteService.creerCarnet(this.newCarnet).subscribe({
-      next: (carnet: CarnetDeNotes) => {
+      next: carnet => {
         this.carnets.unshift(carnet);
-        this.successMsg = `Carnet "${carnet.intitule}" créé avec succès.`;
-        this.newCarnet  = { intitule: '', anneeAcademique: '2024-2025', uniteEnseignementId: null };
-        this.currentView = 'list';
+        this.newCarnet = { intitule: '', anneeAcademique: '2024-2025', uniteEnseignementId: null };
         this.loading = false;
+        // ← Au lieu de revenir sur 'list', on ouvre directement le carnet créé
+        this.ouvrirCarnet(carnet);
       },
-      error: (e: HttpErrorResponse) => { this.errorMsg = 'Erreur création : ' + (e.error?.error || e.message); this.loading = false; }
+      error: e => {
+        this.errorMsg = 'Erreur création : ' + (e.error?.error || e.message);
+        this.loading = false;
+      }
     });
   }
 
