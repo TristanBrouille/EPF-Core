@@ -1,8 +1,8 @@
-package com.epfcore.epfcore.security.domain;
+package com.epfcore.epfcore.student.dto;
 
 import java.time.LocalDate;
 
-public class UserDTO {
+public class UserDocDTO {
 
     private Long id;
     private String firstname;
@@ -10,9 +10,9 @@ public class UserDTO {
     private String email;
     private LocalDate birthDate;
 
-    public UserDTO() {}
+    public UserDocDTO() {}
 
-    public UserDTO(com.epfcore.epfcore.security.domain.User user) {
+    public UserDocDTO(com.epfcore.epfcore.security.domain.User user) {
         this.id = user.getId();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
