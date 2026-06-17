@@ -27,5 +27,16 @@
       <mat-icon>logout</mat-icon>
       <span>Deconnexion</span>
     </button>
+    @if(isAdmin){
+      <button mat-menu-item (click)="openImpersonateDialog()">
+        <mat-icon>switch_account</mat-icon>
+        <span>Impersonate</span>
+      </button>
+    } @else if (isImpersonating){
+      <button mat-raised-button color="warn" (click)="revertImpersonation()">
+        <mat-icon>switch_account</mat-icon>
+        <span>Revert to Admin</span>
+      </button>
+    }
   </mat-menu>
 </mat-toolbar>
