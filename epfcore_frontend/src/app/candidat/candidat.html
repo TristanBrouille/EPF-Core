@@ -9,7 +9,16 @@
         <p><strong>Date de naissance :</strong> {{ user.birthday }}</p>
 
         @if (!hasFormulaire) {
-          <button class="btn-red mt-3" (click)="createFormulaire()">
+          <div class="rgpd-consent mt-3">
+            <label>
+              <input type="checkbox" [(ngModel)]="rgpdAccepte" />
+              <span>
+                J'accepte que mes données personnelles soient collectées et traitées par EPF dans le cadre de ma candidature, conformément au RGPD.<br/>
+                <a href="https://www.epf.fr/mentions-legales" target="_blank">Consulter les mentions légales</a>
+              </span>
+            </label>
+          </div>
+          <button class="btn-red mt-2" (click)="createFormulaire()" [disabled]="!rgpdAccepte">
             Créer mon dossier de candidature
           </button>
         } @else if (!isSoumis) {

@@ -1,5 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { loginService } from '../login/loginService';
 import { Router, RouterLink } from '@angular/router';
 import { FormulaireService } from '../formulaire-inscription/formulaireService';
@@ -9,13 +10,14 @@ import { EntretienCandidature } from '../model/entretien';
 
 @Component({
   selector: 'app-candidat',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, FormsModule],
   templateUrl: './candidat.html',
   styleUrl: './candidat.scss',
 })
 export class Candidat implements OnInit {
   user: any = null;
   hasFormulaire: boolean = false;
+  rgpdAccepte: boolean = false;
   formulaire: Formulaire | null = null;
   entretienPlanifie: EntretienCandidature | null = null;
   entretienRealise: EntretienCandidature | null = null;
