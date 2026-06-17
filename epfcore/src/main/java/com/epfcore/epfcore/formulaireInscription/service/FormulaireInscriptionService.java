@@ -4,6 +4,7 @@ import com.epfcore.epfcore.campus.entity.Campus;
 import com.epfcore.epfcore.campus.repository.CampusRepository;
 import com.epfcore.epfcore.documentFormulaire.repository.DocumentFormulaireRepository;
 import com.epfcore.epfcore.documentFormulaire.storage.StorageService;
+import com.epfcore.epfcore.email.EmailService;
 import com.epfcore.epfcore.formulaireInscription.dto.FormulaireInscriptionDTO;
 import com.epfcore.epfcore.formulaireInscription.entity.DecisionAdmission;
 import com.epfcore.epfcore.formulaireInscription.entity.FormulaireInscription;
@@ -28,19 +29,22 @@ public class FormulaireInscriptionService {
     private final CampusRepository campusRepository;
     private final DocumentFormulaireRepository documentRepository;
     private final StorageService storageService;
+    private final EmailService emailService;
 
     public FormulaireInscriptionService(
             FormulaireInscriptionRepository formulaireRepository,
             UserJpaRepository userRepository,
             CampusRepository campusRepository,
             DocumentFormulaireRepository documentRepository,
-            StorageService storageService
+            StorageService storageService,
+            EmailService emailService
     ) {
         this.formulaireRepository = formulaireRepository;
         this.userRepository = userRepository;
         this.campusRepository = campusRepository;
         this.documentRepository = documentRepository;
         this.storageService = storageService;
+        this.emailService = emailService;
     }
 
     public FormulaireInscriptionDTO save(FormulaireInscriptionDTO dto, String email) {
@@ -119,7 +123,16 @@ public class FormulaireInscriptionService {
         FormulaireInscription formulaire = formulaireRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Formulaire not found"));
         formulaire.setDecisionAdmission(decision);
-        return toDTO(formulaireRepository.save(formulaire));
+        FormulaireInscription saved = formulaireRepository.save(formulaire);
+
+        if (decision == DecisionAdmission.ADMIS || decision == DecisionAdmission.REFUSE) {
+            try {
+                emailService.sendDecisionEmail(saved);
+            } catch (Exception ignored) {
+            }
+        }
+
+        return toDTO(saved);
     }
 
     public void delete(Long id, Authentication authentication) {

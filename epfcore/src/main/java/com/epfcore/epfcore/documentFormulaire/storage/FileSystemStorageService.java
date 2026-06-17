@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +23,25 @@ public class FileSystemStorageService implements StorageService {
         if (properties.getLocation().trim().isEmpty()) {
             throw new StorageException("File upload location can not be Empty.");
         }
-        this.rootLocation = Paths.get(properties.getLocation());
+        Path configured = Paths.get(properties.getLocation());
+        Path resolved;
+        if (configured.isAbsolute()) {
+            resolved = configured;
+        } else {
+            // Résolution relative à target/classes pour être indépendant du répertoire de travail IntelliJ
+            Path fallback = configured.toAbsolutePath();
+            try {
+                URL source = getClass().getProtectionDomain().getCodeSource().getLocation();
+                Path sourcePath = Paths.get(source.toURI());
+                Path base = Files.isDirectory(sourcePath)
+                        ? sourcePath.getParent().getParent()  // target/classes → module root
+                        : sourcePath.getParent();              // dossier contenant le jar en prod
+                resolved = base.resolve(configured).normalize();
+            } catch (Exception e) {
+                resolved = fallback;
+            }
+        }
+        this.rootLocation = resolved;
     }
 
     @Override
