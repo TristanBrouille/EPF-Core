@@ -6,8 +6,8 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { loginService } from '../../login/loginService';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ImpersonateDialogComponent } from '../../impersonate-dialog/impersonate-dialog.component';
-import { ImpersonateService } from '../../impersonate-dialog/impersonate.service';
+import {ImpersonateService} from '../../impersonate-dialog/impersonate.service';
+import {ImpersonateDialogComponent} from '../../impersonate-dialog/impersonate-dialog.component';
 import { CommonModule } from '@angular/common';
 import {AuthState} from '../../auth/auth-state';
 

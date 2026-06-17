@@ -13,11 +13,15 @@ import com.epfcore.epfcore.security.domain.Roles;
 import com.epfcore.epfcore.security.domain.User;
 import com.epfcore.epfcore.security.exposition.UserExpose;
 import com.epfcore.epfcore.security.infrastructure.UserJpaRepository;
+import com.epfcore.epfcore.student.entity.Gender;
+import com.epfcore.epfcore.student.entity.Student;
+import com.epfcore.epfcore.student.repository.StudentRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,6 +34,7 @@ public class FormulaireInscriptionService {
     private final DocumentFormulaireRepository documentRepository;
     private final StorageService storageService;
     private final EmailService emailService;
+    private final StudentRepository studentRepository;
 
     public FormulaireInscriptionService(
             FormulaireInscriptionRepository formulaireRepository,
@@ -37,7 +42,8 @@ public class FormulaireInscriptionService {
             CampusRepository campusRepository,
             DocumentFormulaireRepository documentRepository,
             StorageService storageService,
-            EmailService emailService
+            EmailService emailService,
+            StudentRepository studentRepository
     ) {
         this.formulaireRepository = formulaireRepository;
         this.userRepository = userRepository;
@@ -45,6 +51,7 @@ public class FormulaireInscriptionService {
         this.documentRepository = documentRepository;
         this.storageService = storageService;
         this.emailService = emailService;
+        this.studentRepository = studentRepository;
     }
 
     public FormulaireInscriptionDTO save(FormulaireInscriptionDTO dto, String email) {
@@ -125,6 +132,10 @@ public class FormulaireInscriptionService {
         formulaire.setDecisionAdmission(decision);
         FormulaireInscription saved = formulaireRepository.save(formulaire);
 
+        if (decision == DecisionAdmission.ADMIS) {
+            promouvoirEnEtudiant(saved);
+        }
+
         if (decision == DecisionAdmission.ADMIS || decision == DecisionAdmission.REFUSE) {
             try {
                 emailService.sendDecisionEmail(saved);
@@ -133,6 +144,47 @@ public class FormulaireInscriptionService {
         }
 
         return toDTO(saved);
+    }
+
+    private void promouvoirEnEtudiant(FormulaireInscription formulaire) {
+        User user = formulaire.getUser();
+
+        if (studentRepository.findByUserId(user.getId()).isPresent()) {
+            return;
+        }
+
+        user.setRole(Roles.ETUDIANT);
+        userRepository.save(user);
+
+        int currentYear = LocalDate.now().getYear();
+        int anneeIntegration = formulaire.getAnneeIntegration() != null ? formulaire.getAnneeIntegration() : 1;
+        int endYear = currentYear + (6 - anneeIntegration);
+
+        Student student = new Student();
+        student.setUser(user);
+        student.setGender(parseGenre(formulaire.getGenre()));
+        student.setNationality(formulaire.getNationalite());
+        student.setPhone(formulaire.getTelephone());
+        student.setAddress(formulaire.getAdresse());
+        student.setMajor(formulaire.getMajeur());
+        student.setProgram(formulaire.getProgrammeChoisi());
+        student.setCampus(formulaire.getCampus());
+        student.setLastDegree(formulaire.getDernierDiplome());
+        student.setScholarship(false);
+        student.setEnrollmentDate(LocalDate.now());
+        student.setAcademicYear(currentYear + "-" + endYear);
+
+        Student saved = studentRepository.save(student);
+        saved.setStudentNumber("ET" + currentYear + saved.getId());
+        studentRepository.save(saved);
+    }
+
+    private Gender parseGenre(String genre) {
+        if (genre == null) return Gender.MALE;
+        return switch (genre.toLowerCase()) {
+            case "femme", "f", "female" -> Gender.FEMALE;
+            default -> Gender.MALE;
+        };
     }
 
     public void delete(Long id, Authentication authentication) {
