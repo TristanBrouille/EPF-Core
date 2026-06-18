@@ -1,5 +1,6 @@
 package com.epfcore.epfcore.grades.controller;
  
+import com.epfcore.epfcore.grades.dto.MoyenneRowDto;
 import com.epfcore.epfcore.grades.entities.*;
 import com.epfcore.epfcore.grades.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,34 +114,17 @@ public class NoteController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
- 
+
     @GetMapping("/carnets/{carnetId}/moyennes")
     public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
         try {
-            List<Etudiant> etudiants = noteService.findEtudiantsByCarnet(carnetId);
-            List<Map<String, Object>> result = new ArrayList<>();
-
-            for (Etudiant e : etudiants) {
-                Float moy = noteService.calculerMoyenneEtudiant(carnetId, e.getId());
-
-                Map<String, Object> row = new LinkedHashMap<>();
-                row.put("etudiantId", e.getId());
-                row.put("studentNumber", e.getStudentNumber());
-                row.put("userId", e.getUserId());
-                row.put("campus", e.getCampus());
-                row.put("moyenne", moy);
-
-                result.add(row);
-            }
-
-            return ResponseEntity.ok(result);
-
+            return ResponseEntity.ok(noteService.getMoyennesParCarnet(carnetId));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("error", e.getMessage()));
         }
     }
- 
+  
     private Map<String, Object> toCarnetMap(CarnetDeNotes c) {
         Map<String, Object> m = new LinkedHashMap<>();
         m.put("id",              c.getId());
@@ -180,7 +164,7 @@ public class NoteController {
         m.put("commentaire", n.getCommentaire());
         m.put("source",      n.getSource());
         m.put("dateSaisie",  n.getDateSaisie() != null ? n.getDateSaisie().toString() : null);
-        m.put("etudiantId",  n.getEtudiant().getId());
+        m.put("etudiantId",  n.getEtudiantId());
         m.put("evaluationId",n.getEvaluation().getId());
         return m;
     }
