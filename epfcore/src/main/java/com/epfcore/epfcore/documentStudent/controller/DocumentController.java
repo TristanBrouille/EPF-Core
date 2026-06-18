@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,6 +40,7 @@ public class DocumentController {
         this.generationCertificateService = generationCertificateService;
         this.generationPdfService = generationPdfService;
     }
+
 
     @GetMapping
     public ResponseEntity<List<DocumentStudent>> getAll() {
@@ -89,6 +91,7 @@ public class DocumentController {
         return ResponseEntity.ok().headers(headers).body(pdf);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/{id}/archive")
     public ResponseEntity<DocumentStudent> archiveDocument(
             @PathVariable Integer id,
@@ -96,16 +99,19 @@ public class DocumentController {
         return ResponseEntity.ok(documentService.archive(id, archivedBy));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user/{userId}/archived")
     public ResponseEntity<List<DocumentStudentDTO>> getArchivedByUserId(@PathVariable Integer userId) {
         return ResponseEntity.ok(documentService.getArchivedByUserId(userId));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/{id}/unarchive")
     public ResponseEntity<DocumentStudent> unarchive(@PathVariable Integer id) {
         return ResponseEntity.ok(documentService.unarchive(id));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/archived")
     public ResponseEntity<List<DocumentStudentDTO>> getAllArchived() {
         return ResponseEntity.ok(documentService.getAllArchived());

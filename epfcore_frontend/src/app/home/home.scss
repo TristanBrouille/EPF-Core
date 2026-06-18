@@ -2,14 +2,28 @@
 
 .home-container {
   padding: 1rem;
-  h1 { color: $epf-red; margin-bottom: 0.3rem; }
-  .subtitle { color: $epf-purple; margin-bottom: 1.5rem; }
+
+  h1 {
+    color: $epf-red;
+    margin-bottom: 0.3rem;
+  }
+
+  .subtitle {
+    color: $epf-purple;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .portal-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
+
+  &.compact-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 320px));
+    justify-content: start;
+    gap: 0.75rem;
+  }
 }
 
 .portal-card {
@@ -25,19 +39,60 @@
     margin-bottom: 1rem;
   }
 
-  h3 { color : $white ;margin: 0.5rem 0; }
-  p { font-size: 0.9rem; margin-bottom: 1rem; flex: 1; }
+  h3 {
+    color: $white ;
+    margin: 0.5rem 0;
+  }
 
-  button { color: $white; margin-top: auto; }
+  p {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    flex: 1;
+  }
 
-  &.red-card { background-color: $epf-red; }
-  &.purple-card { background-color: $epf-purple; }
+  button {
+    color: $white;
+    margin-top: auto;
+  }
 
-  .red-button{
+  &.red-card {
+    background-color: $epf-red;
+  }
+
+  &.purple-card {
+    background-color: $epf-purple;
+  }
+
+  .red-button {
     background-color: $epf-red-light;
   }
 
-  .purple-button{
+  .purple-button {
     background-color: $epf-purple-light;
+  }
+
+  &.compact-card {
+    padding: 0.9rem;
+
+    mat-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.7rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin: 0.4rem 0;
+    }
+
+    p {
+      font-size: 0.85rem;
+      margin-bottom: 0.8rem;
+    }
+
+    button {
+      font-size: 0.85rem;
+      padding: 0 1rem;
+      line-height: 36px;
+    }
   }
 }
