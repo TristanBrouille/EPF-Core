@@ -47,6 +47,13 @@
       <p>Consultez la liste des documents archivés</p>
       <button mat-raised-button class="purple-button" routerLink="/archive-documents">Accéder</button>
     </mat-card>
+    <mat-card class="portal-card red-card compact-card">
+      <mat-icon>list</mat-icon>
+      <h3>Utilisateurs</h3>
+      <p>Consultez la liste des des utilisateur afin de les modifier/ajouter</p>
+      <button mat-raised-button class="red-button" routerLink="/user-list">Accéder</button>
+    </mat-card>
+
   </div>
   } @else {
   <div class="portal-grid">
@@ -84,7 +91,7 @@
       <p>Consultez et gérez la liste des salles</p>
       <button mat-raised-button class="red-button" routerLink="/listeSalles">Voir les salles</button>
     </mat-card>
-    
+
     </div>
   }
 

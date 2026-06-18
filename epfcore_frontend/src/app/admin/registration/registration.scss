@@ -1,0 +1,110 @@
+@use '../../../variables' as *;
+
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 40px);
+  background-color: $gray-light;
+  padding: 1.5rem;
+}
+
+.registration-card {
+  background-color: $white;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 550px;
+}
+
+.text-muted {
+  color: $gray-dark;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+  flex: 1;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: $gray-dark;
+  }
+
+  input, select {
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $epf-purple;
+      box-shadow: 0 0 0 3px rgba($epf-purple, 0.15);
+    }
+
+    &.is-invalid {
+      border-color: $epf-red;
+      background-color: rgba($epf-red, 0.02);
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($epf-red, 0.15);
+      }
+    }
+  }
+}
+
+button.btn-block {
+  width: 100%;
+  padding: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba($epf-purple, 0.2);
+
+  &:hover:not(:disabled) {
+    background-color: $epf-purple-light;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.alert {
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: 500;
+
+  &-success {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+  }
+
+  &-danger {
+    background-color: rgba($epf-red, 0.1);
+    color: $epf-red;
+    border: 1px solid rgba($epf-red, 0.2);
+  }
+}

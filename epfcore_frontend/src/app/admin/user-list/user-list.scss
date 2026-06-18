@@ -1,0 +1,122 @@
+@use '../../../variables' as *;
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background-color: $white;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+
+  thead {
+    background-color: $epf-red;
+    color: $white;
+
+    th {
+      padding: 1rem;
+      font-weight: 600;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $gray-light;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: rgba($epf-purple-light, 0.08);
+      }
+
+      &.active-row {
+        background-color: rgba($epf-purple, 0.12);
+        border-left: 4px solid $epf-purple;
+      }
+    }
+
+    td {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+  }
+}
+
+.badge {
+  background-color: rgba($epf-purple, 0.1);
+  color: $epf-purple;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.edit-card {
+  background-color: $white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid $epf-purple;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: $gray-dark;
+  }
+
+  input, select {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+
+    &:focus {
+      outline: none;
+      border-color: $epf-purple;
+      box-shadow: 0 0 0 3px rgba($epf-purple, 0.15);
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.alert {
+  padding: 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+
+  &-success { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
+  &-danger { background-color: rgba($epf-red, 0.1); color: $epf-red; }
+}
