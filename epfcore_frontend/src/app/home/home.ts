@@ -17,4 +17,8 @@ export class Home {
   get isGestionnaireAdmission(): boolean {
     return this.authState.hasRole('GESTIONNAIRE_ADMISSION');
   }
+
+  get isAdmin(): boolean {
+    return this.authState.hasRole('ADMIN');
+  }
 }
