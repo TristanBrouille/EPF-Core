@@ -1,6 +1,3 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {Login} from './login/login';
 import { BulletinComponent } from './bulletin.component/bulletin.component';
 
 import { Component } from '@angular/core';
@@ -15,7 +12,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, MatSidenavContainer, MatSidenav, Sidebar, MatSidenavContent, Footer, CommonModule,BulletinComponent,BulletinComponent],
+  imports: [RouterOutlet, Header, MatSidenavContainer, MatSidenav, Sidebar, MatSidenavContent, Footer, CommonModule,],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
