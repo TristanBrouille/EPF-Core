@@ -51,15 +51,6 @@ public class NoteService {
 
     /** Récupère tous les carnets. */
     @Transactional(readOnly = true)
-    // public List<CarnetDeNotes> findAllCarnets() {
-    //     return em.createQuery(
-    //         "SELECT c FROM CarnetDeNotes c " +
-    //         "LEFT JOIN FETCH c.uniteEnseignement " +
-    //         "LEFT JOIN FETCH c.evaluations " +
-    //         "ORDER BY c.anneeAcademique DESC, c.intitule", CarnetDeNotes.class)
-    //         .getResultList();
-    // }
-
     public List<CarnetDeNotes> findAllCarnets() {
         return em.createQuery(
             "SELECT DISTINCT c FROM CarnetDeNotes c " +

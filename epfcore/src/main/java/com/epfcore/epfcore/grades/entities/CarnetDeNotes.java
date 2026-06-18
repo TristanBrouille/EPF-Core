@@ -4,9 +4,13 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Carnet_de_notes")
+@Getter
+@Setter
 public class CarnetDeNotes {
 
     @Id
@@ -52,25 +56,6 @@ public class CarnetDeNotes {
         this.anneeAcademique   = anneeAcademique;
         this.uniteEnseignement = ue;
     }
-
-    // ── Getters / Setters ─────────────────────────────────────────────────────
-    public long              getId()                        { return id; }
-    public String            getIntitule()                  { return intitule; }
-    public void              setIntitule(String i)          { this.intitule = i; }
-    public String            getAnneeAcademique()           { return anneeAcademique; }
-    public void              setAnneeAcademique(String a)   { this.anneeAcademique = a; }
-    public String            getStatut()                    { return statut; }
-    public void              setStatut(String statut)       { this.statut = statut; }
-    public Float             getMoyenneClasse()             { return moyenneClasse; }
-    public void              setMoyenneClasse(Float m)      { this.moyenneClasse = m; }
-    public UniteEnseignement getUniteEnseignement()         { return uniteEnseignement; }
-    public void              setUniteEnseignement(UniteEnseignement ue){ this.uniteEnseignement = ue; }
-    public Module            getModule()                    { return module; }
-    public void              setModule(Module m)            { this.module = m; }
-    public LocalDateTime     getDateCreation()              { return dateCreation; }
-    public LocalDateTime     getDatePublication()           { return datePublication; }
-    public void              setDatePublication(LocalDateTime d){ this.datePublication = d; }
-    public List<Evaluation>  getEvaluations()               { return evaluations; }
 
     public boolean isPublie() { return "PUBLIE".equals(this.statut); }
 }
