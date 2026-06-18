@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Student } from '../model/student';
 import { StudentService } from './student-service';
 import { Router } from '@angular/router';
+import {loginService} from '../login/loginService';
+import {User} from '../model/user';
 
 @Component({
   selector: 'app-student-profile',
@@ -13,30 +15,54 @@ import { Router } from '@angular/router';
 })
 export class StudentProfile implements OnInit {
 
-  student: Student | null = null;
+  protected student: Student | null = null;
+  protected user: User | undefined;
 
   constructor(
     protected readonly router: Router,
     private studentService: StudentService,
+    private loginService : loginService,
     private cdr: ChangeDetectorRef
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.loadStudentConnecte();
+
+    try {
+      await Promise.all([
+        this.loadStudentConnecte(),
+        this.loadUserConnecte()
+      ]);
+    } catch (err) {
+      console.error("Une erreur est survenue lors du chargement des données utilisateur", err);
+    }
   }
 
-  async loadStudentConnecte(): Promise<void> {
+  private async loadStudentConnecte(): Promise<void> {
     try {
       this.student = await this.studentService.getCurrentStudent();
-      this.cdr.detectChanges();
     } catch (err) {
-      console.error('Erreur chargement student connecté', err);
+      console.error('Erreur chargement student connecté :', err);
+      throw err;
+    }
+  }
+
+  private async loadUserConnecte(): Promise<void> {
+    try {
+      this.user = await this.loginService.me();
+    } catch (err) {
+      console.error('Erreur chargement user connecté :', err);
+      throw err;
     }
   }
 
   get initialesAvatar(): string {
-    if (!this.student) return '';
-    return `${this.student.user.firstname[0]}${this.student.user.lastname[0]}`.toUpperCase();
+    if (this.student) {
+      return `${this.student.user.firstname[0]}${this.student.user.lastname[0]}`.toUpperCase();
+    }
+    if (this.user) {
+      return `${this.user.firstname[0]}${this.user.lastname[0]}`.toUpperCase();
+    }
+    return '';
   }
 
   get dateInscriptionFormatee(): string {

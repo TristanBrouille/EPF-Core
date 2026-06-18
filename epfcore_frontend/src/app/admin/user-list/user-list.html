@@ -1,0 +1,100 @@
+<div class="container mt-2">
+  <h2 class="text-center">Gestion des Utilisateurs</h2>
+
+  <div class="action-bar mb-2">
+    <button class="btn-red" (click)="navigateToCreate()">
+      + Ajouter un utilisateur
+    </button>
+  </div>
+
+  @if (isLoading && users.length === 0) {
+    <p class="text-center">Chargement de la liste...</p>
+  }
+
+  <div class="table-responsive">
+    <table class="user-table">
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Rôle</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          <tr (click)="selectUser(user)" [class.active-row]="selectedUser?.id === user.id">
+            <td>{{ user.lastname }}</td>
+            <td>{{ user.firstname }}</td>
+            <td><span class="badge">{{ user.role }}</span></td>
+            <td><button class="btn-sm btn-purple">Gérer</button></td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" class="text-center">Aucun utilisateur trouvé.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (selectedUser) {
+    <div class="edit-card mt-2">
+      <h3>Modifier la fiche complète : {{ selectedUser.firstname }} {{ selectedUser.lastname }}</h3>
+
+      <form [formGroup]="editForm" (ngSubmit)="onUpdate()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstname">Prénom</label>
+            <input type="text" id="firstname" formControlName="firstname">
+          </div>
+          <div class="form-group">
+            <label for="lastname">Nom</label>
+            <input type="text" id="lastname" formControlName="lastname">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email">
+          </div>
+          <div class="form-group">
+            <label for="password">Changer le mot de passe (optionnel)</label>
+            <input type="password" id="password" formControlName="password" placeholder="Laisser vide si inchangé">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="birthDate">Date de naissance</label>
+            <input type="date" id="birthDate" formControlName="birthDate">
+          </div>
+          <div class="form-group">
+            <label for="role">Rôle</label>
+            <select id="role" formControlName="role">
+              @for (r of roles; track r) {
+                <option [value]="r">{{ r }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="idRfid">Identifiant RFID</label>
+            <input type="text" id="idRfid" formControlName="idRfid">
+          </div>
+        </div>
+
+        @if (message) {
+          <div class="alert mt-1" [ngClass]="isError ? 'alert-danger' : 'alert-success'">
+            {{ message }}
+          </div>
+        }
+
+        <div class="form-actions mt-1">
+          <button type="button" class="btn-red" (click)="selectedUser = null">Annuler</button>
+          <button type="submit" class="btn-purple" [disabled]="isLoading">Enregistrer les modifications</button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

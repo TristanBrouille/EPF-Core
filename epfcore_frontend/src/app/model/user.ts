@@ -23,3 +23,24 @@ export interface UserDto {
   lastname: string;
   role : string;
 }
+
+export interface RegistrationData {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password?: string;
+  birthDate: string;
+  role: string;
+  idRfid: string;
+}
+
+export interface UserAdmin {
+  id?: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  password?: string;
+  birthDate: string;
+  role: string;
+  idRfid: string;
+}

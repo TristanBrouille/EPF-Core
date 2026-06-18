@@ -22,6 +22,8 @@ import { creerSalleComponent } from './creerSalle/creerSalle';
 import { CreerReservationComponent } from '../reservationSalle/reservationSalle';
 import { ListeReservationsComponent } from './listeReservation/listeReservation';
 import { ListeSallesComponent } from './listeSalles/listeSalles';
+import {Registration} from './admin/registration/registration';
+import {UserList} from './admin/user-list/user-list';
 
 export const routes: Routes = [
   {path: 'bulletin', component: BulletinComponent},
@@ -31,7 +33,7 @@ export const routes: Routes = [
   {path: 'register-candidat', component: RegisterCandidat},
   {path: 'home', component: Home},
   {path: 'formulaire-inscription', component: FormulaireInscription},
-  {path: '', redirectTo: 'home', pathMatch: 'full' },
+  {path: '', redirectTo: 'login', pathMatch: 'full' },
   {path: 'history-student', component: HistoryStudent },
   {path: 'student-profile', component: StudentProfile },
   {path: 'student-list', component: StudentList },
@@ -50,4 +52,7 @@ export const routes: Routes = [
   {path: 'reservationSalle', component:CreerReservationComponent},
   {path: 'listeReservations', component:ListeReservationsComponent},
   {path: 'listeSalles', component:ListeSallesComponent},
+  {path: 'registration', component:Registration},
+  {path: 'user-list', component:UserList},
+
 ];

@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .logoutSuccessHandler((_, response, _) -> response.setStatus(HttpServletResponse.SC_OK))
                 )
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/login", "/register", "/candidats/register").permitAll()
+                        auth.requestMatchers("/login", "/candidats/register").permitAll()
                                 .anyRequest().authenticated())
                 .build();
     }
