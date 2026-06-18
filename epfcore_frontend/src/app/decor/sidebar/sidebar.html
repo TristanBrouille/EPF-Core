@@ -12,6 +12,10 @@
       <mat-icon>list</mat-icon>
       <span class="label">Utilisateurs</span>
     </a>
+    <a mat-list-item class="nav-item" routerLink="/carnetnotes">
+      <mat-icon>grading</mat-icon>
+      <span class="label">Bulletins</span>
+    </a>
   }
   @else if (isGestionnaireAdmission()) {
     <a mat-list-item class="nav-item" routerLink="/home">
@@ -51,6 +55,10 @@
     <a mat-list-item class="nav-item">
       <mat-icon>bar_chart</mat-icon>
       <span class="label">Statistiques</span>
+    </a>
+    <a mat-list-item class="nav-item" routerLink="/carnetnotes">
+      <mat-icon>grading</mat-icon>
+      <span class="label">Bulletins</span>
     </a>
   }
 </mat-nav-list>
