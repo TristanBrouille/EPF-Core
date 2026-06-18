@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h2>Créer une Réservation</h2>
+  <form (ngSubmit)="saveReservation()">
+
+    <div class="mb-3">
+      <label for="salle" class="form-label">Sélectionner la Salle</label>
+      <select id="salle" class="form-control" [(ngModel)]="reservation.salleId" name="salleId" (change)="onSalleChange(reservation.salleId)" required>
+        <option value="" disabled selected>-- Choisir une salle --</option>
+        <option *ngFor="let s of salles" [value]="s.id">
+          {{ s.nomSalle }} (Max: {{ s.capacite }} pers.)
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" id="date" class="form-control" [(ngModel)]="reservation.date" name="date" required>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="heureDebut" class="form-label">Heure de Début</label>
+        <input type="time" id="heureDebut" class="form-control" [(ngModel)]="reservation.heureDebut" name="heureDebut" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="heureFin" class="form-label">Heure de Fin</label>
+        <input type="time" id="heureFin" class="form-control" [(ngModel)]="reservation.heureFin" name="heureFin" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="nbrPersonnes" class="form-label">Nombre de personnes prévu</label>
+      <input type="number" id="nbrPersonnes" class="form-control" [(ngModel)]="reservation.nbrPersonnes" name="nbrPersonnes" required min="1">
+      <small *ngIf="salleSelectionnee" class="text-muted">
+        Capacité maximale de cette salle : {{ salleSelectionnee.capacite }} places.
+      </small>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description de l'événement</label>
+      <textarea id="description" class="form-control" [(ngModel)]="reservation.description" name="description" rows="3" placeholder="Réunion de projet, cours..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+  </form>
+</div>
