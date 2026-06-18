@@ -8,37 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
- 
-/**
- * NoteController — Module 5 : Gestion des notes
- *
- * Endpoints exposés :
- *   POST   /api/carnets                           → créer un carnet
- *   GET    /api/carnets                           → liste tous les carnets
- *   GET    /api/carnets/{id}                      → détail d'un carnet
- *   PATCH  /api/carnets/{id}/publier             → publier un carnet
- *   POST   /api/carnets/{id}/evaluations          → ajouter une évaluation
- *   GET    /api/carnets/{id}/evaluations          → liste évaluations du carnet
- *   PUT    /api/notes/saisir                      → saisir / modifier une note
- *   POST   /api/notes/import/{evaluationId}       → importer un CSV
- *   GET    /api/carnets/{id}/notes                → toutes les notes du carnet
- *   GET    /api/carnets/{id}/moyennes             → moyennes calculées
- */
+
 @RestController
 @RequestMapping("/api")
-// @CrossOrigin(
-//   origins = "http://localhost:4200",
-//   methods = {RequestMethod.GET, RequestMethod.POST,
-//              RequestMethod.PUT, RequestMethod.PATCH,
-//              RequestMethod.DELETE},
-//   allowedHeaders = "*"
-// )
+
 public class NoteController {
  
     @Autowired
     private NoteService noteService;
- 
-    // ── Carnets ───────────────────────────────────────────────────────────────
  
     @PostMapping("/carnets")
     public ResponseEntity<?> creerCarnet(@RequestBody Map<String, Object> body) {
@@ -81,9 +58,7 @@ public class NoteController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
- 
-    // ── Évaluations ───────────────────────────────────────────────────────────
- 
+
     @PostMapping("/carnets/{carnetId}/evaluations")
     public ResponseEntity<?> ajouterEvaluation(@PathVariable long carnetId,
                                                @RequestBody Map<String, Object> body) {
@@ -107,9 +82,7 @@ public class NoteController {
         for (Evaluation e : evals) result.add(toEvalMap(e));
         return ResponseEntity.ok(result);
     }
- 
-    // ── Notes – saisie manuelle ───────────────────────────────────────────────
- 
+
     @PutMapping("/notes/saisir")
     public ResponseEntity<?> saisirNote(@RequestBody Map<String, Object> body) {
         try {
@@ -127,15 +100,7 @@ public class NoteController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
- 
-    // ── Notes – import CSV ────────────────────────────────────────────────────
- 
-    /**
-     * Endpoint d'import CSV.
-     * Appel multipart/form-data avec :
-     *   - file : le fichier CSV
-     * Format CSV : etudiant_numero,valeur_note,commentaire
-     */
+
     @PostMapping("/notes/import/{evaluationId}")
     public ResponseEntity<?> importCSV(@PathVariable long evaluationId,
                                        @RequestParam("file") MultipartFile file) {
@@ -149,28 +114,6 @@ public class NoteController {
         }
     }
  
-    // ── Moyennes ──────────────────────────────────────────────────────────────
- 
-    // @GetMapping("/carnets/{carnetId}/moyennes")
-    // public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
-    //     try {
-    //         List<Etudiant> etudiants = noteService.findEtudiantsByCarnet(carnetId);
-    //         List<Map<String, Object>> result = new ArrayList<>();
-    //         for (Etudiant e : etudiants) {
-    //             Float moy = noteService.calculerMoyenneEtudiant(carnetId, e.getId());
-    //             Map<String, Object> row = new LinkedHashMap<>();
-    //             row.put("etudiantId",  e.getId());
-    //             row.put("numero",      e.getNumero());
-    //             row.put("nomComplet",  e.getNomComplet());
-    //             row.put("moyenne",     moy);
-    //             result.add(row);
-    //         }
-    //         return ResponseEntity.ok(result);
-    //     } catch (Exception e) {
-    //         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-    //     }
-    // }
-
     @GetMapping("/carnets/{carnetId}/moyennes")
     public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
         try {
@@ -197,8 +140,6 @@ public class NoteController {
                     .body(Map.of("error", e.getMessage()));
         }
     }
- 
-    // ── Mappers JSON ──────────────────────────────────────────────────────────
  
     private Map<String, Object> toCarnetMap(CarnetDeNotes c) {
         Map<String, Object> m = new LinkedHashMap<>();

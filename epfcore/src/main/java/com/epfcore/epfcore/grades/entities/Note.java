@@ -1,26 +1,3 @@
-// package com.epfcore.epfcore.grades.entities;
-
-// import jakarta.persistence.Entity;
-
-// @Entity
-// public class Note {
-//     private float valeur_note;
-
-//     public Note(float valeur_note){
-//         this.valeur_note = valeur_note;
-//     }
-
-//     public float getValeurNote(){
-//         return valeur_note;
-//     }
-
-//     public void setValeurNote(float valeur_note){
-//         this.valeur_note = valeur_note;
-//     }
-    
-// }
-
-
 package com.epfcore.epfcore.grades.entities;
 
 import jakarta.persistence.*;
@@ -36,7 +13,7 @@ public class Note {
     private long id;
 
     @Column(name = "valeur_Note")
-    private Float valeurNote;   // Float (nullable) : null = absent
+    private Float valeurNote;
 
     @Column(name = "absent", nullable = false)
     private boolean absent = false;
@@ -45,7 +22,7 @@ public class Note {
     private String commentaire;
 
     @Column(name = "source", nullable = false, length = 20)
-    private String source = "MANUELLE";   // MANUELLE | IMPORT_CSV
+    private String source = "MANUELLE";
 
     @Column(name = "date_saisie", nullable = false)
     private LocalDateTime dateSaisie = LocalDateTime.now();
@@ -59,7 +36,6 @@ public class Note {
     @JoinColumn(name = "evaluation_id", nullable = false)
     private Evaluation evaluation;
 
-    // ── Constructeurs ─────────────────────────────────────────────────────────
     public Note() {}
 
     public Note(Float valeur_note, Etudiant etudiant, Evaluation evaluation, String source) {
@@ -70,7 +46,6 @@ public class Note {
         this.absent      = (valeur_note == null);
     }
 
-    // ── Getters / Setters ─────────────────────────────────────────────────────
     public long getId()                        { return id; }
     public Float getValeurNote()               { return valeurNote; }
     public void  setValeurNote(Float v)        { this.valeurNote = v; this.absent = (v == null); }
