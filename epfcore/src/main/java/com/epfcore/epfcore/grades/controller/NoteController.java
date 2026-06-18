@@ -6,8 +6,13 @@ import com.epfcore.epfcore.grades.entities.*;
 import com.epfcore.epfcore.grades.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.security.Principal;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 
 import java.util.*;
 
@@ -19,6 +24,7 @@ public class NoteController {
     @Autowired
     private NoteService noteService;
  
+    @PreAuthorize("!hasAuthority('ETUDIANT')")
     @PostMapping("/carnets")
     public ResponseEntity<?> creerCarnet(@RequestBody Map<String, Object> body) {
         try {
@@ -35,15 +41,26 @@ public class NoteController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
- 
+
     @GetMapping("/carnets")
     public ResponseEntity<?> getAllCarnets() {
-        List<CarnetDeNotes> carnets = noteService.findAllCarnets();
-        List<Map<String, Object>> result = new ArrayList<>();
-        for (CarnetDeNotes c : carnets) result.add(toCarnetMap(c));
-        return ResponseEntity.ok(result);
+        try {
+            List<CarnetDeNotes> carnets = noteService.findAllCarnets();
+
+            if (isEtudiant()) {
+                carnets = carnets.stream()
+                    .filter(c -> "PUBLIE".equals(c.getStatut()))
+                    .toList();
+            }
+
+            List<Map<String, Object>> result = new ArrayList<>();
+            for (CarnetDeNotes c : carnets) result.add(toCarnetMap(c));
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
- 
+
     @GetMapping("/carnets/{id}")
     public ResponseEntity<?> getCarnet(@PathVariable long id) {
         CarnetDeNotes c = noteService.findCarnetById(id);
@@ -51,6 +68,7 @@ public class NoteController {
         return ResponseEntity.ok(toCarnetMap(c));
     }
  
+    @PreAuthorize("!hasAuthority('ETUDIANT')")
     @PatchMapping("/carnets/{id}/publier")
     public ResponseEntity<?> publierCarnet(@PathVariable long id) {
         try {
@@ -61,6 +79,7 @@ public class NoteController {
         }
     }
 
+    @PreAuthorize("!hasAuthority('ETUDIANT')")
     @PostMapping("/carnets/{carnetId}/evaluations")
     public ResponseEntity<?> ajouterEvaluation(@PathVariable long carnetId,
                                                @RequestBody Map<String, Object> body) {
@@ -85,6 +104,7 @@ public class NoteController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("!hasAuthority('ETUDIANT')")
     @PutMapping("/notes/saisir")
     public ResponseEntity<?> saisirNote(@RequestBody Map<String, Object> body) {
         try {
@@ -103,6 +123,7 @@ public class NoteController {
         }
     }
 
+    @PreAuthorize("!hasAuthority('ETUDIANT')")
     @PostMapping("/notes/import/{evaluationId}")
     public ResponseEntity<?> importCSV(@PathVariable long evaluationId,
                                        @RequestParam("file") MultipartFile file) {
@@ -116,16 +137,6 @@ public class NoteController {
         }
     }
 
-    // @GetMapping("/carnets/{carnetId}/moyennes")
-    // public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
-    //     try {
-    //         return ResponseEntity.ok(noteService.getMoyennesParCarnet(carnetId));
-    //     } catch (Exception e) {
-    //         return ResponseEntity.badRequest()
-    //                 .body(Map.of("error", e.getMessage()));
-    //     }
-    // }
-    
     @GetMapping("/carnets/{carnetId}/moyennes")
     public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
         try {
@@ -183,5 +194,11 @@ public class NoteController {
     @GetMapping("/{id}/notes")
     public ResponseEntity<List<NoteDTO>> getNotes(@PathVariable long id) {
         return ResponseEntity.ok(noteService.getNotesByCarnet(id));
+    }
+
+    private boolean isEtudiant() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream()
+            .anyMatch(a -> a.getAuthority().equals("ETUDIANT"));
     }
 }
