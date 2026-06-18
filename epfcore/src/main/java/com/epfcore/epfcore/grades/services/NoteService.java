@@ -2,7 +2,7 @@ package com.epfcore.epfcore.grades.services;
 
 import com.epfcore.epfcore.grades.entities.*;
 import com.epfcore.epfcore.grades.entities.Module;
-import com.epfcore.epfcore.grades.exception.DaoException;
+import com.epfcore.epfcore.student.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +15,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.epfcore.epfcore.student.repository.StudentRepository;
-import com.epfcore.epfcore.student.entity.Student;
 import com.epfcore.epfcore.grades.dto.*;
 
 @Service
@@ -89,8 +87,6 @@ public class NoteService {
         return carnet;
     }
 
-    //  ÉVALUATIONS
-
     public Evaluation ajouterEvaluation(long carnetId, String intitule,
                                         String type, float coef, float noteMax) {
         CarnetDeNotes carnet = em.find(CarnetDeNotes.class, carnetId);
@@ -110,8 +106,6 @@ public class NoteService {
             .setParameter("id", carnetId)
             .getResultList();
     }
-
-    //  SAISIE MANUELLE DES NOTES
 
     public Note saisirNote(long evaluationId, long etudiantId,
                         Float valeur, String commentaire) {
@@ -281,11 +275,11 @@ public class NoteService {
     }
 
     @Transactional(readOnly = true)
-    public List<Etudiant> findEtudiantsByCarnet(long carnetId) {
+    public List<Student> findEtudiantsByCarnet(long carnetId) {
         return em.createQuery(
             "SELECT DISTINCT n.etudiant FROM Note n " +
             "JOIN n.evaluation e WHERE e.carnet.id=:cid",
-            Etudiant.class)
+            Student.class)
             .setParameter("cid", carnetId)
             .getResultList();
     }

@@ -1,11 +1,14 @@
 package com.epfcore.epfcore.grades.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "Evaluation")
 public class Evaluation {
 

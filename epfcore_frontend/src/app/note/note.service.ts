@@ -12,7 +12,7 @@ export class NoteService {
   private readonly API = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
-  
+
 
   getAllCarnets(): Observable<CarnetDeNotes[]> {
     return this.http.get<CarnetDeNotes[]>(`${this.API}/carnets`);
@@ -61,10 +61,10 @@ export class NoteService {
   }
 
   getNotesByCarnet(carnetId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API}/carnets/${carnetId}/notes`);
+    return this.http.get<any[]>(`${this.API}/${carnetId}/notes`);
   }
 
   saisirNote(data: { evaluationId: number; etudiantId: number; valeur: number | null; commentaire: string }): Observable<any> {
     return this.http.patch<any>(`${this.API}/notes/saisir`, data);
-  } 
+  }
 }
