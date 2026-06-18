@@ -22,7 +22,6 @@ import { ArchiveDocuments } from './archive-documents/archive-documents';
 export const routes: Routes = [
   {path: 'bulletin', component: BulletinComponent},
   {path: 'carnetnotes', component: CarnetNotesComponent},
-  { path: '**', redirectTo: 'login' },
   {path: 'login', component: Login},
   {path: 'candidat', component: Candidat},
   {path: 'register-candidat', component: RegisterCandidat},
