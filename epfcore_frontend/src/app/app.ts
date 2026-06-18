@@ -1,3 +1,4 @@
+import { BulletinComponent } from './bulletin.component/bulletin.component';
 
 import { Component } from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
@@ -11,14 +12,14 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, MatSidenavContainer, MatSidenav, Sidebar, MatSidenavContent, Footer, CommonModule],
+  imports: [RouterOutlet, Header, MatSidenavContainer, MatSidenav, Sidebar, MatSidenavContent, Footer, CommonModule,],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
   protected showLayout = true;
   protected showSidebar = true;
-  
+
 
   constructor(private router: Router, protected archiveModal: ArchiveModalService) {
     this.router.events

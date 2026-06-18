@@ -1,0 +1,285 @@
+<!-- ═══════════════════════════════════════════════════════════════════════
+     Carnet de Notes – Module 5 EPF CORE
+     Vues : list | create | carnet | import
+═══════════════════════════════════════════════════════════════════════ -->
+
+<div class="cn-wrapper">
+
+  <!-- <p>LOADING = {{ loading }}</p>
+
+  <p>VIEW = {{ currentView }}</p>
+  <p>NB CARNETS = {{ carnets.length }}</p>
+
+  <pre>{{ carnets | json }}</pre> -->
+
+  <!-- ── Bandeau en-tête ──────────────────────────────────────────────────── -->
+  <div class="cn-header">
+    <div class="cn-header-left">
+      <button *ngIf="currentView !== 'list'" class="btn-back" (click)="backToList()">
+        ← Retour
+      </button>
+      <h1 class="cn-title">
+        <span *ngIf="currentView === 'list'">Carnets de notes</span>
+        <span *ngIf="currentView === 'create'">Nouveau carnet</span>
+        <span *ngIf="currentView === 'carnet' && selectedCarnet">
+          {{ selectedCarnet.intitule }}
+          <span class="badge" [class.badge-publie]="selectedCarnet.statut === 'PUBLIE'"
+                              [class.badge-brouillon]="selectedCarnet.statut === 'BROUILLON'">
+            {{ selectedCarnet.statut }}
+          </span>
+        </span>
+        <span *ngIf="currentView === 'import'">Import CSV</span>
+      </h1>
+    </div>
+    <div class="cn-header-right" *ngIf="currentView === 'list'">
+      <button class="btn-primary" (click)="showCreate()">+ Nouveau carnet</button>
+    </div>
+    <div class="cn-header-right" *ngIf="currentView === 'carnet' && selectedCarnet">
+      <button class="btn-secondary" (click)="showImport()" *ngIf="selectedCarnet.statut === 'BROUILLON'">
+        ↑ Import CSV
+      </button>
+      <button class="btn-primary" (click)="publier()" *ngIf="selectedCarnet.statut === 'BROUILLON'">
+        ✓ Publier
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Messages ─────────────────────────────────────────────────────────── -->
+  <div class="alert alert-success" *ngIf="successMsg">{{ successMsg }}</div>
+  <div class="alert alert-error"   *ngIf="errorMsg">{{ errorMsg }}</div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       VUE : LISTE DES CARNETS
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div *ngIf="currentView === 'list'">
+
+    <div *ngIf="loading" class="cn-loading">Chargement…</div>
+
+    <!-- <div *ngIf="!loading && carnets.length === 0" class="cn-empty">
+      Aucun carnet de notes. Cliquez sur <strong>+ Nouveau carnet</strong> pour commencer.
+    </div> -->
+
+    <div class="carnet-grid" *ngIf="!loading && carnets.length > 0">
+
+      <div class="carnet-card" *ngFor="let c of carnets" (click)="ouvrirCarnet(c)">
+
+        <div class="carnet-card-header">
+          <span class="carnet-card-title">{{ c.intitule }}</span>
+          <span class="badge" [class.badge-publie]="c.statut === 'PUBLIE'"
+                              [class.badge-brouillon]="c.statut === 'BROUILLON'">
+            {{ c.statut }}
+          </span>
+        </div>
+        <div class="carnet-card-meta">
+          <span>{{ c.anneeAcademique }}</span>
+          <span *ngIf="c.uniteEnseignementIntitule"> · {{ c.uniteEnseignementIntitule }}</span>
+        </div>
+        <div class="carnet-card-footer">
+          <span>{{ c.nbEvaluations }} évaluation(s)</span>
+          <span *ngIf="c.moyenneClasse !== null">Moy. classe : {{ c.moyenneClasse | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       VUE : CRÉER UN CARNET
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div *ngIf="currentView === 'create'" class="form-card">
+    <div class="form-group">
+      <label>Intitulé du carnet *</label>
+      <input type="text" [(ngModel)]="newCarnet.intitule"
+             placeholder="ex : Carnet Mathématiques S1 2024-2025" />
+    </div>
+    <div class="form-group">
+      <label>Année académique *</label>
+      <input type="text" [(ngModel)]="newCarnet.anneeAcademique"
+             placeholder="ex : 2024-2025" />
+    </div>
+    <div class="form-group">
+      <label>ID Unité d'enseignement (optionnel)</label>
+      <input type="number" [(ngModel)]="newCarnet.uniteEnseignementId"
+             placeholder="Laisser vide si non applicable" />
+    </div>
+    <div class="form-actions">
+      <button class="btn-secondary" (click)="cancelCreate()">Annuler</button>
+      <button class="btn-primary" (click)="submitCarnet()" [disabled]="loading">
+        {{ loading ? 'Création…' : 'Créer le carnet' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       VUE : CARNET OUVERT – saisie / consultation
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div *ngIf="currentView === 'carnet' && selectedCarnet">
+
+    <!-- Sous-entête infos -->
+    <div class="carnet-info-bar">
+      <span>{{ selectedCarnet.anneeAcademique }}</span>
+      <span *ngIf="selectedCarnet.uniteEnseignementIntitule">
+        · {{ selectedCarnet.uniteEnseignementIntitule }}
+      </span>
+      <span *ngIf="selectedCarnet.datePublication">
+        · Publié le {{ selectedCarnet.datePublication | date:'dd/MM/yyyy HH:mm' }}
+      </span>
+    </div>
+
+    <!-- ── Section évaluations ─────────────────────────────────────────────── -->
+    <div class="section-title">
+      Évaluations
+      <button class="btn-small" (click)="showAddEval = !showAddEval"
+              *ngIf="selectedCarnet.statut === 'BROUILLON'">
+        {{ showAddEval ? '✕ Annuler' : '+ Ajouter' }}
+      </button>
+    </div>
+
+    <!-- Formulaire ajout évaluation -->
+    <div class="form-card form-card-inline" *ngIf="showAddEval">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Intitulé *</label>
+          <input type="text" [(ngModel)]="newEval.intitule" placeholder="ex : DS1" />
+        </div>
+        <div class="form-group form-group-sm">
+          <label>Type</label>
+          <select [(ngModel)]="newEval.type">
+            <option *ngFor="let t of TYPES_EVAL" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+        <div class="form-group form-group-sm">
+          <label>Coef.</label>
+          <input type="number" [(ngModel)]="newEval.coef" min="0.1" step="0.5" />
+        </div>
+        <div class="form-group form-group-sm">
+          <label>Note max</label>
+          <input type="number" [(ngModel)]="newEval.noteMax" min="1" />
+        </div>
+        <div class="form-group form-group-sm form-group-action">
+          <label>&nbsp;</label>
+          <button class="btn-primary" (click)="submitEval()">Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau des évaluations -->
+    <div *ngIf="evaluations.length === 0" class="cn-empty-inline">
+      Aucune évaluation. Ajoutez-en une pour commencer à saisir des notes.
+    </div>
+
+    <div class="eval-chips" *ngIf="evaluations.length > 0">
+      <div class="eval-chip" *ngFor="let e of evaluations">
+        <span class="chip-type">{{ e.type }}</span>
+        <span class="chip-label">{{ e.intitule }}</span>
+        <span class="chip-meta">Coef {{ e.coef }} · /{{ e.noteMax }}</span>
+      </div>
+    </div>
+
+    <!-- ── Tableau de saisie des notes ────────────────────────────────────── -->
+    <div class="section-title" *ngIf="evaluations.length > 0">
+      Saisie des notes
+    </div>
+
+    <div class="table-scroll" *ngIf="evaluations.length > 0 && etudiantsAffichage.length > 0">
+      <table class="notes-table">
+        <thead>
+          <tr>
+            <th class="th-etudiant">Étudiant</th>
+            <th *ngFor="let e of evaluations" class="th-eval">
+              {{ e.intitule }}<br>
+              <small>Coef {{ e.coef }} · /{{ e.noteMax }}</small>
+            </th>
+            <th class="th-moy">Moyenne</th>
+            <th class="th-grade">Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let etud of etudiantsAffichage">
+            <td class="td-etudiant">
+              <strong>{{ etud.nomComplet }}</strong>
+              <small>{{ etud.numero }}</small>
+            </td>
+            <td *ngFor="let e of evaluations" class="td-note">
+              <div class="note-cell"
+                   [class.note-cell-absent]="absentGrid[gridKey(etud.id, e.id)]"
+                   [class.note-cell-readonly]="selectedCarnet?.statut === 'PUBLIE'">
+                <input type="number"
+                       [disabled]="selectedCarnet?.statut === 'PUBLIE' || absentGrid[gridKey(etud.id, e.id)]"
+                       [(ngModel)]="notesGrid[gridKey(etud.id, e.id)]"
+                       (blur)="saisirNote(etud.id, e.id)"
+                       [min]="0" [max]="e.noteMax"
+                       step="0.5"
+                       class="note-input"
+                       placeholder="—" />
+                <button class="btn-absent"
+                        [class.active]="absentGrid[gridKey(etud.id, e.id)]"
+                        [disabled]="selectedCarnet?.statut === 'PUBLIE'"
+                        (click)="toggleAbsent(etud.id, e.id)"
+                        title="Marquer absent">ABS</button>
+              </div>
+            </td>
+            <td class="td-moy">{{ formatNote(getMoyenne(etud.id)) }}</td>
+            <td class="td-grade">{{ getGrade(getMoyenne(etud.id)) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="evaluations.length > 0 && etudiantsAffichage.length === 0" class="cn-empty-inline">
+      Aucune note saisie pour l'instant. Importez un CSV ou saisissez les notes manuellement ci-dessus.
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       VUE : IMPORT CSV
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div *ngIf="currentView === 'import'" class="form-card">
+
+    <div class="import-help">
+      <strong>Format CSV attendu</strong> (sans en-tête, encodage UTF-8) :
+      <pre>numero_etudiant,note,commentaire
+123456,14.5,Très bien
+123457,ABS,Absent justifié
+123458,12,</pre>
+      <p>La valeur <code>ABS</code> marque l'étudiant absent (note null).</p>
+    </div>
+
+    <div class="form-group">
+      <label>Évaluation cible *</label>
+      <select [(ngModel)]="importEvalId">
+        <option [ngValue]="null">-- Choisir une évaluation --</option>
+        <option *ngFor="let e of evaluations" [ngValue]="e.id">
+          {{ e.intitule }} ({{ e.type }}, coef {{ e.coef }})
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Fichier CSV *</label>
+      <input type="file" accept=".csv,.txt" (change)="onFileChange($event)" />
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-secondary" (click)="cancelImport()">Annuler</button>
+      <button class="btn-primary" (click)="submitImport()" [disabled]="importLoading">
+        {{ importLoading ? 'Import en cours…' : '↑ Importer' }}
+      </button>
+    </div>
+
+    <!-- Résultat import -->
+    <div *ngIf="importResult" class="import-result">
+      <div class="import-result-ok">
+        ✓ {{ importResult.imported }} note(s) importée(s)
+      </div>
+      <div class="import-result-err" *ngIf="importResult.errors > 0">
+        ✕ {{ importResult.errors }} erreur(s)
+        <ul>
+          <li *ngFor="let err of importResult.errorDetails">{{ err }}</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>

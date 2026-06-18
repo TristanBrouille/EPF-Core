@@ -1,0 +1,124 @@
+<div class="bulletin-wrapper">
+
+  <!-- En-tête étudiant -->
+  <div class="bulletin-header">
+    <div class="header-info">
+      <span class="student-name">{{ data.studentName }}</span>
+      <span class="student-meta">N° {{ data.studentId }} &nbsp;|&nbsp; {{ data.program }} &nbsp;|&nbsp; {{ data.academicYear }}</span>
+    </div>
+    <div class="header-logo">
+      <span class="logo-placeholder">LOGO</span>
+    </div>
+  </div>
+
+  <!-- Tableau principal -->
+  <table class="bulletin-table">
+    <thead>
+      <tr class="thead-row">
+        <th class="col-label">Matière / <em>Course</em></th>
+        <th class="col-num">Rang /<br><em>Rank</em></th>
+        <th class="col-num">Nb élèves /<br><em>Students</em></th>
+        <th class="col-num">Moyenne Promo /<br><em>Class Average</em></th>
+        <th class="col-num">Écart type /<br><em>Standard deviation</em></th>
+        <th class="col-num">Moyenne /<br><em>Average</em></th>
+        <th class="col-num">ECTS<br>Session 1</th>
+        <th class="col-num">ECTS<br>Session 2</th>
+        <th class="col-num">ECTS<br>Max</th>
+        <th class="col-grade">Grade</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <!-- Ligne résumé global -->
+      <tr class="row-summary">
+        <td></td>
+        <td>{{ data.summary.rank }}</td>
+        <td>{{ data.summary.students }}</td>
+        <td>{{ data.summary.classAverage | number:'1.2-2' }}</td>
+        <td>{{ data.summary.stdDev | number:'1.2-2' }}</td>
+        <td>{{ data.summary.average | number:'1.2-2' }}</td>
+        <td>{{ data.summary.ectsSession1 | number:'1.1-1' }}</td>
+        <td>{{ data.summary.ectsSession2 | number:'1.1-1' }}</td>
+        <td>{{ data.summary.ectsMax | number:'1.1-1' }}</td>
+        <td></td>
+      </tr>
+
+      <!-- Semestres -->
+      <ng-container *ngFor="let sem of data.semesters">
+
+        <!-- Ligne semestre -->
+        <tr class="row-semester">
+          <td class="label-semester">
+            <strong>{{ sem.label }}</strong> / <em>{{ sem.labelEn }}</em>
+          </td>
+          <td><strong>{{ sem.rank }}</strong></td>
+          <td><strong>{{ sem.students }}</strong></td>
+          <td><strong>{{ sem.classAverage | number:'1.2-2' }}</strong></td>
+          <td><strong>{{ sem.stdDev | number:'1.2-2' }}</strong></td>
+          <td><strong>{{ sem.average | number:'1.2-2' }}</strong></td>
+          <td><strong>{{ sem.ectsSession1 | number:'1.1-1' }}</strong></td>
+          <td><strong>{{ sem.ectsSession2 | number:'1.1-1' }}</strong></td>
+          <td><strong>{{ sem.ectsMax | number:'1.1-1' }}</strong></td>
+          <td></td>
+        </tr>
+
+        <!-- Groupes de matières -->
+        <ng-container *ngFor="let group of sem.groups">
+
+          <!-- Ligne groupe -->
+          <tr class="row-group">
+            <td class="label-group">
+              {{ group.label }} / <em>{{ group.labelEn }}</em>
+            </td>
+            <td>{{ group.rank }}</td>
+            <td>{{ group.students }}</td>
+            <td>{{ group.classAverage | number:'1.2-2' }}</td>
+            <td>{{ group.stdDev | number:'1.2-2' }}</td>
+            <td>{{ group.average | number:'1.2-2' }}</td>
+            <td>{{ group.ectsSession1 | number:'1.1-1' }}</td>
+            <td>{{ group.ectsSession2 | number:'1.1-1' }}</td>
+            <td>{{ group.ectsMax | number:'1.1-1' }}</td>
+            <td class="col-grade">{{ group.grade }}</td>
+          </tr>
+
+          <!-- Sous-matières -->
+          <tr *ngFor="let sub of group.subCourses" class="row-sub">
+            <td class="label-sub">
+              {{ sub.label }}
+              <em *ngIf="sub.labelEn"> / {{ sub.labelEn }}</em>
+            </td>
+            <td>{{ sub.rank }}</td>
+            <td>{{ sub.students }}</td>
+            <td>{{ sub.classAverage !== null ? (sub.classAverage | number:'1.2-2') : '' }}</td>
+            <td>{{ sub.stdDev !== null ? (sub.stdDev | number:'1.2-2') : '' }}</td>
+            <td>{{ sub.average !== null ? (sub.average | number:'1.2-2') : '' }}</td>
+            <td>
+              {{ sub.ectsSession1Special ? sub.ectsSession1Special : (sub.ectsSession1 !== null && sub.ectsSession1 !== undefined ? (sub.ectsSession1 | number:'1.1-1') : '') }}
+            </td>
+            <td>
+              {{ sub.ectsSession2Special ? sub.ectsSession2Special : (sub.ectsSession2 !== null && sub.ectsSession2 !== undefined ? (sub.ectsSession2 | number:'1.1-1') : '') }}
+            </td>
+            <td>{{ sub.ectsMax | number:'1.1-1' }}</td>
+            <td class="col-grade">{{ sub.grade }}</td>
+          </tr>
+
+        </ng-container>
+      </ng-container>
+
+    </tbody>
+  </table>
+
+  <!-- Légende grades -->
+  <div class="legend">
+    <span class="legend-title">Grille de notation ECTS :</span>
+    <span class="legend-item"><strong>A</strong> Excellent</span>
+    <span class="legend-item"><strong>B</strong> Très bien</span>
+    <span class="legend-item"><strong>C</strong> Bien</span>
+    <span class="legend-item"><strong>D</strong> Satisfaisant</span>
+    <span class="legend-item"><strong>E</strong> Suffisant</span>
+    <span class="legend-item"><strong>FX</strong> Insuffisant</span>
+    <span class="legend-item"><strong>F</strong> Très insuffisant</span>
+  </div>
+
+</div>

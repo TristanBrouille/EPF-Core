@@ -1,0 +1,416 @@
+// ── Import des variables EPF ──────────────────────────────────────────────────
+@use '../../variables' as *;
+
+// ── Palette alignée sur bulletin.component.scss ───────────────────────────────
+$cn-header-bg:    $epf-red;
+$cn-semester-bg:  $epf-purple;
+$cn-summary-bg:   #D0DBEE;
+$cn-group-bg:     #EAF0F8;
+$cn-sub-bg:       #FFFFFF;
+$cn-border:       #AABBD6;
+
+$cn-text-dark:    #1A1A2E;
+$cn-text-header:  #FFFFFF;
+
+$cn-success:      #2e7d32;
+$cn-error:        #c62828;
+
+$font:            'Arial', sans-serif;
+
+// ── Wrapper principal ─────────────────────────────────────────────────────────
+.cn-wrapper {
+  font-family: $font;
+  font-size: 13px;
+  color: $cn-text-dark;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 16px;
+  box-sizing: border-box;
+}
+
+// ── En-tête ───────────────────────────────────────────────────────────────────
+.cn-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $cn-header-bg;
+  color: $cn-text-header;
+  padding: 12px 20px;
+  border-radius: 4px 4px 0 0;
+  margin-bottom: 2px;
+
+  .cn-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cn-header-right {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cn-title {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color:#ffffff;
+  }
+}
+
+.btn-back {
+  background: rgba(255,255,255,0.15);
+  color: $cn-text-header;
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 5px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+
+  &:hover {
+    background: rgba(255,255,255,0.25);
+  }
+}
+
+// ── Badges statut ─────────────────────────────────────────────────────────────
+.badge {
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-brouillon {
+  background: $cn-semester-bg;
+  color: $cn-text-header;
+}
+
+.badge-publie {
+  background: $cn-success;
+  color: $cn-text-header;
+}
+
+// ── Alertes ───────────────────────────────────────────────────────────────────
+.alert {
+  padding: 10px 16px;
+  border-radius: 3px;
+  margin: 8px 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.alert-success {
+  background: #e8f5e9;
+  color: $cn-success;
+  border-left: 4px solid $cn-success;
+}
+
+.alert-error {
+  background: #ffebee;
+  color: $cn-error;
+  border-left: 4px solid $cn-error;
+}
+
+// ── Loading / Empty ───────────────────────────────────────────────────────────
+.cn-loading {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+}
+
+.cn-empty,
+.cn-empty-inline {
+  color: #888;
+  font-style: italic;
+}
+
+.cn-empty {
+  padding: 40px;
+  text-align: center;
+}
+
+.cn-empty-inline {
+  padding: 16px;
+}
+
+// ── Grille de cartes ──────────────────────────────────────────────────────────
+.carnet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.carnet-card {
+  border: 1px solid $cn-border;
+  border-radius: 5px;
+  padding: 14px 16px;
+  background: $cn-sub-bg;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+
+  &:hover {
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    border-color: $cn-header-bg;
+  }
+
+  .carnet-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .carnet-card-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: $cn-text-dark;
+    flex: 1;
+    margin-right: 8px;
+  }
+
+  .carnet-card-meta {
+    font-size: 11.5px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+
+  .carnet-card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #777;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+  }
+}
+
+// ── Boutons ───────────────────────────────────────────────────────────────────
+.btn-primary {
+  background: $cn-header-bg;
+  color: $cn-text-header;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: $cn-text-header;
+  border: 1px solid rgba(255,255,255,0.6);
+  padding: 7px 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+
+  &:hover {
+    background: rgba(255,255,255,0.15);
+  }
+}
+
+.btn-small {
+  background: $cn-semester-bg;
+  color: $cn-text-header;
+  border: none;
+  padding: 3px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  margin-left: 8px;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+// ── Formulaires ───────────────────────────────────────────────────────────────
+.form-card {
+  background: $cn-sub-bg;
+  border: 1px solid $cn-border;
+  border-radius: 4px;
+  padding: 24px;
+  margin-top: 16px;
+  max-width: 600px;
+}
+
+.form-card-inline {
+  max-width: 100%;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: $cn-group-bg;
+}
+
+.form-group {
+  margin-bottom: 14px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: $cn-text-dark;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="file"],
+  select {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid $cn-border;
+    border-radius: 3px;
+    font-size: 13px;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: 2px solid $cn-header-bg;
+      border-color: $cn-header-bg;
+    }
+  }
+}
+
+// ── Info-bar ──────────────────────────────────────────────────────────────────
+.carnet-info-bar {
+  background: $cn-summary-bg;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: #444;
+  border-bottom: 1px solid $cn-border;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+// ── Titres ────────────────────────────────────────────────────────────────────
+.section-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: $cn-text-dark;
+  border-bottom: 2px solid $cn-header-bg;
+  padding-bottom: 4px;
+  margin: 16px 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+// ── Chips évaluations ─────────────────────────────────────────────────────────
+.eval-chip {
+  background: $cn-group-bg;
+  border: 1px solid $cn-border;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .chip-type {
+    background: $cn-semester-bg;
+    color: $cn-text-header;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .chip-label {
+    font-weight: bold;
+  }
+
+  .chip-meta {
+    color: #666;
+    font-size: 11px;
+  }
+}
+
+// ── Tableau des notes ─────────────────────────────────────────────────────────
+.table-scroll {
+  overflow-x: auto;
+  margin-top: 8px;
+  border: 1px solid $cn-border;
+  border-radius: 4px;
+}
+
+.notes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 600px;
+
+  th,
+  td {
+    border: 1px solid $cn-border;
+    padding: 6px 8px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  thead tr {
+    background: $cn-header-bg;
+    color: $cn-text-header;
+  }
+
+  .th-moy {
+    background: $cn-summary-bg;
+    color: $cn-text-dark;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+
+  tbody tr:hover {
+    background: $cn-group-bg;
+  }
+
+  .td-moy {
+    background: $cn-summary-bg;
+    font-weight: bold;
+  }
+
+  .td-grade {
+    color: $cn-header-bg;
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+
+// ── Saisie de notes ───────────────────────────────────────────────────────────
+.note-input {
+  width: 60px;
+  padding: 4px 6px;
+  border: 1px solid $cn-border;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 12px;
+
+  &:focus {
+    outline: 2px solid $cn-header-bg;
+    border-color: $cn-header-bg;
+  }
+}
+
+// ── Import CSV ────────────────────────────────────────────────────────────────
+.import-help {
+  background: $cn-group-bg;
+  border: 1px solid $cn-border;
+}
+
