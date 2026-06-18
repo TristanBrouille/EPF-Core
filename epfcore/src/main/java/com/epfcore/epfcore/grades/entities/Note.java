@@ -49,19 +49,4 @@ public class Note {
         this.absent      = (valeur_note == null);
     }
 
-    // public long getId()                        { return id; }
-    // public Float getValeurNote()               { return valeurNote; }
-    // public void  setValeurNote(Float v)        { this.valeurNote = v; this.absent = (v == null); }
-    // public boolean isAbsent()                  { return absent; }
-    // public void  setAbsent(boolean absent)     { this.absent = absent; }
-    // public String getCommentaire()             { return commentaire; }
-    // public void  setCommentaire(String c)      { this.commentaire = c; }
-    // public String getSource()                  { return source; }
-    // public void  setSource(String source)      { this.source = source; }
-    // public LocalDateTime getDateSaisie()       { return dateSaisie; }
-    // public void  setDateSaisie(LocalDateTime d){ this.dateSaisie = d; }
-    // public Etudiant getEtudiant()              { return etudiant; }
-    // public void  setEtudiant(Etudiant e)       { this.etudiant = e; }
-    // public Evaluation getEvaluation()          { return evaluation; }
-    // public void  setEvaluation(Evaluation e)   { this.evaluation = e; }
 }

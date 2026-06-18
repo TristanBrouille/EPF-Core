@@ -1,6 +1,7 @@
 package com.epfcore.epfcore.grades.controller;
  
 import com.epfcore.epfcore.grades.dto.MoyenneRowDto;
+import com.epfcore.epfcore.grades.dto.NoteDTO;
 import com.epfcore.epfcore.grades.entities.*;
 import com.epfcore.epfcore.grades.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,10 +116,20 @@ public class NoteController {
         }
     }
 
+    // @GetMapping("/carnets/{carnetId}/moyennes")
+    // public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
+    //     try {
+    //         return ResponseEntity.ok(noteService.getMoyennesParCarnet(carnetId));
+    //     } catch (Exception e) {
+    //         return ResponseEntity.badRequest()
+    //                 .body(Map.of("error", e.getMessage()));
+    //     }
+    // }
+    
     @GetMapping("/carnets/{carnetId}/moyennes")
     public ResponseEntity<?> getMoyennes(@PathVariable long carnetId) {
         try {
-            return ResponseEntity.ok(noteService.getMoyennesParCarnet(carnetId));
+            return ResponseEntity.ok(noteService.getEtudiantsPourCarnet(carnetId));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("error", e.getMessage()));
@@ -167,5 +178,10 @@ public class NoteController {
         m.put("etudiantId",  n.getEtudiantId());
         m.put("evaluationId",n.getEvaluation().getId());
         return m;
+    }
+
+    @GetMapping("/{id}/notes")
+    public ResponseEntity<List<NoteDTO>> getNotes(@PathVariable long id) {
+        return ResponseEntity.ok(noteService.getNotesByCarnet(id));
     }
 }
