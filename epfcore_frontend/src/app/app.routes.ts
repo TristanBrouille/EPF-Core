@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import {Bulletin} from './bulletin/bulletin';
 import { BulletinComponent } from './bulletin.component/bulletin.component';
 import { CarnetNotesComponent } from './carnetNotes/carnetNotes';
 import { Login } from './login/login';
@@ -23,7 +22,7 @@ import { ArchiveDocuments } from './archive-documents/archive-documents';
 export const routes: Routes = [
   {path: 'bulletin', component: BulletinComponent},
   {path: 'carnetnotes', component: CarnetNotesComponent},
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'login' },
   {path: 'login', component: Login},
   {path: 'candidat', component: Candidat},
   {path: 'register-candidat', component: RegisterCandidat},

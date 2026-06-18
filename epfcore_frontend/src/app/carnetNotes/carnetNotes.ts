@@ -9,7 +9,7 @@
 // import { HttpErrorResponse } from '@angular/common/http';
 
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { CarnetDeNotes, Evaluation, ImportResult, MoyenneRow } from "../note/note.model";
@@ -23,7 +23,7 @@ type View = 'list' | 'carnet' | 'create' | 'import';
 @Component({
   selector: 'app-carnet-notes',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './carnetNotes.html',
   styleUrls: ['./carnetNotes.scss']
 })
@@ -63,7 +63,8 @@ export class CarnetNotesComponent implements OnInit {
 
   readonly TYPES_EVAL = ['DS', 'TP', 'PROJET', 'EXAMEN', 'RATTRAPAGE', 'AUTRE'];
 
-  constructor(private noteService: NoteService) {}
+  //constructor(private noteService: NoteService) {}
+  constructor(private noteService: NoteService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadCarnets();
@@ -114,11 +115,13 @@ export class CarnetNotesComponent implements OnInit {
         this.loading = false;
 
         console.log('AFTER FALSE');
+        this.cdr.detectChanges();
       },
       error: err => {
         console.log('ERROR', err);
 
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
     //////////////////
@@ -191,11 +194,8 @@ export class CarnetNotesComponent implements OnInit {
   //   this.loadCarnets();
   // }
   backToList(): void {
-
     this.selectedCarnet = null;
-
     this.currentView = 'list';
-
     }
 
   // loadEvaluations(carnetId: number): void {
@@ -223,6 +223,7 @@ export class CarnetNotesComponent implements OnInit {
       next: (evals) => {
         console.log('EVALUATIONS', evals);
         this.evaluations = evals;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -235,6 +236,7 @@ export class CarnetNotesComponent implements OnInit {
         this.etudiantsAffichage = data.map(r => ({
           id: r.etudiantId, numero: r.numero, nomComplet: r.nomComplet
         }));
+        this.cdr.detectChanges();
       }
     });
   }
