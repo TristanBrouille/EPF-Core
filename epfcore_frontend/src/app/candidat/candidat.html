@@ -28,7 +28,12 @@
         }
 
         @if (isSoumis) {
-          @if (entretienActif) {
+          @if (isRefuse) {
+            <div class="alert alert-danger mt-3" role="alert">
+              <p class="mb-1"><strong>Votre candidature a été refusée.</strong></p>
+              <p class="mb-0">Un mail de confirmation a été envoyé à <strong>{{ user.email }}</strong>.</p>
+            </div>
+          } @else if (entretienActif) {
             <p class="mt-3"><strong>Voici les détails de votre entretien :</strong></p>
             <div class="entretien-details">
               <p><strong>Date et heure :</strong> {{ entretienActif.dateHeure | date:'dd/MM/yyyy HH:mm' }}</p>

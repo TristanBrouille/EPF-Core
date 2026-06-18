@@ -40,8 +40,6 @@ export class Login implements OnInit {
           setTimeout(() => {
             if (authorities.includes('CANDIDAT')) {
               this.router.navigate(['/candidat']);
-            } else if (authorities.includes('GESTIONNAIRE_ADMISSION')) {
-              this.router.navigate(['/admin/formulaires']);
             } else {
               this.router.navigate(['/home']);
             }
