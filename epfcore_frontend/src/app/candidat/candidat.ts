@@ -50,7 +50,9 @@ export class Candidat implements OnInit {
     try {
       this.formulaire = await this.formulaireService.getMyFormulaire();
       this.hasFormulaire = true;
-      if (this.formulaire.soumis) {
+      if (this.formulaire.decisionAdmission === 'REFUSE') {
+        this.currentStep = 4;
+      } else if (this.formulaire.soumis) {
         this.currentStep = 2;
         await this.checkEntretien();
       }
@@ -97,6 +99,10 @@ export class Candidat implements OnInit {
 
   get isSoumis(): boolean {
     return !!this.formulaire?.soumis;
+  }
+
+  get isRefuse(): boolean {
+    return this.formulaire?.decisionAdmission === 'REFUSE';
   }
 
   get progressPercent(): number {

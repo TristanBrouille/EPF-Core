@@ -27,6 +27,11 @@
   }
 
   @if (isGestionnaireAdmission()) {
+    <a mat-list-item class="nav-item" routerLink="/home">
+      <mat-icon>home</mat-icon>
+      <span class="label">Accueil</span>
+    </a>
+
     <a mat-list-item class="nav-item" routerLink="/admin/formulaires">
       <mat-icon>folder_shared</mat-icon>
       <span class="label">Candidatures</span>
