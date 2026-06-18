@@ -3,7 +3,7 @@
   <h1>Bienvenue sur le portail EPF</h1>
   <p class="subtitle">Accédez rapidement à vos informations et outils</p>
 
-  @if (isGestionnaireAdmission) {
+  @if (isGestionnaireAdmission()) {
   <div class="portal-grid">
     <mat-card class="portal-card red-card">
       <mat-icon>folder_open</mat-icon>
@@ -33,7 +33,7 @@
       <button mat-raised-button class="purple-button" routerLink="/admin/entretiens/suivi">Voir le suivi</button>
     </mat-card>
   </div>
-  } @else if (isAdmin) {
+  } @else if (isAdmin()) {
   <div class="portal-grid compact-grid">
     <mat-card class="portal-card red-card compact-card">
       <mat-icon>group</mat-icon>

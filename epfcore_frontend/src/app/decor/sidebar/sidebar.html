@@ -1,4 +1,8 @@
 <mat-nav-list>
+  <a mat-list-item class="nav-item" routerLink="/home">
+    <mat-icon>home</mat-icon>
+    <span class="label">Accueil</span>
+  </a>
   @if (isAdmin()) {
     <a mat-list-item class="nav-item" routerLink="/student-list">
       <mat-icon>group</mat-icon>
@@ -18,10 +22,6 @@
     </a>
   }
   @else if (isGestionnaireAdmission()) {
-    <a mat-list-item class="nav-item" routerLink="/home">
-      <mat-icon>home</mat-icon>
-      <span class="label">Accueil</span>
-    </a>
     <a mat-list-item class="nav-item" routerLink="/admin/formulaires">
       <mat-icon>folder_shared</mat-icon>
       <span class="label">Candidatures</span>
@@ -36,10 +36,6 @@
     </a>
   }
   @else {
-    <a mat-list-item class="nav-item" routerLink="/home">
-      <mat-icon>home</mat-icon>
-      <span class="label">Accueil</span>
-    </a>
     <a mat-list-item class="nav-item" routerLink="/">
       <mat-icon>dashboard</mat-icon>
       <span class="label">Tableau de bord</span>

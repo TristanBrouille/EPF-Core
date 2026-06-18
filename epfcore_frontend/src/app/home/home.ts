@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
-import { AuthState } from '../auth/auth-state';
+import {loginService} from '../login/loginService';
+import {User} from '../model/user';
 
 @Component({
   selector: 'app-home',
@@ -12,13 +13,26 @@ import { AuthState } from '../auth/auth-state';
   styleUrl: './home.scss',
 })
 export class Home {
-  constructor(private authState: AuthState) {}
 
-  get isGestionnaireAdmission(): boolean {
-    return this.authState.hasRole('GESTIONNAIRE_ADMISSION');
+  public user = signal<User | undefined>(undefined);
+
+  constructor(private readonly loginService : loginService) {}
+
+  async ngOnInit() {
+    try {
+      const userData = await this.loginService.me();
+      this.user.set(userData);
+    } catch (error) {
+      console.error("Erreur lors de la récupération de l'utilisateur", error);
+      this.user.set(undefined);
+    }
   }
 
-  get isAdmin(): boolean {
-    return this.authState.hasRole('ADMIN');
-  }
+  public isGestionnaireAdmission = computed(() => {
+    return this.user()?.role?.includes('GESTIONNAIRE_ADMISSION') ?? false;
+  });
+
+  public isAdmin = computed(() => {
+    return this.user()?.role?.includes('ADMIN') ?? false;
+  });
 }

@@ -5,21 +5,26 @@ import {
   CarnetDeNotes, Evaluation, Note, NoteInput,
   MoyenneRow, ImportResult
 } from './note.model';
+import {environment} from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class NoteService {
 
-  private readonly API = 'http://localhost:8080/api';
+  private readonly baseUrl = environment.apiUrl;
+  private url(path: string): string {
+    return `${this.baseUrl}/api${path}`;
+  }
+
 
   constructor(private http: HttpClient) {}
 
 
   getAllCarnets(): Observable<CarnetDeNotes[]> {
-    return this.http.get<CarnetDeNotes[]>(`${this.API}/carnets`);
+    return this.http.get<CarnetDeNotes[]>(this.url(`/carnets`));
   }
 
   getCarnet(id: number): Observable<CarnetDeNotes> {
-    return this.http.get<CarnetDeNotes>(`${this.API}/carnets/${id}`);
+    return this.http.get<CarnetDeNotes>(this.url(`/carnets/${id}`));
   }
 
   creerCarnet(data: {
@@ -28,15 +33,15 @@ export class NoteService {
     uniteEnseignementId?: number | null;
     moduleId?: number | null;
   }): Observable<CarnetDeNotes> {
-    return this.http.post<CarnetDeNotes>(`${this.API}/carnets`, data);
+    return this.http.post<CarnetDeNotes>(this.url(`/carnets`), data);
   }
 
   publierCarnet(id: number): Observable<CarnetDeNotes> {
-    return this.http.patch<CarnetDeNotes>(`${this.API}/carnets/${id}/publier`, {});
+    return this.http.patch<CarnetDeNotes>(this.url(`/carnets/${id}/publier`), {});
   }
 
   getEvaluations(carnetId: number): Observable<Evaluation[]> {
-    return this.http.get<Evaluation[]>(`${this.API}/carnets/${carnetId}/evaluations`);
+    return this.http.get<Evaluation[]>(this.url(`/carnets/${carnetId}/evaluations`));
   }
 
   ajouterEvaluation(carnetId: number, data: {
@@ -45,26 +50,26 @@ export class NoteService {
     coef: number;
     noteMax: number;
   }): Observable<Evaluation> {
-    return this.http.post<Evaluation>(`${this.API}/carnets/${carnetId}/evaluations`, data);
+    return this.http.post<Evaluation>(this.url(`/carnets/${carnetId}/evaluations`), data);
   }
 
   importerCSV(evaluationId: number, file: File): Observable<ImportResult> {
     const form = new FormData();
     form.append('file', file, file.name);
     return this.http.post<ImportResult>(
-      `${this.API}/notes/import/${evaluationId}`, form
+      this.url(`/notes/import/${evaluationId}`), form
     );
   }
 
   getMoyennes(carnetId: number): Observable<MoyenneRow[]> {
-    return this.http.get<MoyenneRow[]>(`${this.API}/carnets/${carnetId}/moyennes`);
+    return this.http.get<MoyenneRow[]>(this.url(`/carnets/${carnetId}/moyennes`));
   }
 
   getNotesByCarnet(carnetId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API}/${carnetId}/notes`);
+    return this.http.get<any[]>(this.url(`/${carnetId}/notes`));
   }
 
   saisirNote(data: { evaluationId: number; etudiantId: number; valeur: number | null; commentaire: string }): Observable<any> {
-    return this.http.patch<any>(`${this.API}/notes/saisir`, data);
+    return this.http.patch<any>(this.url(`/notes/saisir`), data);
   }
 }

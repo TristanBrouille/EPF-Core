@@ -3,6 +3,7 @@ import {firstValueFrom} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User, UserLog} from '../model/user';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,8 @@ import {User, UserLog} from '../model/user';
 export class loginService {
 
 
-  private readonly baseUrl = "http://localhost:8080";
+  private readonly baseUrl = environment.apiUrl;
+
   constructor(private httpClient: HttpClient) {}
 
   private url(path: string): string {
