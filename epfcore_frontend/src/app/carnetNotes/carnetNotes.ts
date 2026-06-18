@@ -1,22 +1,11 @@
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { RouterLink } from '@angular/router';
-// import { NoteService } from './note.service';
-// import {
-//   CarnetDeNotes, Evaluation, MoyenneRow, ImportResult
-// } from './note.model';
-// import { HttpErrorResponse } from '@angular/common/http';
-
 import { CommonModule } from "@angular/common";
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
-import { CarnetDeNotes, Evaluation, ImportResult, MoyenneRow } from "../note/note.model";
+import { CarnetDeNotes, Evaluation, ImportResult, MoyenneRow, Note } from "../note/note.model";
 import { NoteService } from "../note/note.service";
 import { HttpErrorResponse } from "@angular/common/http";
-
-
+import { Observable } from "rxjs";
 
 type View = 'list' | 'carnet' | 'create' | 'import';
 
@@ -29,19 +18,19 @@ type View = 'list' | 'carnet' | 'create' | 'import';
 })
 export class CarnetNotesComponent implements OnInit {
 
-  // ── Navigation ────────────────────────────────────────────────────────────
+  // Navigation 
   currentView: View = 'list';
 
-  // ── État liste ────────────────────────────────────────────────────────────
+  //  État liste 
   carnets: CarnetDeNotes[]  = [];
   loading = false;
   errorMsg = '';
   successMsg = '';
 
-  // ── Création carnet ───────────────────────────────────────────────────────
+  //  Création carnet 
   newCarnet = { intitule: '', anneeAcademique: '2024-2025', uniteEnseignementId: null as number | null };
 
-  // ── Vue carnet ouvert ─────────────────────────────────────────────────────
+  //  Vue carnet ouvert 
   selectedCarnet: CarnetDeNotes | null = null;
   evaluations: Evaluation[] = [];
   moyennes: MoyenneRow[] = [];
@@ -55,106 +44,56 @@ export class CarnetNotesComponent implements OnInit {
   newEval = { intitule: '', type: 'DS', coef: 1, noteMax: 20 };
   showAddEval = false;
 
-  // ── Import CSV ────────────────────────────────────────────────────────────
+  // Import CSV 
   importEvalId: number | null = null;
   importFile: File | null = null;
   importResult: ImportResult | null = null;
   importLoading = false;
 
-  readonly TYPES_EVAL = ['DS', 'TP', 'PROJET', 'EXAMEN', 'RATTRAPAGE', 'AUTRE'];
+  showAddNote = false;
+  newNote: {
+    etudiantId: number | null;
+    evaluationId: number | null;
+    valeur: number | null;
+    absent: boolean;
+    commentaire: string;
+  } = { etudiantId: null, evaluationId: null, valeur: null, absent: false, commentaire: '' };
 
-  //constructor(private noteService: NoteService) {}
+  readonly TYPES_EVAL = ['DS', 'TP', 'PROJET', 'EXAMEN', 'RATTRAPAGE', 'AUTRE'];
+  http: any;
+  API: any;
+
   constructor(private noteService: NoteService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadCarnets();
   }
 
-  // ── Liste des carnets ──────────────────────────────────────────────────────
-  // loadCarnets(): void {
-  //   this.loading = true;
-  //   this.noteService.getAllCarnets().subscribe({
-  //     next: (data: CarnetDeNotes[]) => { this.carnets = data; this.loading = false; },
-  //     error: (e: ImportResult)   => { this.errorMsg = 'Erreur chargement carnets'; this.loading = false; }
-  //   });
-  // }
-
-  // loadCarnets(): void {
-  //   this.loading = false;
-
-  //   this.noteService.getAllCarnets().subscribe({
-  //     next: (data) => {
-  //       console.log('✔ Carnets reçus :', data);
-  //       this.carnets = data;
-  //       this.loading = false;
-  //     },
-  //     error: (err) => {
-  //       console.error('❌ Erreur API getAllCarnets :', err);
-  //       this.errorMsg = 'Erreur chargement carnets';
-  //       this.loading = false;
-  //     }
-  //   });
-  // }
-
   loadCarnets(): void {
-    console.log('LOAD CARNETS APPELÉ'); ///////////////////////////////////////////////////////
-    this.loading = true;
-    ///////////////
-    console.log('START LOAD');
+    console.log('LOAD CARNETS APPELÉ');
 
     this.loading = true;
 
     this.noteService.getAllCarnets().subscribe({
       next: data => {
-        console.log('NEXT');
 
         this.carnets = [...data];
 
-        console.log('BEFORE FALSE');
-
         this.loading = false;
 
-        console.log('AFTER FALSE');
         this.cdr.detectChanges();
       },
       error: err => {
-        console.log('ERROR', err);
 
         this.loading = false;
         this.cdr.detectChanges();
       }
     });
-    //////////////////
-    // this.noteService.getAllCarnets().subscribe({
-    //   next: data => {
-    //     console.log('AVANT affectation', this.carnets);
-    //     console.log('DATA reçue', data);
-
-    //     this.carnets = [...data];
-
-    //     console.log('APRÈS affectation', this.carnets);
-
-    //     this.loading = false;
-    //   }
-    // });
-    // this.noteService.getAllCarnets().subscribe({
-    //   next: data => {
-    //     console.log('Carnets reçus :', data);      // ← ouvrez F12 Console
-    //     console.log('Nombre :', data.length);
-    //     //this.carnets = data;
-    //     this.carnets = [...data];
-    //     this.loading = false;
-    //   },
-    //   error: e => {
-    //     console.error('Erreur complète :', e);
-    //     this.errorMsg = 'Erreur : ' + e.status + ' ' + e.message;
-    //     this.loading = false;
-    //   }
-    // });
+  
   }
 
 
-  // ── Créer un carnet ────────────────────────────────────────────────────────
+  // Créer un carnet 
   showCreate(): void   { this.currentView = 'create'; this.clearMessages(); }
   cancelCreate(): void { this.currentView = 'list'; }
 
@@ -169,7 +108,6 @@ export class CarnetNotesComponent implements OnInit {
         this.carnets.unshift(carnet);
         this.newCarnet = { intitule: '', anneeAcademique: '2024-2025', uniteEnseignementId: null };
         this.loading = false;
-        // ← Au lieu de revenir sur 'list', on ouvre directement le carnet créé
         this.ouvrirCarnet(carnet);
       },
       error: e => {
@@ -179,44 +117,10 @@ export class CarnetNotesComponent implements OnInit {
     });
   }
 
-  // ── Ouvrir un carnet (saisie des notes) ───────────────────────────────────
-  ouvrirCarnet(carnet: CarnetDeNotes): void {
-    this.selectedCarnet = carnet;
-    this.currentView    = 'carnet';
-    this.clearMessages();
-    this.loadEvaluations(carnet.id);
-    this.loadMoyennes(carnet.id);
-  }
-
-  // backToList(): void {
-  //   this.selectedCarnet = null;
-  //   this.currentView    = 'list';
-  //   this.loadCarnets();
-  // }
   backToList(): void {
     this.selectedCarnet = null;
     this.currentView = 'list';
     }
-
-  // loadEvaluations(carnetId: number): void {
-  //   this.noteService.getEvaluations(carnetId).subscribe({
-  //     next: (evals: Evaluation[]) => { this.evaluations = evals; },
-  //     error: ()   => { this.errorMsg = 'Erreur chargement évaluations'; }
-  //   });
-  // }
-
-  // loadMoyennes(carnetId: number): void {
-  //   this.noteService.getMoyennes(carnetId).subscribe({
-  //     next: (data: MoyenneRow[]) => {
-  //       this.moyennes = data;
-  //       // Initialiser la grille depuis les moyennes (liste des étudiants)
-  //       this.etudiantsAffichage = data.map(r => ({
-  //         id: r.etudiantId, numero: r.numero, nomComplet: r.nomComplet
-  //       }));
-  //     },
-  //     error: () => {}
-  //   });
-  // }
 
   loadEvaluations(carnetId: number): void {
     this.noteService.getEvaluations(carnetId).subscribe({
@@ -231,7 +135,6 @@ export class CarnetNotesComponent implements OnInit {
   loadMoyennes(carnetId: number): void {
     this.noteService.getMoyennes(carnetId).subscribe({
       next: (data) => {
-        console.log('MOYENNES', data);
         this.moyennes = data;
         this.etudiantsAffichage = data.map(r => ({
           id: r.etudiantId, numero: r.numero, nomComplet: r.nomComplet
@@ -241,25 +144,9 @@ export class CarnetNotesComponent implements OnInit {
     });
   }
 
-  // ── Saisie manuelle ────────────────────────────────────────────────────────
+  // Saisie manuelle
   gridKey(etudiantId: number, evalId: number): string {
     return `${etudiantId}_${evalId}`;
-  }
-
-  saisirNote(etudiantId: number, evalId: number): void {
-    if (!this.selectedCarnet) return;
-    const key    = this.gridKey(etudiantId, evalId);
-    const absent = this.absentGrid[key] ?? false;
-    const valeur = absent ? null : (this.notesGrid[key] !== '' ? Number(this.notesGrid[key]) : null);
-
-    this.noteService.saisirNote({ evaluationId: evalId, etudiantId, valeur, commentaire: '' }).subscribe({
-      next: () => {
-        this.successMsg = 'Note enregistrée.';
-        setTimeout(() => this.successMsg = '', 2500);
-        this.loadMoyennes(this.selectedCarnet!.id);
-      },
-      error: (e: HttpErrorResponse) => { this.errorMsg = e.error?.error || 'Erreur enregistrement'; }
-    });
   }
 
   toggleAbsent(etudiantId: number, evalId: number): void {
@@ -271,7 +158,7 @@ export class CarnetNotesComponent implements OnInit {
     }
   }
 
-  // ── Publier le carnet ──────────────────────────────────────────────────────
+  // Publier le carnet
   publier(): void {
     if (!this.selectedCarnet) return;
     if (!confirm('Publier ce carnet ? Les notes ne pourront plus être modifiées.')) return;
@@ -285,7 +172,7 @@ export class CarnetNotesComponent implements OnInit {
     });
   }
 
-  // ── Ajouter une évaluation ─────────────────────────────────────────────────
+  // Ajouter une évaluation 
   submitEval(): void {
     if (!this.selectedCarnet || !this.newEval.intitule.trim()) return;
 
@@ -300,7 +187,51 @@ export class CarnetNotesComponent implements OnInit {
     });
   }
 
-  // ── Import CSV ────────────────────────────────────────────────────────────
+  onAbsentChange(): void {
+    if (this.newNote.absent) {
+      this.newNote.valeur = null;
+    }
+  }
+
+  submitNote(): void {
+    if (!this.newNote.etudiantId || !this.newNote.evaluationId) {
+      this.errorMsg = 'L\'étudiant et l\'évaluation sont obligatoires.';
+      return;
+    }
+
+    if (!this.newNote.absent && this.newNote.valeur === null) {
+      this.errorMsg = 'Saisissez une note ou cochez Absent.';
+      return;
+    }
+
+    const eval_ = this.evaluations.find(e => e.id === this.newNote.evaluationId);
+    if (eval_ && !this.newNote.absent &&
+        this.newNote.valeur !== null &&
+        (this.newNote.valeur < 0 || this.newNote.valeur > eval_.noteMax)) {
+      this.errorMsg = `La note doit être entre 0 et ${eval_.noteMax}.`;
+      return;
+    }
+
+    this.noteService.saisirNote({
+      evaluationId: this.newNote.evaluationId!,
+      etudiantId:   this.newNote.etudiantId!,
+      valeur:       this.newNote.absent ? null : this.newNote.valeur,
+      commentaire:  this.newNote.commentaire
+    }).subscribe({
+      next: () => {
+        this.successMsg = 'Note enregistrée.';
+        setTimeout(() => this.successMsg = '', 2500);
+        this.showAddNote = false;
+        this.newNote = { etudiantId: null, evaluationId: null, valeur: null, absent: false, commentaire: '' };
+        this.loadMoyennes(this.selectedCarnet!.id);
+        this.loadNotesExistantes(this.selectedCarnet!.id);
+      },
+      error: (e) => {
+        this.errorMsg = e.error?.error || 'Erreur enregistrement note';
+      }
+    });
+  }
+
   showImport(): void   { this.currentView = 'import'; this.importResult = null; this.clearMessages(); }
   cancelImport(): void { this.currentView = 'carnet'; }
 
@@ -329,7 +260,6 @@ export class CarnetNotesComponent implements OnInit {
     });
   }
 
-  // ── Utilitaires ───────────────────────────────────────────────────────────
   clearMessages(): void { this.errorMsg = ''; this.successMsg = ''; }
 
   getMoyenne(etudiantId: number): number | null {
@@ -351,4 +281,67 @@ export class CarnetNotesComponent implements OnInit {
     if (moy >=  4) return 'FX';
     return 'F';
   }
+
+  ouvrirCarnet(carnet: CarnetDeNotes): void {
+    this.selectedCarnet = carnet;
+    this.currentView    = 'carnet';
+    this.notesGrid      = {};
+    this.absentGrid     = {};
+    this.clearMessages();
+    this.loadEvaluations(carnet.id);
+    this.loadMoyennes(carnet.id);
+    this.loadNotesExistantes(carnet.id);
+  }
+
+  loadNotesExistantes(carnetId: number): void {
+    this.noteService.getNotesByCarnet(carnetId).subscribe({
+      next: notes => {
+        console.log('NOTES REÇUES DU SERVEUR :', notes);
+        notes.forEach((n: any) => {
+          const etudiantId = n.etudiantId || n.idEtudiant || n.etudiant?.id;
+          const evaluationId = n.evaluationId || n.idEvaluation || n.evaluation?.id;
+
+          const valeurNote = n.valeurNote !== undefined ? n.valeurNote : (n.valeur !== undefined ? n.valeur : n.note);
+
+          if (etudiantId && evaluationId) {
+            const key = this.gridKey(etudiantId, evaluationId);
+            this.notesGrid[key]  = (valeurNote !== null && valeurNote !== undefined) ? valeurNote : '';
+            this.absentGrid[key] = n.absent || false;
+          }
+        });
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  saisirNote(etudiantId: number, evalId: number): void {
+    if (!this.selectedCarnet) return;
+    
+    const key = this.gridKey(etudiantId, evalId);
+    const absent = this.absentGrid[key] ?? false;
+
+    const saisie = this.notesGrid[key];
+    const valeur = absent ? null : (saisie !== '' && saisie !== null && saisie !== undefined ? Number(saisie) : null);
+
+    const payload = { 
+      evaluationId: evalId, 
+      etudiantId: etudiantId, 
+      valeur: valeur, 
+      commentaire: '' 
+    };
+
+    this.noteService.saisirNote(payload).subscribe({
+      next: (response) => {
+        this.successMsg = 'Note enregistrée avec succès.';
+        setTimeout(() => this.successMsg = '', 2500);
+        this.notesGrid[key] = valeur !== null ? valeur : '';
+        this.loadMoyennes(this.selectedCarnet!.id);
+        this.cdr.detectChanges();
+      },
+      error: (e: HttpErrorResponse) => { 
+        this.errorMsg = e.error?.error || 'Erreur lors de l\'enregistrement de la note'; 
+      }
+    });
+  }
+
 }

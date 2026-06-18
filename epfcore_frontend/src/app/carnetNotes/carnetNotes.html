@@ -1,18 +1,5 @@
-<!-- ═══════════════════════════════════════════════════════════════════════
-     Carnet de Notes – Module 5 EPF CORE
-     Vues : list | create | carnet | import
-═══════════════════════════════════════════════════════════════════════ -->
-
 <div class="cn-wrapper">
 
-  <!-- <p>LOADING = {{ loading }}</p>
-
-  <p>VIEW = {{ currentView }}</p>
-  <p>NB CARNETS = {{ carnets.length }}</p>
-
-  <pre>{{ carnets | json }}</pre> -->
-
-  <!-- ── Bandeau en-tête ──────────────────────────────────────────────────── -->
   <div class="cn-header">
     <div class="cn-header-left">
       <button *ngIf="currentView !== 'list'" class="btn-back" (click)="backToList()">
@@ -24,7 +11,7 @@
         <span *ngIf="currentView === 'carnet' && selectedCarnet">
           {{ selectedCarnet.intitule }}
           <span class="badge" [class.badge-publie]="selectedCarnet.statut === 'PUBLIE'"
-                              [class.badge-brouillon]="selectedCarnet.statut === 'BROUILLON'">
+                               [class.badge-brouillon]="selectedCarnet.statut === 'BROUILLON'">
             {{ selectedCarnet.statut }}
           </span>
         </span>
@@ -44,29 +31,18 @@
     </div>
   </div>
 
-  <!-- ── Messages ─────────────────────────────────────────────────────────── -->
   <div class="alert alert-success" *ngIf="successMsg">{{ successMsg }}</div>
   <div class="alert alert-error"   *ngIf="errorMsg">{{ errorMsg }}</div>
 
-  <!-- ════════════════════════════════════════════════════════════════════════
-       VUE : LISTE DES CARNETS
-  ════════════════════════════════════════════════════════════════════════ -->
   <div *ngIf="currentView === 'list'">
-
     <div *ngIf="loading" class="cn-loading">Chargement…</div>
 
-    <!-- <div *ngIf="!loading && carnets.length === 0" class="cn-empty">
-      Aucun carnet de notes. Cliquez sur <strong>+ Nouveau carnet</strong> pour commencer.
-    </div> -->
-
     <div class="carnet-grid" *ngIf="!loading && carnets.length > 0">
-
       <div class="carnet-card" *ngFor="let c of carnets" (click)="ouvrirCarnet(c)">
-
         <div class="carnet-card-header">
           <span class="carnet-card-title">{{ c.intitule }}</span>
           <span class="badge" [class.badge-publie]="c.statut === 'PUBLIE'"
-                              [class.badge-brouillon]="c.statut === 'BROUILLON'">
+                               [class.badge-brouillon]="c.statut === 'BROUILLON'">
             {{ c.statut }}
           </span>
         </div>
@@ -82,24 +58,18 @@
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════════════════════
-       VUE : CRÉER UN CARNET
-  ════════════════════════════════════════════════════════════════════════ -->
   <div *ngIf="currentView === 'create'" class="form-card">
     <div class="form-group">
       <label>Intitulé du carnet *</label>
-      <input type="text" [(ngModel)]="newCarnet.intitule"
-             placeholder="ex : Carnet Mathématiques S1 2024-2025" />
+      <input type="text" [(ngModel)]="newCarnet.intitule" placeholder="ex : Carnet Mathématiques S1 2024-2025" />
     </div>
     <div class="form-group">
       <label>Année académique *</label>
-      <input type="text" [(ngModel)]="newCarnet.anneeAcademique"
-             placeholder="ex : 2024-2025" />
+      <input type="text" [(ngModel)]="newCarnet.anneeAcademique" placeholder="ex : 2024-2025" />
     </div>
     <div class="form-group">
       <label>ID Unité d'enseignement (optionnel)</label>
-      <input type="number" [(ngModel)]="newCarnet.uniteEnseignementId"
-             placeholder="Laisser vide si non applicable" />
+      <input type="number" [(ngModel)]="newCarnet.uniteEnseignementId" placeholder="Laisser vide si non applicable" />
     </div>
     <div class="form-actions">
       <button class="btn-secondary" (click)="cancelCreate()">Annuler</button>
@@ -109,32 +79,21 @@
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════════════════════
-       VUE : CARNET OUVERT – saisie / consultation
-  ════════════════════════════════════════════════════════════════════════ -->
   <div *ngIf="currentView === 'carnet' && selectedCarnet">
 
-    <!-- Sous-entête infos -->
     <div class="carnet-info-bar">
       <span>{{ selectedCarnet.anneeAcademique }}</span>
-      <span *ngIf="selectedCarnet.uniteEnseignementIntitule">
-        · {{ selectedCarnet.uniteEnseignementIntitule }}
-      </span>
-      <span *ngIf="selectedCarnet.datePublication">
-        · Publié le {{ selectedCarnet.datePublication | date:'dd/MM/yyyy HH:mm' }}
-      </span>
+      <span *ngIf="selectedCarnet.uniteEnseignementIntitule"> · {{ selectedCarnet.uniteEnseignementIntitule }}</span>
+      <span *ngIf="selectedCarnet.datePublication"> · Publié le {{ selectedCarnet.datePublication | date:'dd/MM/yyyy HH:mm' }}</span>
     </div>
 
-    <!-- ── Section évaluations ─────────────────────────────────────────────── -->
     <div class="section-title">
       Évaluations
-      <button class="btn-small" (click)="showAddEval = !showAddEval"
-              *ngIf="selectedCarnet.statut === 'BROUILLON'">
+      <button class="btn-small" (click)="showAddEval = !showAddEval" *ngIf="selectedCarnet.statut === 'BROUILLON'">
         {{ showAddEval ? '✕ Annuler' : '+ Ajouter' }}
       </button>
     </div>
 
-    <!-- Formulaire ajout évaluation -->
     <div class="form-card form-card-inline" *ngIf="showAddEval">
       <div class="form-row">
         <div class="form-group">
@@ -162,7 +121,6 @@
       </div>
     </div>
 
-    <!-- Tableau des évaluations -->
     <div *ngIf="evaluations.length === 0" class="cn-empty-inline">
       Aucune évaluation. Ajoutez-en une pour commencer à saisir des notes.
     </div>
@@ -175,67 +133,80 @@
       </div>
     </div>
 
-    <!-- ── Tableau de saisie des notes ────────────────────────────────────── -->
     <div class="section-title" *ngIf="evaluations.length > 0">
       Saisie des notes
+      <button class="btn-small" (click)="showAddNote = !showAddNote" *ngIf="selectedCarnet.statut === 'BROUILLON'">
+        {{ showAddNote ? '✕ Annuler' : '+ Ajouter' }}
+      </button>
     </div>
 
-    <div class="table-scroll" *ngIf="evaluations.length > 0 && etudiantsAffichage.length > 0">
+    <div class="form-card form-card-inline" *ngIf="showAddNote && selectedCarnet.statut === 'BROUILLON'">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Étudiant *</label>
+          <select [(ngModel)]="newNote.etudiantId">
+            <option [ngValue]="null">-- Choisir un étudiant --</option>
+            <option *ngFor="let e of etudiantsAffichage" [ngValue]="e.id">
+              {{ e.nomComplet }} ({{ e.numero }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group form-group-sm">
+          <label>Évaluation *</label>
+          <select [(ngModel)]="newNote.evaluationId">
+            <option [ngValue]="null">-- Choisir --</option>
+            <option *ngFor="let e of evaluations" [ngValue]="e.id">
+              {{ e.intitule }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group form-group-sm">
+          <label>Note</label>
+          <input type="number" [(ngModel)]="newNote.valeur" [disabled]="newNote.absent" min="0" step="0.5" placeholder="—" />
+        </div>
+        <div class="form-group form-group-sm">
+          <label>Absent</label>
+          <input type="checkbox" [(ngModel)]="newNote.absent" (change)="onAbsentChange()" style="margin-top:8px" />
+        </div>
+        <div class="form-group form-group-sm">
+          <label>Commentaire</label>
+          <input type="text" [(ngModel)]="newNote.commentaire" placeholder="optionnel" />
+        </div>
+        <div class="form-group form-group-sm form-group-action">
+          <label>&nbsp;</label>
+          <button class="btn-primary" (click)="submitNote()">Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-scroll" *ngIf="evaluations.length > 0">
       <table class="notes-table">
         <thead>
           <tr>
-            <th class="th-etudiant">Étudiant</th>
-            <th *ngFor="let e of evaluations" class="th-eval">
-              {{ e.intitule }}<br>
-              <small>Coef {{ e.coef }} · /{{ e.noteMax }}</small>
-            </th>
+            <th>Numéro</th>
+            <th>Nom Complet</th>
             <th class="th-moy">Moyenne</th>
-            <th class="th-grade">Grade</th>
+            <th class="th-moy">Grade</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let etud of etudiantsAffichage">
-            <td class="td-etudiant">
-              <strong>{{ etud.nomComplet }}</strong>
-              <small>{{ etud.numero }}</small>
-            </td>
-            <td *ngFor="let e of evaluations" class="td-note">
-              <div class="note-cell"
-                   [class.note-cell-absent]="absentGrid[gridKey(etud.id, e.id)]"
-                   [class.note-cell-readonly]="selectedCarnet?.statut === 'PUBLIE'">
-                <input type="number"
-                       [disabled]="selectedCarnet?.statut === 'PUBLIE' || absentGrid[gridKey(etud.id, e.id)]"
-                       [(ngModel)]="notesGrid[gridKey(etud.id, e.id)]"
-                       (blur)="saisirNote(etud.id, e.id)"
-                       [min]="0" [max]="e.noteMax"
-                       step="0.5"
-                       class="note-input"
-                       placeholder="—" />
-                <button class="btn-absent"
-                        [class.active]="absentGrid[gridKey(etud.id, e.id)]"
-                        [disabled]="selectedCarnet?.statut === 'PUBLIE'"
-                        (click)="toggleAbsent(etud.id, e.id)"
-                        title="Marquer absent">ABS</button>
-              </div>
-            </td>
-            <td class="td-moy">{{ formatNote(getMoyenne(etud.id)) }}</td>
-            <td class="td-grade">{{ getGrade(getMoyenne(etud.id)) }}</td>
+          <tr *ngFor="let etudiant of etudiantsAffichage">
+            <td>{{ etudiant.numero }}</td>
+            <td style="text-align: left;">{{ etudiant.nomComplet }}</td>
+            <td class="td-moy">{{ formatNote(getMoyenne(etudiant.id)) }}</td>
+            <td class="td-grade">{{ getGrade(getMoyenne(etudiant.id)) }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-
+    
     <div *ngIf="evaluations.length > 0 && etudiantsAffichage.length === 0" class="cn-empty-inline">
-      Aucune note saisie pour l'instant. Importez un CSV ou saisissez les notes manuellement ci-dessus.
+      Aucun étudiant chargé. Vérifiez la connexion au serveur.
     </div>
 
-  </div>
-
-  <!-- ════════════════════════════════════════════════════════════════════════
-       VUE : IMPORT CSV
-  ════════════════════════════════════════════════════════════════════════ -->
+  </div> 
+  
   <div *ngIf="currentView === 'import'" class="form-card">
-
     <div class="import-help">
       <strong>Format CSV attendu</strong> (sans en-tête, encodage UTF-8) :
       <pre>numero_etudiant,note,commentaire
@@ -267,7 +238,6 @@
       </button>
     </div>
 
-    <!-- Résultat import -->
     <div *ngIf="importResult" class="import-result">
       <div class="import-result-ok">
         ✓ {{ importResult.imported }} note(s) importée(s)
@@ -279,7 +249,6 @@
         </ul>
       </div>
     </div>
-
   </div>
 
 </div>

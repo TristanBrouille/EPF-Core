@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.epfcore.epfcore.student.repository.StudentRepository;
+import com.epfcore.epfcore.student.entity.Student;
+import com.epfcore.epfcore.grades.dto.*;
+
 @Service
 @Transactional
 public class NoteService {
@@ -24,11 +28,11 @@ public class NoteService {
     @PersistenceContext
     private EntityManager em;
 
-    // ══════════════════════════════════════════════════════════════════════════
-    //  CARNET DE NOTES
-    // ══════════════════════════════════════════════════════════════════════════
+    @Autowired
+    private StudentRepository studentRepository;
 
-    /** Crée un nouveau carnet de notes (statut BROUILLON). */
+    //  CARNET DE NOTES
+
     public CarnetDeNotes creerCarnet(String intitule, String anneeAcademique,
                                      Long ueId, Long moduleId) {
         CarnetDeNotes carnet = new CarnetDeNotes();
@@ -49,7 +53,6 @@ public class NoteService {
         return carnet;
     }
 
-    /** Récupère tous les carnets. */
     @Transactional(readOnly = true)
     public List<CarnetDeNotes> findAllCarnets() {
         return em.createQuery(
@@ -69,16 +72,13 @@ public class NoteService {
         return count != null ? count : 0L;
     }
 
-    /** Récupère un carnet par id. */
     @Transactional(readOnly = true)
     public CarnetDeNotes findCarnetById(long id) {
         return em.find(CarnetDeNotes.class, id);
     }
 
-    /**
-     * Publie un carnet (BROUILLON → PUBLIE).
-     * Une fois publié, les notes ne peuvent plus être modifiées directement.
-     */
+    // Publie un carnet (BROUILLON → PUBLIE).
+
     public CarnetDeNotes publierCarnet(long carnetId) {
         CarnetDeNotes carnet = em.find(CarnetDeNotes.class, carnetId);
         if (carnet == null) throw new IllegalArgumentException("Carnet introuvable : " + carnetId);
@@ -89,9 +89,7 @@ public class NoteService {
         return carnet;
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
     //  ÉVALUATIONS
-    // ══════════════════════════════════════════════════════════════════════════
 
     public Evaluation ajouterEvaluation(long carnetId, String intitule,
                                         String type, float coef, float noteMax) {
@@ -113,27 +111,20 @@ public class NoteService {
             .getResultList();
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
     //  SAISIE MANUELLE DES NOTES
-    // ══════════════════════════════════════════════════════════════════════════
 
-    /**
-     * Sauvegarde ou met à jour une note pour un étudiant/évaluation.
-     * Règle : si le carnet est PUBLIÉ, on refuse toute modification.
-     */
     public Note saisirNote(long evaluationId, long etudiantId,
-                           Float valeur, String commentaire) {
-        Evaluation eval   = em.find(Evaluation.class, evaluationId);
+                        Float valeur, String commentaire) {
+        Evaluation eval = em.find(Evaluation.class, evaluationId);
         if (eval == null) throw new IllegalArgumentException("Évaluation introuvable");
         if (eval.getCarnet().isPublie())
             throw new IllegalStateException("Carnet publié : modification interdite.");
 
-        Etudiant etudiant = em.find(Etudiant.class, etudiantId);
-        if (etudiant == null) throw new IllegalArgumentException("Étudiant introuvable");
+        studentRepository.findById(etudiantId)
+            .orElseThrow(() -> new IllegalArgumentException("Étudiant introuvable : " + etudiantId));
 
-        // Recherche d'une note existante
         List<Note> existing = em.createQuery(
-            "SELECT n FROM Note n WHERE n.evaluation.id=:eid AND n.etudiant.id=:sid",
+            "SELECT n FROM Note n WHERE n.evaluation.id=:eid AND n.etudiantId=:sid",
             Note.class)
             .setParameter("eid", evaluationId)
             .setParameter("sid", etudiantId)
@@ -147,21 +138,16 @@ public class NoteService {
             note.setSource("MANUELLE");
             note.setDateSaisie(LocalDateTime.now());
         } else {
-            note = new Note(valeur, etudiant, eval, "MANUELLE");
+            note = new Note();
+            note.setEtudiantId(etudiantId);
+            note.setEvaluation(eval);
+            note.setValeurNote(valeur);
             note.setCommentaire(commentaire);
+            note.setSource("MANUELLE");
             em.persist(note);
         }
         return note;
     }
-
-    // ══════════════════════════════════════════════════════════════════════════
-    //  IMPORT CSV
-    //  Format attendu : etudiant_numero,valeur_note,commentaire
-    //  Exemple :
-    //    123456,14.5,
-    //    123457,ABS,Absent justifié
-    //    123458,12,
-    // ══════════════════════════════════════════════════════════════════════════
 
     public Map<String, Object> importerNotesCSV(long evaluationId, MultipartFile file) {
         Evaluation eval = em.find(Evaluation.class, evaluationId);
@@ -193,19 +179,15 @@ public class NoteService {
                 String valStr  = parts[1].trim();
                 String comment = parts.length > 2 ? parts[2].trim() : null;
 
-                // Recherche étudiant par numéro
-                List<Etudiant> etudiants = em.createQuery(
-                    "SELECT e FROM Etudiant e WHERE e.numero = :num", Etudiant.class)
-                    .setParameter("num", numero)
-                    .getResultList();
-
-                if (etudiants.isEmpty()) {
+                Optional<Student> studentOpt = studentRepository.findByStudentNumber(numero);
+                if (studentOpt.isEmpty()) {
                     errorLines.add("Ligne " + lineNum + " : étudiant introuvable → " + numero);
                     errors++;
                     continue;
                 }
+                Student student = studentOpt.get();
+                Long etudiantId = student.getId();
 
-                Etudiant etudiant = etudiants.get(0);
                 Float valeur = null;
                 boolean absent = false;
 
@@ -228,7 +210,7 @@ public class NoteService {
 
                 // Upsert
                 try {
-                    saisirNoteInterne(eval, etudiant, valeur, comment, absent, "IMPORT_CSV");
+                    saisirNoteInterne(eval, etudiantId, valeur, comment, absent, "IMPORT_CSV");
                     success++;
                 } catch (Exception e) {
                     errorLines.add("Ligne " + lineNum + " : erreur sauvegarde → " + e.getMessage());
@@ -246,14 +228,14 @@ public class NoteService {
         return result;
     }
 
-    private void saisirNoteInterne(Evaluation eval, Etudiant etudiant,
-                                   Float valeur, String commentaire,
-                                   boolean absent, String source) {
+    private void saisirNoteInterne(Evaluation eval, Long etudiantId,
+                                Float valeur, String commentaire,
+                                boolean absent, String source) {
         List<Note> existing = em.createQuery(
-            "SELECT n FROM Note n WHERE n.evaluation.id=:eid AND n.etudiant.id=:sid",
+            "SELECT n FROM Note n WHERE n.evaluation.id=:eid AND n.etudiantId=:sid",
             Note.class)
             .setParameter("eid", eval.getId())
-            .setParameter("sid", etudiant.getId())
+            .setParameter("sid", etudiantId)
             .getResultList();
 
         if (!existing.isEmpty()) {
@@ -264,24 +246,21 @@ public class NoteService {
             n.setSource(source);
             n.setDateSaisie(LocalDateTime.now());
         } else {
-            Note n = new Note(valeur, etudiant, eval, source);
+            Note n = new Note(valeur, etudiantId, eval, source);
             n.setAbsent(absent);
             n.setCommentaire(commentaire);
             em.persist(n);
         }
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
     //  CALCUL MOYENNE ÉTUDIANT POUR UN CARNET
-    //  Moyenne pondérée : Σ(note_i × coef_i) / Σ(coef_i)
-    // ══════════════════════════════════════════════════════════════════════════
 
     @Transactional(readOnly = true)
     public Float calculerMoyenneEtudiant(long carnetId, long etudiantId) {
         List<Object[]> rows = em.createQuery(
             "SELECT n.valeurNote, e.coef FROM Note n " +
             "JOIN n.evaluation e " +
-            "WHERE e.carnet.id=:cid AND n.etudiant.id=:eid AND n.absent=false",
+            "WHERE e.carnet.id=:cid AND n.etudiantId=:eid AND n.absent=false",
             Object[].class)
             .setParameter("cid", carnetId)
             .setParameter("eid", etudiantId)
@@ -301,7 +280,6 @@ public class NoteService {
         return sumCoef == 0 ? null : (float)(sumPonderated / sumCoef);
     }
 
-    /** Récupère tous les étudiants qui ont au moins une note dans ce carnet. */
     @Transactional(readOnly = true)
     public List<Etudiant> findEtudiantsByCarnet(long carnetId) {
         return em.createQuery(
@@ -310,5 +288,46 @@ public class NoteService {
             Etudiant.class)
             .setParameter("cid", carnetId)
             .getResultList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoyenneRowDto> getMoyennesParCarnet(long carnetId) {
+        List<Long> ids = em.createQuery(
+            "SELECT DISTINCT n.etudiantId FROM Note n JOIN n.evaluation e WHERE e.carnet.id=:cid",
+            Long.class)
+            .setParameter("cid", carnetId)
+            .getResultList();
+
+        List<MoyenneRowDto> result = new ArrayList<>();
+        for (Long etudiantId : ids) {
+            studentRepository.findById(etudiantId).ifPresent(student -> {
+                Float moy = calculerMoyenneEtudiant(carnetId, etudiantId);
+                String nomComplet = student.getUser().getFirstname() + " " + student.getUser().getLastname();
+                result.add(new MoyenneRowDto(etudiantId, student.getStudentNumber(), nomComplet, moy));
+            });
+        }
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoyenneRowDto> getEtudiantsPourCarnet(long carnetId) {
+        CarnetDeNotes carnet = em.find(CarnetDeNotes.class, carnetId);
+        if (carnet == null) throw new IllegalArgumentException("Carnet introuvable");
+
+        return studentRepository.findAll().stream().map(s -> {
+            Float moy = calculerMoyenneEtudiant(carnetId, s.getId());
+            String nom = s.getUser().getFirstname() + " " + s.getUser().getLastname();
+            return new MoyenneRowDto(s.getId(), s.getStudentNumber(), nom, moy);
+        }).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<NoteDTO> getNotesByCarnet(long carnetId) {
+        return em.createQuery(
+            "SELECT n FROM Note n JOIN n.evaluation e WHERE e.carnet.id=:cid",
+            Note.class)
+            .setParameter("cid", carnetId)
+            .getResultList()
+            .stream().map(NoteDTO::new).toList();
     }
 }
