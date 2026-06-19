@@ -11,7 +11,7 @@ import {User} from '../../model/user';
     MatNavList,
     MatListItem,
     RouterLink,
-    MatIcon,
+    MatIcon
   ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',

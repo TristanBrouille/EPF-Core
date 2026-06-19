@@ -2,60 +2,58 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { DocumentStudent } from '../model/documentStudent';
+import {environment} from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DocumentStudentService {
-    private baseUrl = 'http://localhost:8080/api/document_student';
 
-    constructor(private http: HttpClient) { }
+  private readonly baseUrl = environment.apiUrl;
 
-    getByUserId(userId: number): Promise<DocumentStudent[]> {
-        return firstValueFrom(
-            this.http.get<DocumentStudent[]>(
-                `${this.baseUrl}/user/${userId}`,
-                { withCredentials: true }
-            )
-        );
-    }
+  constructor(private http: HttpClient) {}
 
-    etByStudentIdAndStatus(userId: number, status: string): Promise<DocumentStudent[]> {
-        return firstValueFrom(
-            this.http.get<DocumentStudent[]>(`${this.baseUrl}/student/${userId}/status/${status}`, {
-                withCredentials: true
-            })
-        );
-    }
+  private url(path: string): string {
+    return `${this.baseUrl}/api/document_student${path}`;
+  }
 
-    create(document: Partial<DocumentStudent>): Promise<DocumentStudent> {
-        return firstValueFrom(
-            this.http.post<DocumentStudent>(`${this.baseUrl}`, document, {
-                withCredentials: true
-            })
-        );
-    }
+  getByUserId(userId: number): Promise<DocumentStudent[]> {
+    return firstValueFrom(
+      this.http.get<DocumentStudent[]>(
+        this.url(`/user/${userId}`),
+        { withCredentials: true }
+      )
+    );
+  }
 
-    async certificate(studentId: number): Promise<Blob> {
-        return firstValueFrom(
-            this.http.get(`${this.baseUrl}/generate/certificate/${studentId}`, {
-                responseType: 'blob'
-            })
-        );
-    }
+  etByStudentIdAndStatus(userId: number, status: string): Promise<DocumentStudent[]> {
+    return firstValueFrom(
+      this.http.get<DocumentStudent[]>(this.url(`/student/${userId}/status/${status}`), {
+        withCredentials: true
+      })
+    );
+  }
 
-    async downloadpdf(studentId: number): Promise<Blob> {
-        return firstValueFrom(
-            this.http.get(`${this.baseUrl}/generate/pdf/${studentId}`, {
-                responseType: 'blob'
-            })
-        );
-    }
+  create(document: Partial<DocumentStudent>): Promise<DocumentStudent> {
+    return firstValueFrom(
+      this.http.post<DocumentStudent>(this.url(``), document, {
+        withCredentials: true
+      })
+    );
+  }
+
+  async certificate(studentId: number): Promise<Blob> {
+    return firstValueFrom(
+      this.http.get(this.url(`/generate/certificate/${studentId}`), {
+        responseType: 'blob'
+      })
+    );
+  }
 
     archiveDocument(id: number, archivedBy: string = 'system'): Promise<DocumentStudent> {
         return firstValueFrom(
             this.http.patch<DocumentStudent>(
-                `${this.baseUrl}/${id}/archive?archivedBy=${archivedBy}`,
+              this.url(`/${id}/archive?archivedBy=${archivedBy}`),
                 {}
             )
         );
@@ -64,7 +62,7 @@ export class DocumentStudentService {
     getArchivedDocumentsByUser(userId: number): Promise<DocumentStudent[]> {
         return firstValueFrom(
             this.http.get<DocumentStudent[]>(
-                `${this.baseUrl}/user/${userId}/archived`,
+              this.url(`/user/${userId}/archived`),
                 {}
             )
         );
@@ -73,7 +71,7 @@ export class DocumentStudentService {
     unarchiveDocument(id: number): Promise<DocumentStudent> {
         return firstValueFrom(
             this.http.patch<DocumentStudent>(
-                `${this.baseUrl}/${id}/unarchive`,
+              this.url(`/${id}/unarchive`),
                 {},
                 { withCredentials: true }
             )
@@ -83,9 +81,16 @@ export class DocumentStudentService {
     getAllArchivedDocuments(): Promise<DocumentStudent[]> {
         return firstValueFrom(
             this.http.get<DocumentStudent[]>(
-                `${this.baseUrl}/archived`,
+              this.url(`/archived`),
                 { withCredentials: true }
             )
         );
     }
+  async downloadpdf(studentId: number): Promise<Blob> {
+    return firstValueFrom(
+      this.http.get(this.url(`/generate/pdf/${studentId}`), {
+        responseType: 'blob'
+      })
+    );
+  }
 }
