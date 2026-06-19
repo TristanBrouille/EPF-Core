@@ -1,0 +1,86 @@
+<div class="container-liste">
+  <div class="header-section">
+    <h1>Liste des Réservations</h1>
+    <button type="button" class="btn btn-primary action-nav" routerLink="/reservationSalle">
+      <i class="bi bi-calendar-plus"></i> Réserver une salle
+    </button>
+  </div>
+
+  <div class="filter-toolbar">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-outline-custom" [class.active]="filtrePeriode === 'tous'" (click)="setFiltrePeriode('tous')">Toutes</button>
+      <button type="button" class="btn btn-outline-custom" [class.active]="filtrePeriode === 'futur'" (click)="setFiltrePeriode('futur')">À venir</button>
+      <button type="button" class="btn btn-outline-custom" [class.active]="filtrePeriode === 'passe'" (click)="setFiltrePeriode('passe')">Passées</button>
+    </div>
+
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-outline-custom" [class.active]="filtreStatus === 'TOUS'" (click)="setFiltreStatus('TOUS')">Tous Statuts</button>
+      <button type="button" class="btn btn-outline-custom" [class.active]="filtreStatus === 'EN_ATTENTE'" (click)="setFiltreStatus('EN_ATTENTE')">En attente</button>
+      <button type="button" class="btn btn-outline-custom" [class.active]="filtreStatus === 'ACCEPTE'" (click)="setFiltreStatus('ACCEPTE')">Acceptées</button>
+      <button type="button" class="btn btn-outline-custom" [class.active]="filtreStatus === 'REFUSE'" (click)="setFiltreStatus('REFUSE')">Refusées</button>
+    </div>
+  </div>
+
+  <table class="table table-striped custom-table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Demandeur</th>
+        <th scope="col">Salle</th>
+        <th scope="col">Date</th>
+        <th scope="col">Horaires</th>
+        <th scope="col">Places</th>
+        <th scope="col">Statut</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+  @for (res of reservationsFiltrees; track res.idReservation) {
+    <tr>
+      <th scope="row">{{ res.idReservation }}</th>
+      <td><strong>{{ res.nomReserveur }}</strong></td>
+      
+      <td>
+        {{ res.salle?.nomSalle }} 
+      </td>
+
+      <td>
+        @if (res.date && res.date.includes && res.date.includes('-')) {
+            {{ res.date | date: 'dd/MM/yyyy' }}
+        } @else {
+            {{ res.date }}
+        }
+        </td>
+
+        <td>
+        {{ res.heureDebut }} - {{ res.heureFin }}
+        </td>
+
+      <td>{{ res.nbrPersonnes }} pers.</td>
+      <td>
+        <span class="badge status-badge" 
+              [ngClass]="{'bg-warning text-dark': res.status === 'EN_ATTENTE', 'bg-success': res.status === 'ACCEPTE', 'bg-danger': res.status === 'REFUSE'}">
+          {{ res.status }}
+        </span>
+      </td>
+      <td>
+        @if (res.status === 'EN_ATTENTE') {
+          <button type="button" class="btn btn-success btn-sm me-1" (click)="modifierStatut(res.idReservation, 'ACCEPTE')" title="Accepter">
+            <i class="bi bi-check-lg"></i>
+          </button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="modifierStatut(res.idReservation, 'REFUSE')" title="Refuser">
+            <i class="bi bi-xl"></i>
+          </button>
+        } @else {
+          <span class="text-muted small"><i class="bi bi-lock-fill"></i> Verrouillé</span>
+        }
+      </td>
+    </tr>
+  } @empty {
+    <tr>
+      <td colspan="8" class="text-center py-4 text-muted">Aucune réservation ne correspond à vos filtres.</td>
+    </tr>
+  }
+</tbody>
+  </table>
+</div>

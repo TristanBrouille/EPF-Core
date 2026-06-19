@@ -1,0 +1,156 @@
+@if (student) {
+  <div class="student-page">
+    <div class="student-card">
+      <div class="student-sidebar">
+        @if (student.photoUrl) {
+          <img [src]="student.photoUrl" class="student-avatar" />
+        } @else {
+          <div class="student-avatar placeholder">
+            {{ initialesAvatar }}
+          </div>
+        }
+
+        <div class="student-badge" [class.active]="student.scholarship">
+          <span class="right">Bourse : </span>
+          {{ student.scholarship === 'Boursier' ? 'Boursier' : 'Non boursier' }}
+        </div>
+
+        <div class="student-meta">
+          <span class="right">Campus : </span>
+          {{ student.campus }}
+        </div>
+
+        <div class="student-meta">
+          <span class="right">Année : </span>
+          {{ student.academicYear }}
+        </div>
+      </div>
+
+      <div class="student-content">
+        <div class="card">
+          <h3>Informations</h3>
+          <div class="grid">
+            <div>
+              <label>Prénom</label>
+              <p>{{ student.user.firstname }}</p>
+            </div>
+            <div>
+              <label>Nom</label>
+              <p>{{ student.user.lastname }}</p>
+            </div>
+            <div [class.active]="student.gender === 'MALE'">
+              <label>Sexe</label>
+              <p>{{ student.gender === 'MALE' ? 'masculin' : 'féminin' }}</p>
+            </div>
+            <div>
+              <label>Nationalité</label>
+              <p>{{ student.nationality }}</p>
+            </div>
+            <div>
+              <label>Date d'anniversaire</label>
+              <p>{{ student.user.birthDate }}</p>
+            </div>
+            <div>
+              <label>Téléphone</label>
+              <p>{{ telephoneFormate }}</p>
+            </div>
+            <div class="full">
+              <label>Adresse</label>
+              <p>{{ student.address }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Scolarité</h3>
+          <div class="grid">
+            <div>
+              <label>Numéro étudiant</label>
+              <p class="mono">{{ student.studentNumber }}</p>
+            </div>
+            <div>
+              <label>Formation</label>
+              <p>{{ student.program }}</p>
+            </div>
+            <div>
+              <label>Majeur</label>
+              <p>{{ student.major }}</p>
+            </div>
+            <div>
+              <label>Date inscription</label>
+              <p>{{ dateInscriptionFormatee }}</p>
+            </div>
+            <div class="full">
+              <label>Dernier diplôme</label>
+              <p>{{ student.lastDegree }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Contact</h3>
+          <a [href]="'mailto:' + student.user.email" class="email-link">
+            {{ student.user.email }}
+          </a>
+        </div>
+
+        <div class="button-container">
+          <button (click)="downloadpdf()" class="pdf-button">
+            Télécharger mes informations personnelles
+          </button>
+          <button (click)="certificate()" class="pdf-button">
+            Télécharger mon certificat de scolarité
+          </button>
+        </div>
+
+        <button (click)="goToHistory()" class="pdf-button">
+          Consulter mon historique de demande de documents
+        </button>
+      </div>
+    </div>
+  </div>
+} @else if (user) {
+  <div class="student-page user-page">
+    <div class="student-card">
+
+      <div class="student-sidebar">
+        <div class="student-avatar placeholder">
+          {{ initialesAvatar }}
+        </div>
+        <div class="student-meta">
+          <span class="right">Fonction : </span>
+          {{ user.role }}
+        </div>
+      </div>
+
+      <div class="student-content">
+        <div class="card">
+          <h3>Informations Personnelles</h3>
+          <div class="grid">
+            <div>
+              <label>Prénom</label>
+              <p>{{ user.firstname }}</p>
+            </div>
+            <div>
+              <label>Nom</label>
+              <p>{{ user.lastname }}</p>
+            </div>
+            <div>
+              <label>Date de naissance</label>
+              <p>{{ user.birthDate }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Contact</h3>
+          <a [href]="'mailto:' + user.email" class="email-link">
+            {{ user.email }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="loading">Chargement...</div>
+}

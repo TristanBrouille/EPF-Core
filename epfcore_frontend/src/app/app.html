@@ -1,0 +1,63 @@
+@if (showLayout){
+<app-header></app-header>
+
+<mat-sidenav-container class="layout">
+
+  @if (showSidebar) {
+  <mat-sidenav mode="side" opened class="sidebar">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+  }
+  <mat-sidenav-content>
+
+
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <app-footer></app-footer>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+
+@if (archiveModal.showModal()) {
+<div class="modal-overlay" (click)="archiveModal.cancel()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-body">
+      <h3 class="modal-title">
+        {{ archiveModal.pendingAction() === 'archive' ? 'Archiver ce document ?' : 'Désarchiver ce document ?'}}
+      </h3>
+      <p class="modal-text">
+        Le document <strong>{{ documentTypeLabel(archiveModal.pendingDoc()?.documentType) }}</strong>
+        @if (archiveModal.pendingAction() === 'archive') {
+        sera déplacé vers les archives.
+        } @else {
+        sera restauré et ne sera plus dans les archives.
+        }
+      </p>
+      <p class="modal-question">
+        @if (archiveModal.pendingAction() === 'archive') {
+        Êtes-vous sûr de vouloir archiver ce document ?
+        } @else {
+        Êtes-vous sûr de vouloir désarchiver ce document ?
+        }
+      </p>
+
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" (click)="archiveModal.cancel()">Annuler</button>
+      <button class="btn-modal-confirm" (click)="archiveModal.confirm()">
+        <i class="ti" [ngClass]="archiveModal.pendingAction() === 'archive' ? 'ti-archive' : 'ti-archive-off'"></i>
+        {{ archiveModal.pendingAction() === 'archive' ? 'Archiver' : 'Désarchiver' }}
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+
+} @else {
+<router-outlet />
+}

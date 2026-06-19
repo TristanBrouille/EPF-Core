@@ -1,0 +1,79 @@
+<div class="registration-container">
+  <div class="registration-card">
+    <h2 class="text-center mb-2">Créer un compte</h2>
+
+
+    <p class="text-center text-muted mb-2">Veuillez remplir les informations ci-dessous</p>
+    <div class="action-bar mb-2">
+      <button class="btn-red" (click)="return()">
+        Retour
+      </button>
+    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstname">Prénom</label>
+          <input type="text" id="firstname" formControlName="firstname" placeholder="Ex: Admin2"
+                 [class.is-invalid]="registerForm.get('firstname')?.touched && registerForm.get('firstname')?.invalid">
+        </div>
+
+        <div class="form-group">
+          <label for="lastname">Nom</label>
+          <input type="text" id="lastname" formControlName="lastname" placeholder="Ex: Admin2"
+                 [class.is-invalid]="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.invalid">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Adresse Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="exemple@domaine.com"
+               [class.is-invalid]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" formControlName="password" placeholder="••••••••"
+               [class.is-invalid]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+      </div>
+
+      <div class="form-group">
+        <label for="birthDate">Date de naissance</label>
+        <input type="date" id="birthDate" formControlName="birthDate"
+               [class.is-invalid]="registerForm.get('birthDate')?.touched && registerForm.get('birthDate')?.invalid">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="role">Rôle</label>
+          <select id="role" formControlName="role">
+            @for (r of roles; track r) {
+              <option [value]="r">{{ r }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="idRfid">Identifiant RFID</label>
+          <input type="text" id="idRfid" formControlName="idRfid" placeholder="Ex: RF789536"
+                 [class.is-invalid]="registerForm.get('idRfid')?.touched && registerForm.get('idRfid')?.invalid">
+        </div>
+      </div>
+
+      @if (message) {
+        <div class="alert mt-2" [ngClass]="isError ? 'alert-danger' : 'alert-success'">
+          {{ message }}
+        </div>
+      }
+
+      <button type="submit" class="btn-purple btn-block mt-2" [disabled]="isSubmitting">
+        @if (!isSubmitting) {
+          <span>S'enregistrer</span>
+        } @else {
+          <span>Chargement...</span>
+        }
+      </button>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+
+
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+@use 'variables' as *;
+
+@import url(bootstrap);
+
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$magenta-palette,
+      tertiary: mat.$violet-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  margin: 0;
+  height: 100%;
+}
+
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: $black;
+  background-color: $white;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: $epf-red;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: $epf-purple;
+  text-decoration: none;
+  transition: color 0.3s;
+
+}
+
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &.btn-red {
+    background-color: $epf-red;
+    color: $white;
+
+  }
+
+  &.btn-purple {
+    background-color: $epf-purple;
+    color: $white;
+  }
+}
+
+.text-red    { color: $epf-red !important; }
+.text-purple { color: $epf-purple !important; }
+.bg-red      { background-color: $epf-red !important; color: $white; }
+.bg-purple   { background-color: $epf-purple !important; color: $white; }
+
+.container   { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+.text-center { text-align: center; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }

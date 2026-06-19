@@ -1,0 +1,416 @@
+@use '../../_variables.scss' as *;
+@use "sass:color";
+
+.student-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.student-card {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  background: $white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* SIDEBAR */
+.student-sidebar {
+  width: 280px;
+  background: linear-gradient(135deg, $epf-red, color.adjust($epf-red, $lightness: -15%));
+  color: $black;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.student-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.student-avatar.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 32px;
+  font-weight: bold;
+
+}
+
+.student-badge {
+  margin: 15px auto;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+.student-badge.active {
+  color: $black;
+  font-size: 15px;
+}
+
+.student-meta {
+  margin-top: 20px;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+/* CONTENT */
+.student-content {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: $white;
+  border: 1px solid $gray-dark;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.card h3 {
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: $epf-red;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.grid .full {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-size: 12px;
+  color: #888;
+}
+
+.right {
+  color: $white;
+}
+
+p {
+  margin: 3px 0 0;
+  font-weight: 500;
+}
+
+.sexe {
+  font-size: 0.8rem;
+}
+
+.mono {
+  font-family: monospace;
+  color: $epf-purple;
+}
+
+/* EMAIL */
+.email-link {
+  color: $epf-red;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .student-card {
+    flex-direction: column;
+  }
+
+  .student-sidebar {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pdf-button {
+  background: $epf-red;
+  color: $white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+  font-size: 15px;
+
+  &:hover {
+    background: color.adjust($epf-red, $lightness: -10%);
+    transform: translateY(-1px);
+  }
+}
+
+.button-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-docs {
+  color: #6c757d;
+  font-size: 13px;
+  margin: 0;
+}
+
+.archived-row td {
+  color: #6c757d;
+  background: #fafafa;
+}
+
+.btn-archive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid $epf-red;
+  color: $epf-red;
+  padding: 5px 12px;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background: #e9ecef;
+    color: #212529;
+    border-color: #adb5bd;
+  }
+
+  i {
+    font-size: 13px;
+  }
+}
+
+.btn-unarchive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid $black;
+  color: $black;
+  padding: 5px 12px;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background: #e9ecef;
+    color: #212529;
+    border-color: #adb5bd;
+  }
+
+  i {
+    font-size: 13px;
+  }
+}
+
+.archive-success {
+  background: #eaf3de;
+  color: #3b6d11;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 16px;
+  text-align: center;
+}
+
+.text-muted {
+  color: #adb5bd;
+  font-size: 13px;
+}
+
+.hist-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* Proportions par défaut (avec documents archivés, colonne Statut plus large) */
+.hist-table th:nth-child(1),
+.hist-table td:nth-child(1) {
+  width: 45%;
+}
+
+.hist-table th:nth-child(2),
+.hist-table td:nth-child(2) {
+  width: 35%;
+}
+
+.hist-table th:nth-child(3),
+.hist-table td:nth-child(3) {
+  width: 20%;
+}
+
+/* Proportions resserrées quand aucun document n'est archivé */
+.hist-table.compact th:nth-child(1),
+.hist-table.compact td:nth-child(1) {
+  width: 45%;
+}
+
+.hist-table.compact th:nth-child(2),
+.hist-table.compact td:nth-child(2) {
+  width: 35%;
+}
+
+.hist-table.compact th:nth-child(3),
+.hist-table.compact td:nth-child(3) {
+  width: 20%;
+}
+
+.badge-archived {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+
+  &.badge-pending {
+    background: #faeeda;
+    color: #854f0b;
+  }
+
+  &.badge-processing {
+    background: #e6f1fb;
+    color: #185fa5;
+  }
+
+  &.badge-approved {
+    background: #eaf3de;
+    color: #3b6d11;
+  }
+
+  &.badge-rejected {
+    background: #f5d5d5;
+    color: $gray-dark;
+  }
+
+  &.badge-archived {
+    background: #fcebeb;
+    color: #a32d2d;
+  }
+}
+
+.dot-archived {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &.dot-pending {
+    background: #ba7517;
+  }
+
+  &.dot-processing {
+    background: #185fa5;
+  }
+
+  &.dot-approved {
+    background: #3b6d11;
+  }
+
+  &.dot-rejected {
+    background: $gray-dark;
+  }
+
+  &.dot-archived {
+    background: #a32d2d;
+  }
+}
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+
+  &.badge-pending {
+    background: #faeeda;
+    color: #854f0b;
+  }
+
+  &.badge-processing {
+    background: #e6f1fb;
+    color: #185fa5;
+  }
+
+  &.badge-approved {
+    background: #eaf3de;
+    color: #3b6d11;
+  }
+
+  &.badge-rejected {
+    background: #f5d5d5;
+    color: $gray-dark;
+  }
+
+  &.badge-archived {
+    background: #fcebeb;
+    color: #a32d2d;
+  }
+}
+
+.dot-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &.dot-pending {
+    background: #ba7517;
+  }
+
+  &.dot-processing {
+    background: #185fa5;
+  }
+
+  &.dot-approved {
+    background: #3b6d11;
+  }
+
+  &.dot-rejected {
+    background: $gray-dark;
+  }
+
+  &.dot-archived {
+    background: #a32d2d;
+  }
+}
+
+
+
+
+
+

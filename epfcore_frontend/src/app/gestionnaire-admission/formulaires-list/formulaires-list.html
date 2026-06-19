@@ -1,0 +1,34 @@
+<div class="admin-page">
+  <h1>Dossiers de candidature soumis</h1>
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (formulaires.length === 0 && !errorMessage) {
+    <p>Aucun dossier soumis pour le moment.</p>
+  } @else {
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Candidat</th>
+          <th>Email</th>
+          <th>Programme choisi</th>
+          <th>Campus</th>
+          <th>Date de soumission</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (formulaire of formulaires; track formulaire.id) {
+          <tr (click)="openFormulaire(formulaire.id)">
+            <td>{{ formulaire.user?.firstname }} {{ formulaire.user?.lastname }}</td>
+            <td>{{ formulaire.user?.email }}</td>
+            <td>{{ formulaire.programmeChoisi }}</td>
+            <td>{{ formulaire.campusVille }}</td>
+            <td>{{ formulaire.dateSoumission | date:'dd/MM/yyyy' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

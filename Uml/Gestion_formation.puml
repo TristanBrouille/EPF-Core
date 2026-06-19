@@ -1,4 +1,4 @@
-@startuml Gestion Formation Modul
+@startuml Gestion Formation Module
 left to right direction
 skinparam packageStyle rectangle
 skinparam actorStyle awesome

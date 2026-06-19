@@ -1,0 +1,69 @@
+<div class="container mt-4">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4 bg-light p-3 rounded shadow-sm">
+    
+    <div class="d-flex align-items-center gap-2">
+      <label for="filterCampus" class="form-label fw-bold mb-0 text-nowrap">Filtrer par Campus :</label>
+      <select 
+        id="filterCampus" 
+        class="form-select" 
+        [(ngModel)]="campusSelectionne" 
+        (change)="filtrerParCampus()">
+        <option value="">Tous les campus</option>
+        @for (campus of campusDisponibles; track campus) {
+          <option [value]="campus">{{ campus }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary d-flex align-items-center" (click)="allerACreerSalle()">
+        <i class="bi bi-plus-circle me-2"></i> Créer une salle
+      </button>
+      <button class="btn btn-secondary d-flex align-items-center" (click)="allerAListeReservations()">
+        <i class="bi bi-calendar3 me-2"></i> Liste des Réservations
+      </button>
+    </div>
+
+  </div>
+
+  <div class="table-responsive shadow-sm rounded">
+    <table class="table table-striped table-hover align-middle mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nom de la salle</th>
+          <th>Type</th>
+          <th>Capacité maximale</th>
+          <th>Équipements</th>
+          <th>Campus</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (salle of sallesFiltrees; track salle.id) {
+          <tr>
+            <td class="fw-bold">#{{ salle.id }}</td>
+            <td>{{ salle.nomSalle }}</td>
+            <td>
+              <span class="badge bg-info text-dark">{{ salle.typeSalle }}</span>
+            </td>
+            <td>{{ salle.capacite }} places</td>
+            <td>{{ salle.equipement ? salle.equipement : 'Aucun équipement' }}</td>
+            <td>
+              <span class="badge bg-success">
+                {{ salle.campus ? salle.campus.ville : 'Non assigné' }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">
+              Aucune salle ne correspond aux critères de sélection.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>

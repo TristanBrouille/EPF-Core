@@ -1,0 +1,42 @@
+<mat-toolbar class="header">
+  <header class="header">
+    <img class="logo" src="assets/images/logo_epf.png" alt="Logo EPF">
+  </header>
+
+  <span class="spacer"></span>
+
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    #trigger="matMenuTrigger"
+    (mouseenter)="trigger.openMenu()"
+    (mouseleave)="checkClose()"
+  >
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu
+    #menu="matMenu"
+    (mouseenter)="isInside = true"
+    (mouseleave)="closeMenu(trigger)"
+  >
+    <button mat-menu-item (click)="goToProfile()">
+      <mat-icon>account_circle</mat-icon>
+      <span>Mon Profil</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Deconnexion</span>
+    </button>
+    @if(isAdmin){
+      <button mat-menu-item (click)="openImpersonateDialog()">
+        <mat-icon>switch_account</mat-icon>
+        <span>Impersonate</span>
+      </button>
+    } @else if (isImpersonating){
+      <button mat-raised-button color="warn" (click)="revertImpersonation()">
+        <mat-icon>switch_account</mat-icon>
+        <span>Revert to Admin</span>
+      </button>
+    }
+  </mat-menu>
+</mat-toolbar>

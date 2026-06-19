@@ -1,0 +1,80 @@
+@use '../../../variables' as *;
+
+.admin-page {
+  padding: 1.5rem;
+
+  h1 {
+    margin: 1rem 0 1.5rem;
+  }
+}
+
+.error-message {
+  color: $epf-red;
+  margin-bottom: 1rem;
+}
+
+.success-message {
+  color: $epf-purple;
+  margin-bottom: 1rem;
+}
+
+.btn-retour {
+  margin-bottom: 1rem;
+}
+
+.card {
+  background: $white;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: $epf-red;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  align-items: start;
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    color: $gray-dark;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  p {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  select {
+    width: 100%;
+    padding: 0.4rem;
+  }
+
+  .full {
+    grid-column: 1 / -1;
+  }
+}
+
+.btn-valider {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.btn-bilan {
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.btn-delete {
+  background: $gray-dark;
+}

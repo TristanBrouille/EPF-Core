@@ -1,0 +1,62 @@
+@startuml
+
+class Etudiant {
+  id: int
+  nom: string
+  prenom: string
+  creditsValides: int
+  assuranceValide: boolean
+}
+
+class Entreprise {
+  id: int
+  nom: string
+  adresse: string
+  siret: string
+  tuteur: string
+}
+
+class DemandeStage {
+  id: int
+  type: string
+  mission: string
+  dateDebut: date
+  dateFin: date
+  gratification: float
+  statut: string
+}
+
+class Convention {
+  id: int
+  version: int
+  dateGeneration: date
+  statutSignature: string
+}
+
+class Validation {
+  id: int
+  etape: string
+  statut: string
+  dateValidation: date
+}
+
+class Document {
+  id: int
+  type: string
+  cheminFichier: string
+}
+
+class Evaluation {
+  rapport: string
+  note: float
+  soutenance: boolean
+}
+
+Etudiant "1" -- "0..*" DemandeStage
+Entreprise "1" -- "0..*" DemandeStage
+DemandeStage "1" -- "1" Convention
+DemandeStage "1" -- "0..*" Validation
+Convention "1" -- "0..*" Document
+DemandeStage "1" -- "0..1" Evaluation
+
+@enduml

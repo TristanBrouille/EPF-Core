@@ -1,0 +1,70 @@
+<div class="history-wrapper">
+
+  <div class="filter-bar">
+    <input type="text" placeholder="Rechercher..." [(ngModel)]="searchTerm" />
+    <select [(ngModel)]="filterStatus">
+      <option value="">Tous les statuts</option>
+      <option value="PENDING">En attente</option>
+      <option value="PROCESSING">En cours</option>
+      <option value="APPROVED">Approuvée</option>
+      <option value="REJECTED">Refusée</option>
+    </select>
+    <select [(ngModel)]="filterType">
+      <option value="">Tous les types</option>
+      <option value="CERTIFICATE_SCOLAR">Certificat de scolarité</option>
+      <option value="INFOS_STUDENT">Infos personnelles</option>
+    </select>
+  </div>
+
+  <div class="table-card">
+    <table class="hist-table">
+      <thead>
+        <tr>
+          <th>Type de document</th>
+          <th>Date de demande</th>
+          <th>Date de création</th>
+          <th>Statut</th>
+          <th>Téléchargement</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of filteredRequests(); track r.id) {
+        <tr>
+          <td>
+            <span class="doc-icon" [ngClass]="docIconClass(r.documentType)">
+              <i class="ti" [ngClass]="docIconTi(r.documentType)" aria-hidden="true"></i>
+            </span>
+            <span class="doc-label">{{ documentTypeLabel(r.documentType) }}</span>
+          </td>
+          <td class="date-cell">{{ r.creationDate | date:'dd MMM yyyy' }}</td>
+          <td class="date-cell">{{ r.processingDate ? (r.processingDate | date:'dd MMM yyyy') : '—' }}</td>
+          <td>
+            <span class="badge-status" [ngClass]="badgeClass(r.status)">
+              <span class="dot" [ngClass]="dotClass(r.status)"></span>
+              {{ r.status }}
+            </span>
+          </td>
+          <td>
+            @if (r.documentType.trim() === 'CERTIFICATE_SCOLAR') {
+            <button (click)="certificate()" class="pdf-button">
+              Télécharger le certificat
+            </button>
+            }
+            @if (r.documentType === 'INFOS_STUDENT') {
+            <button (click)="downloadpdf()" class="pdf-button">
+              Télécharger les infos
+            </button>
+            }
+          </td>
+        </tr>
+        }
+        @if (filteredRequests().length === 0) {
+        <tr>
+          <td colspan="6" class="empty-state">Aucune demande trouvée.</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

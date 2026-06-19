@@ -1,0 +1,93 @@
+@if (user) {
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-5">
+        <h2>Informations personnelles</h2>
+        <p><strong>Prénom :</strong> {{ user.firstname }}</p>
+        <p><strong>Nom :</strong> {{ user.lastname }}</p>
+        <p><strong>Email :</strong> {{ user.email }}</p>
+        <p><strong>Date de naissance :</strong> {{ user.birthday }}</p>
+
+        @if (!hasFormulaire) {
+          <div class="rgpd-consent mt-3">
+            <label>
+              <input type="checkbox" [(ngModel)]="rgpdAccepte" />
+              <span>
+                J'accepte que mes données personnelles soient collectées et traitées par EPF dans le cadre de ma candidature, conformément au RGPD.<br/>
+                <a href="https://www.epf.fr/mentions-legales" target="_blank">Consulter les mentions légales</a>
+              </span>
+            </label>
+          </div>
+          <button class="btn-red mt-2" (click)="createFormulaire()" [disabled]="!rgpdAccepte">
+            Créer mon dossier de candidature
+          </button>
+        } @else if (!isSoumis) {
+          <button class="btn-red mt-3" routerLink="/formulaire-inscription">
+            Voir mon dossier de candidature
+          </button>
+        }
+
+        @if (isSoumis) {
+          @if (isRefuse) {
+            <div class="alert alert-danger mt-3" role="alert">
+              <p class="mb-1"><strong>Votre candidature a été refusée.</strong></p>
+              <p class="mb-0">Un mail de confirmation a été envoyé à <strong>{{ user.email }}</strong>.</p>
+            </div>
+          } @else if (entretienActif) {
+            <p class="mt-3"><strong>Voici les détails de votre entretien :</strong></p>
+            <div class="entretien-details">
+              <p><strong>Date et heure :</strong> {{ entretienActif.dateHeure | date:'dd/MM/yyyy HH:mm' }}</p>
+              <p><strong>Type :</strong> {{ entretienActif.typeEntretien }}</p>
+              @if (entretienActif.typeEntretien === 'VISIO') {
+                <p><strong>Lien :</strong> {{ entretienActif.lienVisio }}</p>
+              } @else if (entretienActif.typeEntretien === 'PRESENTIEL') {
+                <p><strong>Campus :</strong> {{ entretienActif.campusVille }}</p>
+                @if (entretienActif.salle) {
+                  <p><strong>Salle :</strong> {{ entretienActif.salle }}</p>
+                }
+              }
+              @if (entretienActif.interviewer) {
+                <p><strong>Interviewer :</strong> {{ entretienActif.interviewer.firstname }} {{ entretienActif.interviewer.lastname }}</p>
+              }
+            </div>
+          } @else {
+            <p class="mt-3">
+              Votre dossier de candidature est en cours d'examen. Un email vous sera envoyé pour vous prévenir d'un futur entretien.
+            </p>
+          }
+        }
+      </div>
+
+      <div class="col-7">
+        <h2>Avancement Dossier</h2>
+
+        <div class="progress-section">
+          <div class="progress-steps">
+            @for (step of steps; track step.id) {
+              <div class="step" [class.active]="step.id <= currentStep" [class.done]="step.id < currentStep">
+                <div class="step-circle">{{ step.id }}</div>
+                <div class="step-label">{{ step.label }}</div>
+              </div>
+            }
+          </div>
+
+          <div class="progress mt-3">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              [style.width.%]="progressPercent"
+            ></div>
+          </div>
+
+          <p class="progress-text text-center mt-2">{{ currentStepMessage }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (errorMessage) {
+  <div>
+    <p>{{ errorMessage }}</p>
+  </div>
+}

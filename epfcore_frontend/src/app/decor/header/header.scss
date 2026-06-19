@@ -1,0 +1,16 @@
+@use '../../../variables' as *;
+
+.header {
+  background: $epf-red;
+  color: white;
+  font-weight: 500;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+}
+
+.spacer {
+  flex: 1;
+}

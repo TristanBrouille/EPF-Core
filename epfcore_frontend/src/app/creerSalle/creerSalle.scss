@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  justify-content: center; 
+  align-items: center;   
+  min-height: 100vh;     
+}
+
+.w-50 {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;             
+}
+
+.w-50 .mb-3 {
+  display: flex;
+  flex-direction: column; 
+  gap: 0.5rem;           
+}
+
+.w-50 .form-control,
+.w-50 .form-select {
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.w-50 {
+  background-color: #cd6172;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}

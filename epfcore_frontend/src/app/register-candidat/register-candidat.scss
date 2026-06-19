@@ -1,0 +1,74 @@
+@use '../../variables' as *;
+
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  background-image: url("/assets/images/epf_cachan.png");
+  background-size: cover;
+  background-attachment: fixed;
+
+  .register-container {
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba($black, 0.1);
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    h1 {
+      color: $epf-red;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.5rem;
+
+      label {
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      input {
+        padding: 0.5rem 0.75rem;
+        border: 1px solid $gray-dark;
+        border-radius: 4px;
+        font-size: 1rem;
+        outline: none;
+
+        &:focus {
+          border-color: $epf-purple;
+        }
+      }
+
+      .error {
+        color: $epf-red;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+    }
+
+    button {
+      width: 100%;
+    }
+
+    .error-message {
+      margin-top: 1rem;
+      color: $epf-red;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}

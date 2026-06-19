@@ -1,0 +1,95 @@
+<div class="admin-page">
+  <button type="button" class="btn-red btn-retour" (click)="goBack()">← Retour</button>
+
+  <h1>Nouvel entretien</h1>
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  <form [formGroup]="entretienForm" (ngSubmit)="onSubmit()" class="entretien-form">
+    <div class="form-group">
+      <label>Candidat</label>
+      <input
+        type="text"
+        placeholder="Rechercher un candidat..."
+        (input)="onCandidatSearch($any($event.target).value)"
+      />
+      <select formControlName="formulaireId">
+        <option [ngValue]="null">-- Sélectionner un candidat --</option>
+        @for (formulaire of filteredFormulaires; track formulaire.id) {
+          <option [ngValue]="formulaire.id">
+            {{ formulaire.user?.firstname }} {{ formulaire.user?.lastname }} ({{ formulaire.user?.email }})
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Interviewer</label>
+      <input
+        type="text"
+        placeholder="Rechercher un interviewer..."
+        (input)="onInterviewerSearch($any($event.target).value)"
+      />
+      <select formControlName="interviewerId">
+        <option [ngValue]="null">-- Aucun --</option>
+        @for (interviewer of filteredInterviewers; track interviewer.id) {
+          <option [ngValue]="interviewer.id">{{ interviewer.firstname }} {{ interviewer.lastname }} ({{ interviewer.email }})</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" formControlName="dateEntretien" />
+      @if (entretienForm.get('dateEntretien')?.touched && entretienForm.get('dateEntretien')?.errors?.['sunday']) {
+        <p class="error">Les entretiens ne peuvent pas être planifiés le dimanche</p>
+      }
+    </div>
+
+    <div class="form-group">
+      <label>Heure</label>
+      <select formControlName="heureEntretien">
+        <option value="">-- Sélectionner --</option>
+        @for (slot of timeSlots; track slot) {
+          <option [value]="slot">{{ slot }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Type d'entretien</label>
+      <select formControlName="typeEntretien">
+        <option value="PRESENTIEL">Présentiel</option>
+        <option value="VISIO">Visioconférence</option>
+        <option value="TELEPHONE">Téléphone</option>
+      </select>
+    </div>
+
+    @if (isVisio) {
+      <div class="form-group">
+        <label>Lien de visioconférence</label>
+        <input type="text" formControlName="lienVisio" placeholder="Ex: https://meet.google.com/..." />
+      </div>
+    } @else if (isPresentiel) {
+      <div class="form-group">
+        <label>Campus</label>
+        <select formControlName="campusVille">
+          <option value="">-- Sélectionner --</option>
+          <option value="Cachan">{{ campusLabel('Cachan') }}</option>
+          <option value="Montpellier">{{ campusLabel('Montpellier') }}</option>
+          <option value="Troyes">{{ campusLabel('Troyes') }}</option>
+          <option value="Saint-Nazaire">{{ campusLabel('Saint-Nazaire') }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Salle</label>
+        <input type="text" formControlName="salle" placeholder="Ex: Salle 204" />
+      </div>
+    }
+
+    <button type="submit" class="btn-red" [disabled]="!isFormReady">Créer l'entretien</button>
+  </form>
+</div>

@@ -1,0 +1,15 @@
+@use '../../variables' as *;
+
+.full-width {
+  width: 100%;
+}
+mat-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+mat-list-item {
+    cursor: pointer;
+}
+mat-list-item:hover {
+    background-color: $gray-light;
+}

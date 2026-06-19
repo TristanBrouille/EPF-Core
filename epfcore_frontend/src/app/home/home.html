@@ -1,0 +1,98 @@
+<div class="home-container">
+
+  <h1>Bienvenue sur le portail EPF</h1>
+  <p class="subtitle">Accédez rapidement à vos informations et outils</p>
+
+  @if (isGestionnaireAdmission()) {
+  <div class="portal-grid">
+    <mat-card class="portal-card red-card">
+      <mat-icon>folder_open</mat-icon>
+      <h3>Dossiers de candidature</h3>
+      <p>Consultez et gérez les dossiers soumis</p>
+      <button mat-raised-button class="red-button" routerLink="/admin/formulaires">Accéder</button>
+    </mat-card>
+
+    <mat-card class="portal-card purple-card">
+      <mat-icon>event</mat-icon>
+      <h3>Planifier un entretien</h3>
+      <p>Créez un nouvel entretien de candidature</p>
+      <button mat-raised-button class="purple-button" routerLink="/admin/entretiens/nouveau">Planifier</button>
+    </mat-card>
+
+    <mat-card class="portal-card red-card">
+      <mat-icon>calendar_month</mat-icon>
+      <h3>Calendrier des entretiens</h3>
+      <p>Visualisez les entretiens de la semaine</p>
+      <button mat-raised-button class="red-button" routerLink="/admin/entretiens">Voir le calendrier</button>
+    </mat-card>
+
+    <mat-card class="portal-card purple-card">
+      <mat-icon>track_changes</mat-icon>
+      <h3>Suivi des entretiens</h3>
+      <p>Gérez les entretiens en retard et sans décision</p>
+      <button mat-raised-button class="purple-button" routerLink="/admin/entretiens/suivi">Voir le suivi</button>
+    </mat-card>
+  </div>
+  } @else if (isAdmin()) {
+  <div class="portal-grid compact-grid">
+    <mat-card class="portal-card red-card compact-card">
+      <mat-icon>group</mat-icon>
+      <h3>Liste des étudiants</h3>
+      <p>Consultez et gérez les documents des étudiants</p>
+      <button mat-raised-button class="red-button" routerLink="/student-list">Accéder</button>
+    </mat-card>
+    <mat-card class="portal-card purple-card compact-card">
+      <mat-icon>archive</mat-icon>
+      <h3>Archives</h3>
+      <p>Consultez la liste des documents archivés</p>
+      <button mat-raised-button class="purple-button" routerLink="/archive-documents">Accéder</button>
+    </mat-card>
+    <mat-card class="portal-card red-card compact-card">
+      <mat-icon>list</mat-icon>
+      <h3>Utilisateurs</h3>
+      <p>Consultez la liste des des utilisateur afin de les modifier/ajouter</p>
+      <button mat-raised-button class="red-button" routerLink="/user-list">Accéder</button>
+    </mat-card>
+
+  </div>
+  } @else {
+  <div class="portal-grid">
+    <mat-card class="portal-card red-card">
+      <mat-icon>school</mat-icon>
+      <h3>Étudiants</h3>
+      <p>Accédez à vos carnets de notes</p>
+      <button mat-raised-button class="red-button" routerLink="/carnetnotes">Voir les notes</button>
+    </mat-card>
+
+    <mat-card class="portal-card purple-card">
+      <mat-icon>rocket</mat-icon>
+      <h3>Projets</h3>
+      <p>Suivi des projets étudiants et labos</p>
+      <button mat-raised-button class="purple-button">Voir les projets</button>
+    </mat-card>
+
+    <mat-card class="portal-card red-card">
+      <mat-icon>person</mat-icon>
+      <h3>Enseignants</h3>
+      <p>Consultez vos cours et suivis étudiants</p>
+      <button mat-raised-button class="red-button">Accéder</button>
+    </mat-card>
+
+      <mat-card class="portal-card purple-card">
+        <mat-icon>bar_chart</mat-icon>
+        <h3>Statistiques</h3>
+        <p>Consultez les indicateurs clés</p>
+        <button mat-raised-button class="purple-button">Voir stats</button>
+      </mat-card>
+
+    <mat-card class="portal-card red-card">
+      <mat-icon>meeting_room</mat-icon>
+      <h3>Salles</h3>
+      <p>Consultez et gérez la liste des salles</p>
+      <button mat-raised-button class="red-button" routerLink="/listeSalles">Voir les salles</button>
+    </mat-card>
+
+    </div>
+  }
+
+</div>
